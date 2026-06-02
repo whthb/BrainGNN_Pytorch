@@ -36,7 +36,7 @@ warnings.filterwarnings("ignore")
 
 # Input data variables
 
-root_folder = '/home/azureuser/projects/BrainGNN/data/'
+root_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
 data_folder = os.path.join(root_folder, 'ABIDE_pcp/cpac/filt_noglobal')
 phenotype = os.path.join(root_folder, 'ABIDE_pcp/Phenotypic_V1_0b_preprocessed1.csv')
 
@@ -261,4 +261,3 @@ def get_networks(subject_list, kind, iter_no='', seed=1234, n_subjects='', atlas
     networks = np.stack(norm_networks)
 
     return networks
-

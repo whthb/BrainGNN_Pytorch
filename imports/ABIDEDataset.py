@@ -8,11 +8,14 @@ from imports.read_abide_stats_parall import read_data
 
 
 class ABIDEDataset(InMemoryDataset):
-    def __init__(self, root, name, transform=None, pre_transform=None):
+    def __init__(self, root, name, transform=None, pre_transform=None,
+                 processed_filename='data.pt'):
         self.root = root
         self.name = name
+        self.processed_filename = processed_filename
         super(ABIDEDataset, self).__init__(root,transform, pre_transform)
-        self.data, self.slices = torch.load(self.processed_paths[0])
+        self.data, self.slices = torch.load(self.processed_paths[0],
+                                            weights_only=False)
 
     @property
     def raw_file_names(self):
@@ -22,7 +25,7 @@ class ABIDEDataset(InMemoryDataset):
         return onlyfiles
     @property
     def processed_file_names(self):
-        return  'data.pt'
+        return self.processed_filename
 
     def download(self):
         # Download to `self.raw_dir`.
@@ -42,7 +45,8 @@ class ABIDEDataset(InMemoryDataset):
             data_list = [self.pre_transform(data) for data in data_list]
             self.data, self.slices = self.collate(data_list)
 
-        torch.save((self.data, self.slices), self.processed_paths[0])
+        data = self._data if hasattr(self, '_data') else self.data
+        torch.save((data, self.slices), self.processed_paths[0])
 
     def __repr__(self):
         return '{}({})'.format(self.name, len(self))

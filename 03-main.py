@@ -10,7 +10,7 @@ from torch.optim import lr_scheduler
 from tensorboardX import SummaryWriter
 
 from imports.ABIDEDataset import ABIDEDataset
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
 from net.braingnn import Network
 from imports.utils import train_val_test_split
 from sklearn.metrics import classification_report, confusion_matrix
@@ -25,7 +25,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--epoch', type=int, default=0, help='starting epoch')
 parser.add_argument('--n_epochs', type=int, default=100, help='number of epochs of training')
 parser.add_argument('--batchSize', type=int, default=100, help='size of the batches')
-parser.add_argument('--dataroot', type=str, default='/home/azureuser/projects/BrainGNN/data/ABIDE_pcp/cpac/filt_noglobal', help='root directory of the dataset')
+parser.add_argument('--dataroot', type=str, default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/ABIDE_pcp/cpac/filt_noglobal'), help='root directory of the dataset')
+parser.add_argument('--processed_file', type=str, default='data_pyg2.pt', help='PyG processed cache filename')
 parser.add_argument('--fold', type=int, default=0, help='training which fold')
 parser.add_argument('--lr', type = float, default=0.01, help='learning rate')
 parser.add_argument('--stepsize', type=int, default=20, help='scheduler step size')
@@ -46,6 +47,7 @@ parser.add_argument('--load_model', type=bool, default=False)
 parser.add_argument('--save_model', type=bool, default=True)
 parser.add_argument('--optim', type=str, default='Adam', help='optimization method: SGD, Adam')
 parser.add_argument('--save_path', type=str, default='./model/', help='path to save model')
+parser.add_argument('--log_path', type=str, default='./log/', help='path to save TensorBoard logs')
 opt = parser.parse_args()
 
 if not os.path.exists(opt.save_path):
@@ -59,20 +61,21 @@ load_model = opt.load_model
 opt_method = opt.optim
 num_epoch = opt.n_epochs
 fold = opt.fold
-writer = SummaryWriter(os.path.join('./log',str(fold)))
+writer = SummaryWriter(os.path.join(opt.log_path,str(fold)))
 
 
 
 ################## Define Dataloader ##################################
 
-dataset = ABIDEDataset(path,name)
-dataset.data.y = dataset.data.y.squeeze()
-dataset.data.x[dataset.data.x == float('inf')] = 0
+dataset = ABIDEDataset(path, name, processed_filename=opt.processed_file)
+dataset_data = dataset._data if hasattr(dataset, '_data') else dataset.data
+dataset_data.y = dataset_data.y.squeeze()
+dataset_data.x[dataset_data.x == float('inf')] = 0
 
 tr_index,val_index,te_index = train_val_test_split(fold=fold)
-train_dataset = dataset[tr_index]
-val_dataset = dataset[val_index]
-test_dataset = dataset[te_index]
+train_dataset = dataset[tr_index.tolist()]
+val_dataset = dataset[val_index.tolist()]
+test_dataset = dataset[te_index.tolist()]
 
 
 train_loader = DataLoader(train_dataset,batch_size=opt.batchSize, shuffle= True)
@@ -115,7 +118,6 @@ def consist_loss(s):
 ###################### Network Training Function#####################################
 def train(epoch):
     print('train...........')
-    scheduler.step()
 
     for param_group in optimizer.param_groups:
         print("LR", param_group['lr'])
@@ -222,6 +224,7 @@ for epoch in range(0, num_epoch):
         best_model_wts = copy.deepcopy(model.state_dict())
         if save_model:
             torch.save(best_model_wts, os.path.join(opt.save_path,str(fold)+'.pth'))
+    scheduler.step()
 
 #######################################################################################
 ######################### Testing on testing set ######################################
@@ -229,7 +232,8 @@ for epoch in range(0, num_epoch):
 
 if opt.load_model:
     model = Network(opt.indim,opt.ratio,opt.nclass).to(device)
-    model.load_state_dict(torch.load(os.path.join(opt.save_path,str(fold)+'.pth')))
+    model.load_state_dict(torch.load(os.path.join(opt.save_path,str(fold)+'.pth'),
+                                     map_location=device, weights_only=True))
     model.eval()
     preds = []
     correct = 0
@@ -253,4 +257,3 @@ else:
    print("===========================")
    print("Test Acc: {:.7f}, Test Loss: {:.7f} ".format(test_accuracy, test_l))
    print(opt)
-

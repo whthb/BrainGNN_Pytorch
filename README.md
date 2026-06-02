@@ -12,7 +12,20 @@ pip install -r requirements.txt
 ```
 **PYG**
 
-To install pyg library, [please refer to the document](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html)
+To install PyG, [please refer to the document](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html)
+
+**RTX 5070 Ti**
+
+For RTX 50-series GPUs, create a CUDA 12.8 environment and install the modern
+dependency set:
+```bash
+conda create -n braingnn_rtx5070ti python=3.11 pip -y
+conda activate braingnn_rtx5070ti
+python -m pip install -r requirements-rtx5070ti.txt
+```
+
+The modern environment uses `processed/data_pyg2.pt` so that its PyG cache does
+not overwrite the legacy `processed/data.pt`.
 
 ### Dataset 
 **ABIDE**
@@ -23,8 +36,14 @@ python 01-fetch_data.py
 python 02-process_data.py
 ```
 
+`01-fetch_data.py` automatically retries transient connection, timeout, and TLS
+errors while downloading from S3. To limit retries or change the delay:
+```
+python 01-fetch_data.py --max-retries 20 --retry-delay 10
+```
+
 ### How to run classification?
-Training and testing are integrated in file `main.py`. To run
+Training and testing are integrated in file `03-main.py`. To run
 ```
 python 03-main.py 
 ```

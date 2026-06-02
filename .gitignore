@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.tmp/
+log/
+log_pyg2/
+log_pyg2_gpu/
+model/
+model_pyg2/
+model_pyg2_gpu/
+data/ABIDE_pcp/

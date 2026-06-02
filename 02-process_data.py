@@ -24,7 +24,7 @@ import warnings
 import os
 
 warnings.filterwarnings("ignore")
-root_folder = '/data/'
+root_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 data_folder = os.path.join(root_folder, 'ABIDE_pcp/cpac/filt_noglobal/')
 
 # Process boolean command line arguments

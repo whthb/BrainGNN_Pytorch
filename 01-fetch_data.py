@@ -22,12 +22,14 @@ from nilearn import datasets
 import argparse
 from imports import preprocess_data as Reader
 import os
+import requests
 import shutil
 import sys
+import time
 
 # Input data variables
-code_folder = os.getcwd()
-root_folder = '/data/'
+code_folder = os.path.dirname(os.path.abspath(__file__))
+root_folder = os.path.join(code_folder, 'data')
 data_folder = os.path.join(root_folder, 'ABIDE_pcp/cpac/filt_noglobal/')
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
@@ -44,6 +46,30 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
+def fetch_abide_with_retry(root_folder, pipeline, files, max_retries, retry_delay):
+    retry_count = 0
+    while True:
+        try:
+            return datasets.fetch_abide_pcp(
+                data_dir=root_folder,
+                pipeline=pipeline,
+                band_pass_filtering=True,
+                global_signal_regression=False,
+                derivatives=files,
+                quality_checked=False
+            )
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                requests.exceptions.SSLError) as exc:
+            retry_count += 1
+            if max_retries >= 0 and retry_count > max_retries:
+                raise
+            print('ABIDE download interrupted: %s' % exc, file=sys.stderr)
+            print('Retrying in %s seconds (attempt %s)...' %
+                  (retry_delay, retry_count), file=sys.stderr)
+            time.sleep(retry_delay)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Download ABIDE data and compute functional connectivity matrices')
     parser.add_argument('--pipeline', default='cpac', type=str,
@@ -53,6 +79,10 @@ def main():
                         help='Brain parcellation atlas. Options: ho, cc200 and cc400, default: cc200.')
     parser.add_argument('--download', default=True, type=str2bool,
                         help='Dowload data or just compute functional connectivity. default: True')
+    parser.add_argument('--max-retries', default=-1, type=int,
+                        help='Maximum transient download retries. Use -1 to retry indefinitely. default: -1')
+    parser.add_argument('--retry-delay', default=5, type=float,
+                        help='Seconds to wait before retrying an interrupted download. default: 5')
     args = parser.parse_args()
     print(args)
 
@@ -72,9 +102,7 @@ def main():
 
     # Download database files
     if download == True:
-        abide = datasets.fetch_abide_pcp(data_dir=root_folder, pipeline=pipeline,
-                                         band_pass_filtering=True, global_signal_regression=False, derivatives=files,
-                                         quality_checked=False)
+        fetch_abide_with_retry(root_folder, pipeline, files, args.max_retries, args.retry_delay)
 
     subject_IDs = Reader.get_ids() #changed path to data path
     subject_IDs = subject_IDs.tolist()

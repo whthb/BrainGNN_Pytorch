@@ -72,7 +72,9 @@ class Network(torch.nn.Module):
         x= F.dropout(x, p=0.5, training=self.training)
         x = F.log_softmax(self.fc3(x), dim=-1)
 
-        return x,self.pool1.weight,self.pool2.weight, torch.sigmoid(score1).view(x.size(0),-1), torch.sigmoid(score2).view(x.size(0),-1)
+        pool1_weight = self.pool1.weight if hasattr(self.pool1, 'weight') else self.pool1.select.weight
+        pool2_weight = self.pool2.weight if hasattr(self.pool2, 'weight') else self.pool2.select.weight
+        return x,pool1_weight,pool2_weight, torch.sigmoid(score1).view(x.size(0),-1), torch.sigmoid(score2).view(x.size(0),-1)
 
     def augment_adj(self, edge_index, edge_weight, num_nodes):
         edge_index, edge_weight = add_self_loops(edge_index, edge_weight,
@@ -84,4 +86,3 @@ class Network(torch.nn.Module):
                                          num_nodes)
         edge_index, edge_weight = remove_self_loops(edge_index, edge_weight)
         return edge_index, edge_weight
-
