@@ -4,7 +4,12 @@ __pycache__/
 log/
 log_pyg2/
 log_pyg2_gpu/
+log_*/
 model/
 model_pyg2/
 model_pyg2_gpu/
+model_*/
 data/ABIDE_pcp/
+experiments/**/runs/
+*.pth
+events.out.tfevents.*

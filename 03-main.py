@@ -13,7 +13,8 @@ from imports.ABIDEDataset import ABIDEDataset
 from torch_geometric.loader import DataLoader
 from net.braingnn import Network
 from imports.utils import train_val_test_split
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import (balanced_accuracy_score, classification_report,
+                             confusion_matrix)
 
 torch.manual_seed(123)
 
@@ -27,6 +28,11 @@ parser.add_argument('--n_epochs', type=int, default=100, help='number of epochs 
 parser.add_argument('--batchSize', type=int, default=100, help='size of the batches')
 parser.add_argument('--dataroot', type=str, default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/ABIDE_pcp/cpac/filt_noglobal'), help='root directory of the dataset')
 parser.add_argument('--processed_file', type=str, default='data_pyg2.pt', help='PyG processed cache filename')
+parser.add_argument('--edge_source', type=str, default='pcorr', choices=['pcorr', 'corr'], help='connectivity matrix used to build graph edges')
+parser.add_argument('--edge_topk', type=int, default=None, help='keep top-k absolute edges per ROI before symmetrizing; default keeps all edges')
+parser.add_argument('--edge_top_percent', type=float, default=None, help='keep this fraction of strongest edges per ROI before symmetrizing')
+parser.add_argument('--positive_edges_only', action='store_true', help='keep only positive connectivity values as edge weights')
+parser.add_argument('--best_metric', type=str, default='loss', choices=['loss', 'acc', 'balanced_acc'], help='validation metric used to save the best checkpoint')
 parser.add_argument('--fold', type=int, default=0, help='training which fold')
 parser.add_argument('--lr', type = float, default=0.01, help='learning rate')
 parser.add_argument('--stepsize', type=int, default=20, help='scheduler step size')
@@ -43,6 +49,10 @@ parser.add_argument('--ratio', type=float, default=0.5, help='pooling ratio')
 parser.add_argument('--indim', type=int, default=200, help='feature dim')
 parser.add_argument('--nroi', type=int, default=200, help='num of ROIs')
 parser.add_argument('--nclass', type=int, default=2, help='num of classes')
+parser.add_argument('--dim1', type=int, default=32, help='first GNN hidden dimension')
+parser.add_argument('--dim2', type=int, default=32, help='second GNN hidden dimension')
+parser.add_argument('--fc_dim', type=int, default=512, help='fully connected hidden dimension')
+parser.add_argument('--dropout', type=float, default=0.5, help='dropout probability')
 parser.add_argument('--load_model', type=bool, default=False)
 parser.add_argument('--save_model', type=bool, default=True)
 parser.add_argument('--optim', type=str, default='Adam', help='optimization method: SGD, Adam')
@@ -67,12 +77,15 @@ writer = SummaryWriter(os.path.join(opt.log_path,str(fold)))
 
 ################## Define Dataloader ##################################
 
-dataset = ABIDEDataset(path, name, processed_filename=opt.processed_file)
+dataset = ABIDEDataset(path, name, processed_filename=opt.processed_file,
+                       edge_source=opt.edge_source, edge_topk=opt.edge_topk,
+                       edge_top_percent=opt.edge_top_percent,
+                       positive_edges_only=opt.positive_edges_only)
 dataset_data = dataset._data if hasattr(dataset, '_data') else dataset.data
 dataset_data.y = dataset_data.y.squeeze()
-dataset_data.x[dataset_data.x == float('inf')] = 0
+dataset_data.x = torch.nan_to_num(dataset_data.x, nan=0.0, posinf=0.0, neginf=0.0)
 
-tr_index,val_index,te_index = train_val_test_split(fold=fold)
+tr_index,val_index,te_index = train_val_test_split(fold=fold, labels=dataset_data.y.cpu().numpy())
 train_dataset = dataset[tr_index.tolist()]
 val_dataset = dataset[val_index.tolist()]
 test_dataset = dataset[te_index.tolist()]
@@ -85,7 +98,9 @@ test_loader = DataLoader(test_dataset, batch_size=opt.batchSize, shuffle=False)
 
 
 ############### Define Graph Deep Learning Network ##########################
-model = Network(opt.indim,opt.ratio,opt.nclass).to(device)
+model = Network(opt.indim,opt.ratio,opt.nclass, dim1=opt.dim1,
+                dim2=opt.dim2, fc_dim=opt.fc_dim,
+                dropout=opt.dropout).to(device)
 print(model)
 
 if opt_method == 'Adam':
@@ -107,7 +122,6 @@ def topk_loss(s,ratio):
 def consist_loss(s):
     if len(s) == 0:
         return 0
-    s = torch.sigmoid(s)
     W = torch.ones(s.shape[0],s.shape[0])
     D = torch.eye(s.shape[0])*torch.sum(W,dim=1)
     L = D-W
@@ -165,16 +179,22 @@ def train(epoch):
 def test_acc(loader):
     model.eval()
     correct = 0
+    preds = []
+    trues = []
     for data in loader:
         data = data.to(device)
         outputs= model(data.x, data.edge_index, data.batch, data.edge_attr,data.pos)
         pred = outputs[0].max(dim=1)[1]
         correct += pred.eq(data.y).sum().item()
+        preds.append(pred.cpu().detach().numpy())
+        trues.append(data.y.cpu().detach().numpy())
 
-    return correct / len(loader.dataset)
+    preds = np.concatenate(preds, axis=0)
+    trues = np.concatenate(trues, axis=0)
+    return correct / len(loader.dataset), balanced_accuracy_score(trues, preds)
 
-def test_loss(loader,epoch):
-    print('testing...........')
+def test_loss(loader,epoch,stage='testing'):
+    print(stage + '...........')
     model.eval()
     loss_all = 0
     for data in loader:
@@ -199,28 +219,37 @@ def test_loss(loader,epoch):
 ############################   Model Training #########################################
 #######################################################################################
 best_model_wts = copy.deepcopy(model.state_dict())
-best_loss = 1e10
+best_score = -1e10
 for epoch in range(0, num_epoch):
     since  = time.time()
     tr_loss, s1_arr, s2_arr, w1, w2 = train(epoch)
-    tr_acc = test_acc(train_loader)
-    val_acc = test_acc(val_loader)
-    val_loss = test_loss(val_loader,epoch)
+    tr_acc, tr_bacc = test_acc(train_loader)
+    val_acc, val_bacc = test_acc(val_loader)
+    val_loss = test_loss(val_loader,epoch,stage='validating')
     time_elapsed = time.time() - since
     print('*====**')
     print('{:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
     print('Epoch: {:03d}, Train Loss: {:.7f}, '
-          'Train Acc: {:.7f}, Test Loss: {:.7f}, Test Acc: {:.7f}'.format(epoch, tr_loss,
-                                                       tr_acc, val_loss, val_acc))
+          'Train Acc: {:.7f}, Train Balanced Acc: {:.7f}, '
+          'Val Loss: {:.7f}, Val Acc: {:.7f}, Val Balanced Acc: {:.7f}'.format(
+              epoch, tr_loss, tr_acc, tr_bacc, val_loss, val_acc, val_bacc))
 
-    writer.add_scalars('Acc',{'train_acc':tr_acc,'val_acc':val_acc},  epoch)
+    writer.add_scalars('Acc',{'train_acc':tr_acc,'val_acc':val_acc,
+                              'train_bacc':tr_bacc,'val_bacc':val_bacc},  epoch)
     writer.add_scalars('Loss', {'train_loss': tr_loss, 'val_loss': val_loss},  epoch)
     writer.add_histogram('Hist/hist_s1', s1_arr, epoch)
     writer.add_histogram('Hist/hist_s2', s2_arr, epoch)
 
-    if val_loss < best_loss and epoch > 5:
+    if opt.best_metric == 'loss':
+        current_score = -val_loss
+    elif opt.best_metric == 'acc':
+        current_score = val_acc
+    else:
+        current_score = val_bacc
+
+    if current_score > best_score and epoch > 5:
         print("saving best model")
-        best_loss = val_loss
+        best_score = current_score
         best_model_wts = copy.deepcopy(model.state_dict())
         if save_model:
             torch.save(best_model_wts, os.path.join(opt.save_path,str(fold)+'.pth'))
@@ -231,7 +260,9 @@ for epoch in range(0, num_epoch):
 #######################################################################################
 
 if opt.load_model:
-    model = Network(opt.indim,opt.ratio,opt.nclass).to(device)
+    model = Network(opt.indim,opt.ratio,opt.nclass, dim1=opt.dim1,
+                    dim2=opt.dim2, fc_dim=opt.fc_dim,
+                    dropout=opt.dropout).to(device)
     model.load_state_dict(torch.load(os.path.join(opt.save_path,str(fold)+'.pth'),
                                      map_location=device, weights_only=True))
     model.eval()
@@ -252,8 +283,8 @@ if opt.load_model:
 else:
    model.load_state_dict(best_model_wts)
    model.eval()
-   test_accuracy = test_acc(test_loader)
+   test_accuracy, test_bacc = test_acc(test_loader)
    test_l= test_loss(test_loader,0)
    print("===========================")
-   print("Test Acc: {:.7f}, Test Loss: {:.7f} ".format(test_accuracy, test_l))
+   print("Test Acc: {:.7f}, Test Balanced Acc: {:.7f}, Test Loss: {:.7f} ".format(test_accuracy, test_bacc, test_l))
    print(opt)

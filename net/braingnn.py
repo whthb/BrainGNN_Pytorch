@@ -12,7 +12,8 @@ from net.braingraphconv import MyNNConv
 
 ##########################################################################################################################
 class Network(torch.nn.Module):
-    def __init__(self, indim, ratio, nclass, k=8, R=200):
+    def __init__(self, indim, ratio, nclass, k=8, R=200, dim1=32,
+                 dim2=32, fc_dim=512, dropout=0.5):
         '''
 
         :param indim: (int) node feature dimension
@@ -24,13 +25,14 @@ class Network(torch.nn.Module):
         super(Network, self).__init__()
 
         self.indim = indim
-        self.dim1 = 32
-        self.dim2 = 32
-        self.dim3 = 512
+        self.dim1 = dim1
+        self.dim2 = dim2
+        self.dim3 = fc_dim
         self.dim4 = 256
         self.dim5 = 8
         self.k = k
         self.R = R
+        self.dropout = dropout
 
         self.n1 = nn.Sequential(nn.Linear(self.R, self.k, bias=False), nn.ReLU(), nn.Linear(self.k, self.dim1 * self.indim))
         self.conv1 = MyNNConv(self.indim, self.dim1, self.n1, normalize=False)
@@ -67,14 +69,14 @@ class Network(torch.nn.Module):
 
         x = torch.cat([x1,x2], dim=1)
         x = self.bn1(F.relu(self.fc1(x)))
-        x = F.dropout(x, p=0.5, training=self.training)
+        x = F.dropout(x, p=self.dropout, training=self.training)
         x = self.bn2(F.relu(self.fc2(x)))
-        x= F.dropout(x, p=0.5, training=self.training)
+        x= F.dropout(x, p=self.dropout, training=self.training)
         x = F.log_softmax(self.fc3(x), dim=-1)
 
         pool1_weight = self.pool1.weight if hasattr(self.pool1, 'weight') else self.pool1.select.weight
         pool2_weight = self.pool2.weight if hasattr(self.pool2, 'weight') else self.pool2.select.weight
-        return x,pool1_weight,pool2_weight, torch.sigmoid(score1).view(x.size(0),-1), torch.sigmoid(score2).view(x.size(0),-1)
+        return x,pool1_weight,pool2_weight, score1.view(x.size(0),-1), score2.view(x.size(0),-1)
 
     def augment_adj(self, edge_index, edge_weight, num_nodes):
         edge_index, edge_weight = add_self_loops(edge_index, edge_weight,

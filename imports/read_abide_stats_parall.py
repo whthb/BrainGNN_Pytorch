@@ -69,7 +69,8 @@ class NoDaemonContext(type(multiprocessing.get_context())):
     Process = NoDaemonProcess
 
 
-def read_data(data_dir):
+def read_data(data_dir, edge_source='pcorr', edge_topk=None,
+              edge_top_percent=None, positive_edges_only=False):
     onlyfiles = [f for f in listdir(data_dir) if osp.isfile(osp.join(data_dir, f))]
     onlyfiles.sort()
     batch = []
@@ -81,7 +82,11 @@ def read_data(data_dir):
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
     #pool =  MyPool(processes = cores)
-    func = partial(read_sigle_data, data_dir)
+    func = partial(read_sigle_data, data_dir,
+                   edge_source=edge_source,
+                   edge_topk=edge_topk,
+                   edge_top_percent=edge_top_percent,
+                   positive_edges_only=positive_edges_only)
 
     import timeit
 
@@ -125,27 +130,76 @@ def read_data(data_dir):
     return data, slices
 
 
-def read_sigle_data(data_dir,filename,use_gdc =False):
+def _select_edge_matrix(temp, edge_source, positive_edges_only=False):
+    if edge_source == 'pcorr':
+        matrix = temp['pcorr'][()]
+    elif edge_source == 'corr':
+        matrix = temp['corr'][()]
+    else:
+        raise ValueError("edge_source must be 'pcorr' or 'corr'")
+
+    matrix = np.nan_to_num(matrix, nan=0.0, posinf=0.0, neginf=0.0)
+    if positive_edges_only:
+        matrix = np.where(matrix > 0, matrix, 0.0)
+    else:
+        matrix = np.abs(matrix)
+    np.fill_diagonal(matrix, 0.0)
+    return matrix
+
+
+def _apply_topk(matrix, edge_topk=None, edge_top_percent=None):
+    if edge_topk is None and edge_top_percent is None:
+        return matrix
+
+    if edge_topk is not None and edge_top_percent is not None:
+        raise ValueError('Use only one of edge_topk or edge_top_percent')
+
+    num_nodes = matrix.shape[0]
+    if edge_top_percent is not None:
+        edge_top_percent = float(edge_top_percent)
+        if edge_top_percent <= 0 or edge_top_percent > 1:
+            raise ValueError('edge_top_percent must be in (0, 1]')
+        edge_topk = int(np.ceil((num_nodes - 1) * edge_top_percent))
+
+    edge_topk = int(edge_topk)
+    if edge_topk <= 0:
+        raise ValueError('edge_topk must be a positive integer')
+
+    edge_topk = min(edge_topk, num_nodes - 1)
+    topk_cols = np.argpartition(matrix, -edge_topk, axis=1)[:, -edge_topk:]
+    rows = np.arange(num_nodes)[:, None]
+    mask = np.zeros_like(matrix, dtype=bool)
+    mask[rows, topk_cols] = matrix[rows, topk_cols] > 0
+    mask = mask | mask.T
+    return matrix * mask
+
+
+def _matrix_to_edges(matrix):
+    row, col = np.nonzero(matrix)
+    edge_att = matrix[row, col]
+    edge_index = np.stack([row, col])
+    edge_index, edge_att = remove_self_loops(torch.from_numpy(edge_index),
+                                             torch.from_numpy(edge_att))
+    num_nodes = matrix.shape[0]
+    edge_index = edge_index.long()
+    edge_index, edge_att = coalesce(edge_index, edge_att, num_nodes,
+                                    num_nodes)
+    return edge_index, edge_att
+
+
+def read_sigle_data(data_dir,filename,edge_source='pcorr',edge_topk=None,
+                    edge_top_percent=None,positive_edges_only=False,
+                    use_gdc =False):
 
     temp = dd.io.load(osp.join(data_dir, filename))
 
     # read edge and edge attribute
-    pcorr = np.abs(temp['pcorr'][()])
-
-    num_nodes = pcorr.shape[0]
-    G = from_numpy_array(pcorr)
-    A = nx.to_scipy_sparse_array(G)
-    adj = A.tocoo()
-    edge_att = np.zeros(len(adj.row))
-    for i in range(len(adj.row)):
-        edge_att[i] = pcorr[adj.row[i], adj.col[i]]
-
-    edge_index = np.stack([adj.row, adj.col])
-    edge_index, edge_att = remove_self_loops(torch.from_numpy(edge_index), torch.from_numpy(edge_att))
-    edge_index = edge_index.long()
-    edge_index, edge_att = coalesce(edge_index, edge_att, num_nodes,
-                                    num_nodes)
-    att = temp['corr'][()]
+    edge_matrix = _apply_topk(_select_edge_matrix(temp, edge_source,
+                                                  positive_edges_only),
+                              edge_topk, edge_top_percent)
+    num_nodes = edge_matrix.shape[0]
+    edge_index, edge_att = _matrix_to_edges(edge_matrix)
+    att = np.nan_to_num(temp['corr'][()], nan=0.0, posinf=0.0, neginf=0.0)
     label = temp['label'][()]
 
     att_torch = torch.from_numpy(att).float()
@@ -173,8 +227,5 @@ if __name__ == "__main__":
     data_dir = '/home/azureuser/projects/BrainGNN/data/ABIDE_pcp/cpac/filt_noglobal/raw'
     filename = '50346.h5'
     read_sigle_data(data_dir, filename)
-
-
-
 
 
