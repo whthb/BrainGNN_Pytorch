@@ -1,5 +1,23 @@
 # 变更日志
 
+## 2026-06-05 - 恢复 HCP subject-wise 数据脚本
+
+- 重新写回 HCP S1200 task-fMRI subject-wise pipeline 脚本：
+  - `08-build_hcp_s1200_manifest.py`
+  - `09-hcp_extract_subjectwise_roi_dataset.py`
+  - `10-hcp_subjectwise_pipeline_smoke.py`
+  - `11-main_hcp_subjectwise.py`
+- `08-build_hcp_s1200_manifest.py` 支持基于每个 task/run 的 `Movement_RelativeRMS.txt` 做 motion QC：
+  - `--mean-fd-threshold 0.1`
+  - `--max-fd-threshold 0.15`
+  - `--qc-report <path>`
+- `09-hcp_extract_subjectwise_roi_dataset.py` 继续采用流式处理：下载一个 CIFTI、提取 ROI、写入 subject-wise HDF5、清理临时文件。
+- `09-hcp_extract_subjectwise_roi_dataset.py` 增加 `--workers`，支持 subject-level parallel：
+  - 同一个 subject 的 task/run 在同一个 worker 内串行处理。
+  - 不同 subject 可并行下载/提取。
+  - 每个 worker 使用独立临时目录，且每个 subject HDF5 只由一个 worker 写入，避免写冲突。
+- `11-main_hcp_subjectwise.py` 保留 subject-level train/validation/test split，避免同一 subject 的不同 task/run 泄漏到不同集合。
+
 ## 2026-06-03 - 论文 3.3 节超参数选择实验
 
 ### 实验脚本

@@ -13,3 +13,9 @@ data/ABIDE_pcp/
 experiments/**/runs/
 *.pth
 events.out.tfevents.*
+worktrees/
+manifest_hcp*_qc_*.csv
+data/HCP900_subjectwise*/
+data/HCP_S1200_subjectwise*/
+data/hcp900_motion_qc_*.csv
+data/hcp_atlas_workbench/
