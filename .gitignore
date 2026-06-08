@@ -11,6 +11,7 @@ model_pyg2_gpu/
 model_*/
 data/ABIDE_pcp/
 experiments/**/runs/
+experiments/paper33_hparam_qc_pcorr_pos_top10_fold0_20260603_2310/
 *.pth
 events.out.tfevents.*
 worktrees/
