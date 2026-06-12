@@ -1,158 +1,231 @@
-# Graph Neural Network for Brain Network Analysis
- A preliminary implementation of BrainGNN. The example presented here is on the public resting-state fMRI ABIDE for the convenience of development. This dataset was different from the ones used in our publication, which are cleaner task-fMRI. Still seeking solutions improve representation learning on the noisy data.
+# BrainGNN HCP Subject-Wise Reproduction
 
+This repository contains a current-model local reproduction of the HCP
+experiments from BrainGNN. Training uses `07-main_hcp_subjectwise.py`; the
+unified five-fold experiment entry point is
+`15-run_hcp_subjectwise_new_baseline.py`.
 
-## Usage
-### Setup
-**pip**
+The local study is a method reproduction, not an exact numerical reproduction
+of the paper's HCP result. The available dataset contains 343 partially
+observed subjects, 1,235 LR/RL run-level task graphs, seven task classes, and a
+68-ROI cortical atlas. The paper used a different complete-subject cohort and
+268 ROIs.
 
-See the `requirements.txt` for environment configuration. 
-```bash
-pip install -r requirements.txt
-```
-**PYG**
+## Environment
 
-To install PyG, [please refer to the document](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html)
+For an RTX 50-series GPU, create the CUDA 12.8 environment:
 
-**RTX 5070 Ti**
-
-For RTX 50-series GPUs, create a CUDA 12.8 environment and install the modern
-dependency set:
 ```bash
 conda create -n braingnn_rtx5070ti python=3.11 pip -y
 conda activate braingnn_rtx5070ti
 python -m pip install -r requirements-rtx5070ti.txt
 ```
 
-The modern environment uses `processed/data_pyg2.pt` so that its PyG cache does
-not overwrite the legacy `processed/data.pt`.
-
-### Dataset 
-**ABIDE**
-
-We treat each fMRI as a brain graph. How to download and construct the graphs?
-```
-python 01-fetch_data.py
-python 02-process_data.py
-```
-
-`01-fetch_data.py` automatically retries transient connection, timeout, and TLS
-errors while downloading from S3. To limit retries or change the delay:
-```
-python 01-fetch_data.py --max-retries 20 --retry-delay 10
-```
-
-### How to run classification?
-Training and testing are integrated in file `03-main.py`. To run
-```
-python 03-main.py 
-```
-
-### Local HCP feasibility study
-
-The local HCP workflow validates BrainGNN behavior on an incomplete 68-ROI
-HCP900 task-fMRI subset. It is not a reproduction of the paper's 268-ROI HCP
-result. See `plan.md` for the experiment definition and reporting constraints.
-
-The feasibility workflow is organized as follows:
-
-- `08-build_hcp_feasibility_dataset.py` merges available LR/RL runs into one
-  graph per subject-task pair.
-- `09-build_hcp_feasibility_splits.py` creates fixed subject-wise folds.
-- `10-run_hcp_feasibility_baselines.py` and
-  `14-run_hcp_same_input_baselines.py` run the retained baselines whose mean
-  balanced accuracy is below BrainGNN.
-- `11-run_hcp_feasibility_experiments.py` runs the main experiment, ablations,
-  and lambda sweep; `12-summarize_hcp_feasibility.py` aggregates their outputs.
-- `13-plot_hcp_interpretability.py` generates the local Section 3.5-style
-  figures.
-- `imports/hcp_feasibility.py`, `imports/hcp_splits.py`, and `net/roi_pool.py`
-  provide reusable data, split, and paper-style ROI pooling support.
-- `configs/hcp900_feasibility_68roi_subjectwise_5fold.json` stores the fixed
-  split; `experiments/hcp900_feasibility_68roi/` stores compact aggregate
-  results and figures. Per-fold training artifacts are intentionally ignored.
-- `tests/` covers dataset construction, split integrity, and ROI pooling.
-
-Build one graph per available subject-task pair by merging LR/RL runs:
+Run the tests:
 
 ```bash
-python 08-build_hcp_feasibility_dataset.py \
-  --source-root data/HCP900_subjectwise_qc_allsub_7task_lrrl \
-  --output-root data/HCP900_feasibility_68roi_merged
+conda run --no-capture-output -n braingnn_rtx5070ti python -m pytest -q
 ```
 
-Build deterministic subject-wise five-fold splits:
+## Dataset
+
+Verify and extract the tracked split archive:
 
 ```bash
-python 09-build_hcp_feasibility_splits.py \
-  --dataroot data/HCP900_feasibility_68roi_merged \
-  --output configs/hcp900_feasibility_68roi_subjectwise_5fold.json
+sha256sum -c artifacts/HCP900_subjectwise_qc_allsub_7task_lrrl.SHA256SUMS
+cat artifacts/HCP900_subjectwise_qc_allsub_7task_lrrl.tar.zst.part-* \
+  | tar --zstd -xf - -C data
 ```
 
-Run the majority-class baseline and the paper-like BrainGNN configuration:
+The expected input root is:
 
-```bash
-python 10-run_hcp_feasibility_baselines.py \
-  --dataroot data/HCP900_feasibility_68roi_merged \
-  --split-manifest configs/hcp900_feasibility_68roi_subjectwise_5fold.json \
-  --output experiments/hcp900_feasibility_68roi/baselines.json
-
-python 11-run_hcp_feasibility_experiments.py \
-  --dataroot data/HCP900_feasibility_68roi_merged \
-  --split-manifest configs/hcp900_feasibility_68roi_subjectwise_5fold.json \
-  --output-root experiments/hcp900_feasibility_68roi/main \
-  --experiment main
+```text
+data/HCP900_subjectwise_qc_allsub_7task_lrrl/
+  task_label_map.json
+  sample_metadata.csv
+  subjects/*.h5
 ```
 
-The experiment runner also supports `loss_ablation`, `conv_ablation`, and
-`lambda_sweep`.
+Each graph uses Pearson-correlation rows as node features and positive top-10%
+partial-correlation edges. Splits are deterministic and subject-wise, so a
+subject never appears in more than one train/validation/test partition within
+a fold.
 
-Generate local equivalents of the interpretation figures in paper Section 3.5:
+Optional smoke test:
 
 ```bash
-python 13-plot_hcp_interpretability.py \
-  --experiment-root experiments/hcp900_feasibility_68roi \
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 06-hcp_subjectwise_pipeline_smoke.py \
+  --data-root data/HCP900_subjectwise_qc_allsub_7task_lrrl \
+  --edge-source pcorr --positive-edges-only --epochs 3
+```
+
+## Full Paper-Motivated Experiment Matrix
+
+Run the current model's complete five-fold experiment matrix:
+
+```bash
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python -u 15-run_hcp_subjectwise_new_baseline.py \
+  --experiment all \
+  --jobs 3 \
+  --output-dir experiments/hcp900_subjectwise_paper_reproduction_current_20260612
+```
+
+Use `--jobs 1` if GPU memory is limited. Re-running the same command resumes
+from completed fold summaries. Use `--no-skip-completed` only when every
+selected fold must be retrained. CUDA deterministic algorithms are not forced,
+so repeated runs can differ slightly despite using seed 123.
+
+The runner covers:
+
+- main paper-like BrainGNN result;
+- CE/unit/TPK/GLC loss ablations;
+- Ra-GConv versus shared-kernel vanilla-GConv;
+- the paper-style `lambda1_TPK` and `lambda2_GLC` sweep;
+- default-head versus approximately 96k-parameter capacity comparison.
+
+Identical settings that occur in more than one paper table are trained once
+and referenced by each relevant aggregate. The full matrix therefore executes
+15 unique configurations x 5 folds = 75 training tasks.
+
+Run only one experiment group:
+
+```bash
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python -u 15-run_hcp_subjectwise_new_baseline.py \
+  --experiment loss_ablation --jobs 3
+```
+
+Valid groups are `main`, `loss_ablation`, `conv_ablation`, `lambda_sweep`, and
+`capacity`.
+
+Run the classification baselines on the exact same exported subject splits:
+
+```bash
+ROOT=experiments/hcp900_subjectwise_paper_reproduction_current_20260612
+
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 10-run_hcp_feasibility_baselines.py \
+  --dataroot data/HCP900_subjectwise_qc_allsub_7task_lrrl \
+  --split-manifest "$ROOT/split_manifest.json" \
+  --output "$ROOT/baselines/majority.json"
+
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 14-run_hcp_same_input_baselines.py \
+  --dataroot data/HCP900_subjectwise_qc_allsub_7task_lrrl \
+  --split-manifest "$ROOT/split_manifest.json" \
+  --output "$ROOT/baselines/same_input_rbf_svm.json"
+```
+
+## Interpretability Summaries And Figures
+
+After training, summarize the main model and the three GLC settings used by
+the Section 3.5-style comparison:
+
+```bash
+ROOT=experiments/hcp900_subjectwise_paper_reproduction_current_20260612
+
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 12-summarize_hcp_feasibility.py \
+  --experiment-root "$ROOT/runs/paper_like" \
+  --output "$ROOT/interpretability_summaries/paper_like.json"
+
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 12-summarize_hcp_feasibility.py \
+  --experiment-root "$ROOT/runs/ce_unit_tpk" \
+  --output "$ROOT/interpretability_summaries/glc_0.json"
+
+cp "$ROOT/interpretability_summaries/paper_like.json" \
+  "$ROOT/interpretability_summaries/glc_0.1.json"
+
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 12-summarize_hcp_feasibility.py \
+  --experiment-root "$ROOT/runs/tpk_0.1_glc_0.5" \
+  --output "$ROOT/interpretability_summaries/glc_0.5.json"
+```
+
+Generate the local equivalents of the paper's interpretation figures:
+
+```bash
+MPLCONFIGDIR=.tmp/matplotlib \
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 13-plot_hcp_interpretability.py \
+  --experiment-root "$ROOT" \
   --atlas data/hcp_atlas_workbench/100307.aparc.32k_fs_LR.dlabel.nii \
-  --output-dir experiments/hcp900_feasibility_68roi/interpretability_figures
+  --output-dir "$ROOT/interpretability_figures"
 ```
 
-The generated Fig. 5- and Fig. 7-style maps use saved first-pooling top-17
-scores as a proxy because second-pooling node mappings were not saved. The
-Fig. 8 proxy is a task-ROI Jaccard heatmap, not Neurosynth decoding.
+The Fig. 5- and Fig. 7-style maps use saved first-pooling top-17 scores as a
+proxy because second-pooling ROI mappings are not saved. The Fig. 8-style
+output is a task-ROI Jaccard heatmap, not Neurosynth decoding. Cortical maps
+are anatomical schematics rather than surface-coordinate renderings.
 
-Run the current paper-style model on the complete 1235-graph subject-wise
-dataset:
+## Generate The Report
 
 ```bash
-python 15-run_hcp_subjectwise_new_baseline.py
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python 16-report_hcp_subjectwise_reproduction.py \
+  --experiment-root "$ROOT"
 ```
 
-This uses positive top-10% partial-correlation edges, batch size 64, 100
-epochs, and validation balanced accuracy for checkpoint selection.
+Final compact artifacts are written under:
 
-The five-fold retraining completed on June 12, 2026:
+```text
+experiments/hcp900_subjectwise_paper_reproduction_current_20260612/
+  protocol.json
+  split_manifest.json
+  summary.json
+  summary.csv
+  aggregates/*.json
+  baselines/*.json
+  interpretability_summaries/*.json
+  interpretability_figures/*
+  report_data.json
+  REPORT.md
+```
 
-- accuracy: `0.8485 +/- 0.0298`
-- balanced accuracy: `0.8280 +/- 0.0245`
-- macro F1: `0.8268 +/- 0.0276`
+Per-fold training logs, predictions, pooling scores, and community weights are
+under `runs/`. This directory is intentionally ignored by Git because the
+complete matrix is much larger than the compact aggregates and report.
 
-Tracked results and predictions are under
-`experiments/hcp900_subjectwise_new_baseline_pcorr_pos10_5fold_20260612/`.
-Checkpoints and TensorBoard logs remain local because they are ignored by Git.
+## Current Result Snapshot
 
-Run the retained RBF-SVM baseline using the same Pearson node features and
-positive top-10% partial-correlation weighted graph as BrainGNN:
+The completed June 12, 2026 rerun is summarized in
+`experiments/hcp900_subjectwise_paper_reproduction_current_20260612/REPORT.md`.
+
+- Main paper-like BrainGNN balanced accuracy: `0.8449 +/- 0.0205`
+- Same-input RBF-SVM balanced accuracy: `0.7942 +/- 0.0403`
+- Ra-GConv versus vanilla-GConv balanced-accuracy difference: `+0.0224`
+- Best tested lambda setting: `lambda1_TPK=0`, `lambda2_GLC=0.1`, balanced
+  accuracy `0.8601 +/- 0.0204`
+- Mean within-task top-17 ROI Jaccard rises from `0.4826` at GLC 0 to `0.8832`
+  at GLC 0.5
+
+## Single-Fold Trainer
+
+For debugging one fold directly:
 
 ```bash
-python 14-run_hcp_same_input_baselines.py \
-  --dataroot data/HCP900_feasibility_68roi_merged \
-  --split-manifest configs/hcp900_feasibility_68roi_subjectwise_5fold.json \
-  --output experiments/hcp900_feasibility_68roi/same_input_baselines.json
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python -u 07-main_hcp_subjectwise.py \
+  --dataroot data/HCP900_subjectwise_qc_allsub_7task_lrrl \
+  --fold 0 --n_epochs 100 --batchSize 64 \
+  --edge_source pcorr --edge_top_percent 0.10 --positive_edges_only \
+  --best_metric balanced_acc \
+  --output_dir experiments/debug_hcp_fold0
 ```
 
+## Legacy Workflows
+
+The ABIDE example remains available through `01-fetch_data.py`,
+`02-process_data.py`, and `03-main.py`. The older merged-graph HCP feasibility
+workflow is retained in scripts `08` through `14` and under
+`experiments/hcp900_feasibility_68roi/`; those results must not be mixed with
+the current 1,235-graph run-level reproduction.
 
 ## Citation
-If you find the code and dataset useful, please cite our paper.
+
 ```latex
 @article{li2020braingnn,
   title={Braingnn: Interpretable brain graph neural network for fmri analysis},

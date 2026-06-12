@@ -1,0 +1,182 @@
+{
+  "batch_size": 64,
+  "best_metric": "balanced_acc",
+  "dataroot": "/home/whthb/hw/BrainGNN_Pytorch/data/HCP900_subjectwise_qc_allsub_7task_lrrl",
+  "edge_source": "pcorr",
+  "edge_top_percent": 0.1,
+  "experiment": "all",
+  "experiment_views": {
+    "capacity": {
+      "paper_96k": "paper_96k",
+      "paper_like_55k": "paper_like"
+    },
+    "conv_ablation": {
+      "ra": "paper_like",
+      "vanilla": "vanilla"
+    },
+    "lambda_sweep": {
+      "tpk_0.1_glc_0": "ce_unit_tpk",
+      "tpk_0.1_glc_0.1": "paper_like",
+      "tpk_0.1_glc_0.2": "tpk_0.1_glc_0.2",
+      "tpk_0.1_glc_0.5": "tpk_0.1_glc_0.5",
+      "tpk_0.1_glc_1": "tpk_0.1_glc_1",
+      "tpk_0.2_glc_0.1": "tpk_0.2_glc_0.1",
+      "tpk_0.5_glc_0.1": "tpk_0.5_glc_0.1",
+      "tpk_0_glc_0": "ce_unit",
+      "tpk_0_glc_0.1": "ce_unit_glc",
+      "tpk_0_glc_0.2": "tpk_0_glc_0.2",
+      "tpk_0_glc_0.5": "tpk_0_glc_0.5",
+      "tpk_0_glc_1": "tpk_0_glc_1"
+    },
+    "loss_ablation": {
+      "ce_only": "ce_only",
+      "ce_unit": "ce_unit",
+      "ce_unit_glc": "ce_unit_glc",
+      "ce_unit_tpk": "ce_unit_tpk",
+      "full": "paper_like"
+    },
+    "main": {
+      "paper_like": "paper_like"
+    }
+  },
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "gamma": 0.5,
+  "jobs": 3,
+  "learning_rate": 0.001,
+  "n_epochs": 100,
+  "optimizer": "Adam",
+  "positive_edges_only": true,
+  "runner": "15-run_hcp_subjectwise_new_baseline.py",
+  "seed": 123,
+  "selected_canonical_configs": [
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.0,
+      "name": "ce_only",
+      "tpk": 0.0,
+      "unit": 0.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.0,
+      "name": "ce_unit",
+      "tpk": 0.0,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.1,
+      "name": "ce_unit_glc",
+      "tpk": 0.0,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.0,
+      "name": "ce_unit_tpk",
+      "tpk": 0.1,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 1472,
+      "glc": 0.1,
+      "name": "paper_96k",
+      "tpk": 0.1,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.1,
+      "name": "paper_like",
+      "tpk": 0.1,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.2,
+      "name": "tpk_0.1_glc_0.2",
+      "tpk": 0.1,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.5,
+      "name": "tpk_0.1_glc_0.5",
+      "tpk": 0.1,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 1.0,
+      "name": "tpk_0.1_glc_1",
+      "tpk": 0.1,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.1,
+      "name": "tpk_0.2_glc_0.1",
+      "tpk": 0.2,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.1,
+      "name": "tpk_0.5_glc_0.1",
+      "tpk": 0.5,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.2,
+      "name": "tpk_0_glc_0.2",
+      "tpk": 0.0,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 0.5,
+      "name": "tpk_0_glc_0.5",
+      "tpk": 0.0,
+      "unit": 1.0
+    },
+    {
+      "conv": "ra",
+      "fc_dim": 512,
+      "glc": 1.0,
+      "name": "tpk_0_glc_1",
+      "tpk": 0.0,
+      "unit": 1.0
+    },
+    {
+      "conv": "vanilla",
+      "fc_dim": 512,
+      "glc": 0.1,
+      "name": "vanilla",
+      "tpk": 0.1,
+      "unit": 1.0
+    }
+  ],
+  "step_size": 20,
+  "trainer": "07-main_hcp_subjectwise.py",
+  "weight_decay": 0.005
+}

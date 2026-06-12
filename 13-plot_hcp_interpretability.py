@@ -20,6 +20,11 @@ import numpy as np
 
 TASK_ORDER = ("EMOTION", "GAMBLING", "LANGUAGE", "MOTOR", "RELATIONAL", "SOCIAL", "WM")
 GLC_VALUES = ("0", "0.1", "0.5")
+CURRENT_GLC_RUNS = {
+    "0": "ce_unit_tpk",
+    "0.1": "paper_like",
+    "0.5": "tpk_0.1_glc_0.5",
+}
 LOBE_REGIONS = {
     "occipital": ("cuneus", "lateraloccipital", "lingual", "pericalcarine"),
     "parietal": (
@@ -187,6 +192,19 @@ def sample_lookup(path: Path) -> dict[tuple[str, str], dict[str, object]]:
     }
 
 
+def sample_matches_task(sample_name: str, task: str) -> bool:
+    return sample_name == task or sample_name.startswith(f"{task}_")
+
+
+def current_or_legacy_run_root(experiment_root: Path, run_name: str) -> Path:
+    current = experiment_root / "runs" / run_name
+    if current.exists():
+        return current
+    if run_name == "paper_like":
+        return experiment_root / "main_paper_consistent" / "paper_like"
+    return experiment_root / "lambda_sweep" / run_name
+
+
 def figure5_glc_comparison(
     experiment_root: Path,
     output_dir: Path,
@@ -198,18 +216,21 @@ def figure5_glc_comparison(
 ) -> dict[str, object]:
     lookups = {
         glc: sample_lookup(
-            experiment_root / "lambda_sweep" / f"tpk_0.1_glc_{glc}" /
-            f"fold_{fold}" / "test_pool1_scores.npz"
+            current_or_legacy_run_root(
+                experiment_root,
+                CURRENT_GLC_RUNS[glc] if (experiment_root / "runs").exists() else f"tpk_0.1_glc_{glc}",
+            ) / f"fold_{fold}" / "test_pool1_scores.npz"
         )
         for glc in GLC_VALUES
     }
     common_keys = set.intersection(*(set(lookup) for lookup in lookups.values()))
     candidates = [
         key for key in sorted(common_keys)
-        if key[1] == task and all(lookups[glc][key]["true"] == lookups[glc][key]["pred"] for glc in GLC_VALUES)
+        if sample_matches_task(key[1], task)
+        and all(lookups[glc][key]["true"] == lookups[glc][key]["pred"] for glc in GLC_VALUES)
     ]
     if len(candidates) < 3:
-        candidates = [key for key in sorted(common_keys) if key[1] == task]
+        candidates = [key for key in sorted(common_keys) if sample_matches_task(key[1], task)]
     selected_keys = candidates[:3]
     if len(selected_keys) < 3:
         raise ValueError(f"fewer than three shared {task} samples in fold {fold}")
@@ -438,7 +459,7 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     rois = atlas_rois(args.atlas)
     positions = schematic_positions(rois)
-    main_root = args.experiment_root / "main_paper_consistent" / "paper_like"
+    main_root = current_or_legacy_run_root(args.experiment_root, "paper_like")
 
     data = {
         "roi_labels": rois,

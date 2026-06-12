@@ -16,9 +16,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 
-BRAINGNN_PARAMETER_COUNT = 55_719
-
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataroot", required=True, type=Path)
@@ -171,11 +168,6 @@ def main() -> None:
             "The retained unweighted RBF-SVM baseline is fit on the exact BrainGNN training graphs only; "
             "validation graphs are not added."
         ),
-        "reference": {
-            "brain_gnn_parameter_count": BRAINGNN_PARAMETER_COUNT,
-            "brain_gnn_balanced_accuracy_mean": 0.752528492015674,
-            "brain_gnn_balanced_accuracy_std": 0.028057246307531116,
-        },
         "folds": fold_results,
         "aggregate": aggregate,
         "sample_count": int(len(samples)),

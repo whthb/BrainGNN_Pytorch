@@ -282,6 +282,10 @@ def main() -> None:
     args.nclass = len(task_label_map)
     args.nroi = int(graphs[0].num_nodes)
     args.indim = args.nroi
+    model = Network(args.indim, args.ratio, args.nclass, R=args.nroi, dim1=args.dim1,
+                    dim2=args.dim2, fc_dim=args.fc_dim, dropout=args.dropout,
+                    roi_aware=args.conv_type == "ra")
+    model_parameter_count = sum(parameter.numel() for parameter in model.parameters())
     if args.split_manifest is None:
         train_graphs, val_graphs, test_graphs, split_info = split_subjects(
             graphs, args.n_folds, args.fold, args.val_ratio, args.seed
@@ -301,6 +305,7 @@ def main() -> None:
         "test_label_counts": label_counts(test_graphs),
         "nclass": args.nclass,
         "nroi": args.nroi,
+        "model_parameter_count": model_parameter_count,
         "task_label_map": task_label_map,
         "split_manifest": str(args.split_manifest) if args.split_manifest else None,
         **split_info,
@@ -321,9 +326,7 @@ def main() -> None:
     train_loader = DataLoader(train_graphs, batch_size=args.batchSize, shuffle=True)
     val_loader = DataLoader(val_graphs, batch_size=args.batchSize, shuffle=False)
     test_loader = DataLoader(test_graphs, batch_size=args.batchSize, shuffle=False)
-    model = Network(args.indim, args.ratio, args.nclass, R=args.nroi, dim1=args.dim1,
-                    dim2=args.dim2, fc_dim=args.fc_dim, dropout=args.dropout,
-                    roi_aware=args.conv_type == "ra").to(device)
+    model = model.to(device)
     print(model)
     class_weights = None
     if args.class_weight == "balanced":
@@ -413,6 +416,7 @@ def main() -> None:
             "confusion_matrix": confusion_matrix(trues, preds).tolist(),
             "classification_report": classification_report(trues, preds, output_dict=True, zero_division=0),
             "best_validation_score": best_score,
+            "model_parameter_count": model_parameter_count,
         }
         with (args.output_dir / "summary.json").open("w") as handle:
             json.dump(summary, handle, indent=2, sort_keys=True)

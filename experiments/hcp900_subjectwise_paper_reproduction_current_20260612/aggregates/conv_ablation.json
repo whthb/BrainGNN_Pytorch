@@ -1,0 +1,157 @@
+{
+  "configs": {
+    "ra": {
+      "completed_folds": 5,
+      "folds": [
+        {
+          "accuracy": 0.8271604938271605,
+          "balanced_accuracy": 0.8261909280323602,
+          "fold": 0,
+          "macro_f1": 0.8137665243034061,
+          "macro_precision": 0.8074814074814075,
+          "macro_recall": 0.8261909280323602
+        },
+        {
+          "accuracy": 0.8826086956521739,
+          "balanced_accuracy": 0.8560530478293638,
+          "fold": 1,
+          "macro_f1": 0.8549544817927172,
+          "macro_precision": 0.8564741805813234,
+          "macro_recall": 0.8560530478293638
+        },
+        {
+          "accuracy": 0.8609022556390977,
+          "balanced_accuracy": 0.8529468522047023,
+          "fold": 2,
+          "macro_f1": 0.8566970314018096,
+          "macro_precision": 0.8625231910946197,
+          "macro_recall": 0.8529468522047023
+        },
+        {
+          "accuracy": 0.8864628820960698,
+          "balanced_accuracy": 0.8726381136870333,
+          "fold": 3,
+          "macro_f1": 0.8725761111138214,
+          "macro_precision": 0.8738787384558011,
+          "macro_recall": 0.8726381136870333
+        },
+        {
+          "accuracy": 0.8539325842696629,
+          "balanced_accuracy": 0.8169097334485279,
+          "fold": 4,
+          "macro_f1": 0.8171373706544148,
+          "macro_precision": 0.821289636918281,
+          "macro_recall": 0.8169097334485279
+        }
+      ],
+      "metrics": {
+        "accuracy": {
+          "mean": 0.862213382296833,
+          "std": 0.02146160621445861
+        },
+        "balanced_accuracy": {
+          "mean": 0.8449477350403974,
+          "std": 0.02045491754833324
+        },
+        "macro_f1": {
+          "mean": 0.8430263038532338,
+          "std": 0.02336121953699621
+        },
+        "macro_precision": {
+          "mean": 0.8443294309062865,
+          "std": 0.025456937633760477
+        },
+        "macro_recall": {
+          "mean": 0.8449477350403974,
+          "std": 0.02045491754833324
+        }
+      },
+      "parameters": {
+        "conv": "ra",
+        "fc_dim": 512,
+        "glc": 0.1,
+        "name": "paper_like",
+        "tpk": 0.1,
+        "unit": 1.0
+      },
+      "source_run": "paper_like"
+    },
+    "vanilla": {
+      "completed_folds": 5,
+      "folds": [
+        {
+          "accuracy": 0.7983539094650206,
+          "balanced_accuracy": 0.7850785711143767,
+          "fold": 0,
+          "macro_f1": 0.7922142014044731,
+          "macro_precision": 0.8046934887628613,
+          "macro_recall": 0.7850785711143767
+        },
+        {
+          "accuracy": 0.8695652173913043,
+          "balanced_accuracy": 0.8592771263823895,
+          "fold": 1,
+          "macro_f1": 0.8574287210304926,
+          "macro_precision": 0.8613034769033339,
+          "macro_recall": 0.8592771263823895
+        },
+        {
+          "accuracy": 0.7857142857142857,
+          "balanced_accuracy": 0.7891522045632001,
+          "fold": 2,
+          "macro_f1": 0.7899415769399719,
+          "macro_precision": 0.8004397533853395,
+          "macro_recall": 0.7891522045632001
+        },
+        {
+          "accuracy": 0.9126637554585153,
+          "balanced_accuracy": 0.9136552093364818,
+          "fold": 3,
+          "macro_f1": 0.9093858279867141,
+          "macro_precision": 0.9061994509211716,
+          "macro_recall": 0.9136552093364818
+        },
+        {
+          "accuracy": 0.7790262172284644,
+          "balanced_accuracy": 0.7657567214109592,
+          "fold": 4,
+          "macro_f1": 0.7542297997929054,
+          "macro_precision": 0.7582757327737296,
+          "macro_recall": 0.7657567214109592
+        }
+      ],
+      "metrics": {
+        "accuracy": {
+          "mean": 0.8290646770515181,
+          "std": 0.05283058738007809
+        },
+        "balanced_accuracy": {
+          "mean": 0.8225839665614816,
+          "std": 0.05548699384103764
+        },
+        "macro_f1": {
+          "mean": 0.8206400254309114,
+          "std": 0.055479664519201874
+        },
+        "macro_precision": {
+          "mean": 0.8261823805492872,
+          "std": 0.051714584201429506
+        },
+        "macro_recall": {
+          "mean": 0.8225839665614816,
+          "std": 0.05548699384103764
+        }
+      },
+      "parameters": {
+        "conv": "vanilla",
+        "fc_dim": 512,
+        "glc": 0.1,
+        "name": "vanilla",
+        "tpk": 0.1,
+        "unit": 1.0
+      },
+      "source_run": "vanilla"
+    }
+  },
+  "experiment": "conv_ablation"
+}

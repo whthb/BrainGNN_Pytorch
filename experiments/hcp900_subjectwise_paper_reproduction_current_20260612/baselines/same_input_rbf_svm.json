@@ -1,0 +1,115 @@
+{
+  "aggregate": {
+    "rbf_svm": {
+      "accuracy_mean": 0.8427214686595075,
+      "accuracy_std": 0.03493905844085087,
+      "balanced_accuracy_mean": 0.7942454338474183,
+      "balanced_accuracy_std": 0.04028468363645733,
+      "complexity_mean": {
+        "stored_scalar_proxy": 6835025.4,
+        "support_vectors": 738.6
+      },
+      "macro_f1_mean": 0.8237643182616405,
+      "macro_f1_std": 0.034419685899860115,
+      "macro_precision_mean": 0.9071780637973493,
+      "macro_precision_std": 0.02060262801514255,
+      "macro_recall_mean": 0.7942454338474183,
+      "macro_recall_std": 0.04028468363645733
+    }
+  },
+  "dataroot": "data/HCP900_subjectwise_qc_allsub_7task_lrrl",
+  "folds": [
+    {
+      "accuracy": 0.8395061728395061,
+      "balanced_accuracy": 0.8018825288902016,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 6959029,
+        "support_vectors": 752
+      },
+      "fold": 0,
+      "macro_f1": 0.8329880056072172,
+      "macro_precision": 0.9045889480672089,
+      "macro_recall": 0.8018825288902016,
+      "model": "rbf_svm",
+      "n_test_graphs": 243,
+      "n_train_graphs": 763
+    },
+    {
+      "accuracy": 0.8260869565217391,
+      "balanced_accuracy": 0.7504468119599698,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 6959029,
+        "support_vectors": 752
+      },
+      "fold": 1,
+      "macro_f1": 0.7953202502533105,
+      "macro_precision": 0.9141420361247947,
+      "macro_recall": 0.7504468119599698,
+      "model": "rbf_svm",
+      "n_test_graphs": 230,
+      "n_train_graphs": 763
+    },
+    {
+      "accuracy": 0.8045112781954887,
+      "balanced_accuracy": 0.762214417240674,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 6662901,
+        "support_vectors": 720
+      },
+      "fold": 2,
+      "macro_f1": 0.7873711889079563,
+      "macro_precision": 0.8894349653277688,
+      "macro_recall": 0.762214417240674,
+      "model": "rbf_svm",
+      "n_test_graphs": 266,
+      "n_train_graphs": 727
+    },
+    {
+      "accuracy": 0.9082969432314411,
+      "balanced_accuracy": 0.8656682153380834,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 6940521,
+        "support_vectors": 750
+      },
+      "fold": 3,
+      "macro_f1": 0.8844233286093752,
+      "macro_precision": 0.942697653223969,
+      "macro_recall": 0.8656682153380834,
+      "model": "rbf_svm",
+      "n_test_graphs": 229,
+      "n_train_graphs": 763
+    },
+    {
+      "accuracy": 0.8352059925093633,
+      "balanced_accuracy": 0.7910151958081624,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 6653647,
+        "support_vectors": 719
+      },
+      "fold": 4,
+      "macro_f1": 0.8187188179303436,
+      "macro_precision": 0.8850267162430056,
+      "macro_recall": 0.7910151958081624,
+      "model": "rbf_svm",
+      "n_test_graphs": 267,
+      "n_train_graphs": 725
+    }
+  ],
+  "input": {
+    "description": "BrainGNN Pearson node-feature matrix concatenated with the weighted positive top-10% partial-correlation adjacency matrix in fixed ROI order",
+    "edge_dimension": 4624,
+    "edge_source": "pcorr",
+    "edge_top_percent": 0.1,
+    "feature_dimension": 9248,
+    "node_feature_dimension": 4624,
+    "roi_identity_note": "BrainGNN's constant identity pos matrix is represented implicitly by fixed vector positions"
+  },
+  "sample_count": 1235,
+  "split_manifest": "experiments/hcp900_subjectwise_paper_reproduction_current_20260612/split_manifest.json",
+  "training_note": "The retained unweighted RBF-SVM baseline is fit on the exact BrainGNN training graphs only; validation graphs are not added."
+}

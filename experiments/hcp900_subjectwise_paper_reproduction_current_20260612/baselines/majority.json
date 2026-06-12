@@ -1,0 +1,66 @@
+{
+  "aggregate": {
+    "majority": {
+      "accuracy_mean": 0.22179619106008414,
+      "accuracy_std": 0.01995947692212008,
+      "balanced_accuracy_mean": 0.14285714285714285,
+      "balanced_accuracy_std": 0.0,
+      "macro_f1_mean": 0.051805454561497,
+      "macro_f1_std": 0.0037393584778314787,
+      "macro_precision_mean": 0.03168517015144058,
+      "macro_precision_std": 0.002851353846017155,
+      "macro_recall_mean": 0.14285714285714285,
+      "macro_recall_std": 0.0
+    }
+  },
+  "dataroot": "data/HCP900_subjectwise_qc_allsub_7task_lrrl",
+  "feature": "none; predicts the majority class from each training fold",
+  "folds": [
+    {
+      "accuracy": 0.205761316872428,
+      "balanced_accuracy": 0.14285714285714285,
+      "fold": 0,
+      "macro_f1": 0.04875670404680644,
+      "macro_precision": 0.029394473838918283,
+      "macro_recall": 0.14285714285714285,
+      "model": "majority"
+    },
+    {
+      "accuracy": 0.2608695652173913,
+      "balanced_accuracy": 0.14285714285714285,
+      "fold": 1,
+      "macro_f1": 0.059113300492610835,
+      "macro_precision": 0.037267080745341616,
+      "macro_recall": 0.14285714285714285,
+      "model": "majority"
+    },
+    {
+      "accuracy": 0.21052631578947367,
+      "balanced_accuracy": 0.14285714285714285,
+      "fold": 2,
+      "macro_f1": 0.049689440993788817,
+      "macro_precision": 0.03007518796992481,
+      "macro_recall": 0.14285714285714285,
+      "model": "majority"
+    },
+    {
+      "accuracy": 0.2183406113537118,
+      "balanced_accuracy": 0.14285714285714285,
+      "fold": 3,
+      "macro_f1": 0.05120327700972862,
+      "macro_precision": 0.031191515907673113,
+      "macro_recall": 0.14285714285714285,
+      "model": "majority"
+    },
+    {
+      "accuracy": 0.21348314606741572,
+      "balanced_accuracy": 0.14285714285714285,
+      "fold": 4,
+      "macro_f1": 0.05026455026455027,
+      "macro_precision": 0.030497592295345103,
+      "macro_recall": 0.14285714285714285,
+      "model": "majority"
+    }
+  ],
+  "split_manifest": "experiments/hcp900_subjectwise_paper_reproduction_current_20260612/split_manifest.json"
+}
