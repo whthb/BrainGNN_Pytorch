@@ -120,6 +120,26 @@ The generated Fig. 5- and Fig. 7-style maps use saved first-pooling top-17
 scores as a proxy because second-pooling node mappings were not saved. The
 Fig. 8 proxy is a task-ROI Jaccard heatmap, not Neurosynth decoding.
 
+Run the current paper-style model on the complete 1235-graph subject-wise
+dataset:
+
+```bash
+python 15-run_hcp_subjectwise_new_baseline.py
+```
+
+This uses positive top-10% partial-correlation edges, batch size 64, 100
+epochs, and validation balanced accuracy for checkpoint selection.
+
+The five-fold retraining completed on June 12, 2026:
+
+- accuracy: `0.8485 +/- 0.0298`
+- balanced accuracy: `0.8280 +/- 0.0245`
+- macro F1: `0.8268 +/- 0.0276`
+
+Tracked results and predictions are under
+`experiments/hcp900_subjectwise_new_baseline_pcorr_pos10_5fold_20260612/`.
+Checkpoints and TensorBoard logs remain local because they are ignored by Git.
+
 Run the retained RBF-SVM baseline using the same Pearson node features and
 positive top-10% partial-correlation weighted graph as BrainGNN:
 

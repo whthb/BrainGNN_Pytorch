@@ -46,7 +46,7 @@ def parse_args() -> argparse.Namespace:
                         help="validation fraction within non-test subjects; 0.25 gives about 60/20/20 with 5 folds")
     parser.add_argument("--split_manifest", type=Path, default=None)
     parser.add_argument("--n_epochs", type=int, default=100)
-    parser.add_argument("--batchSize", type=int, default=200)
+    parser.add_argument("--batchSize", type=int, default=64)
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--stepsize", type=int, default=20)
     parser.add_argument("--gamma", type=float, default=0.5)
@@ -417,7 +417,11 @@ def main() -> None:
         with (args.output_dir / "summary.json").open("w") as handle:
             json.dump(summary, handle, indent=2, sort_keys=True)
         with (args.output_dir / "predictions.csv").open("w", newline="") as handle:
-            writer_csv = csv.DictWriter(handle, fieldnames=["subject", "sample_name", "true", "pred"])
+            writer_csv = csv.DictWriter(
+                handle,
+                fieldnames=["subject", "sample_name", "true", "pred"],
+                lineterminator="\n",
+            )
             writer_csv.writeheader()
             writer_csv.writerows(
                 {"subject": subject, "sample_name": sample_name, "true": int(true), "pred": int(pred)}
