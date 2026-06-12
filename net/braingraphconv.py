@@ -2,7 +2,8 @@ import torch
 import torch.nn.functional as F
 from torch.nn import Parameter
 from net.brainmsgpassing import MyMessagePassing
-from torch_geometric.utils import add_remaining_self_loops,softmax
+from torch_geometric.utils import add_remaining_self_loops
+from torch_scatter import scatter_add
 
 from torch_geometric.typing import (OptTensor)
 
@@ -12,7 +13,7 @@ from net.inits import uniform
 class MyNNConv(MyMessagePassing):
     def __init__(self, in_channels, out_channels, nn, normalize=False, bias=True,
                  **kwargs):
-        super(MyNNConv, self).__init__(aggr='mean', **kwargs)
+        super(MyNNConv, self).__init__(aggr='add', **kwargs)
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -56,8 +57,11 @@ class MyNNConv(MyMessagePassing):
                               edge_weight=edge_weight)
 
     def message(self, edge_index_i, size_i, x_j, edge_weight, ptr: OptTensor):
-        edge_weight = softmax(edge_weight, edge_index_i, ptr, size_i)
-        return x_j if edge_weight is None else edge_weight.view(-1, 1) * x_j
+        if edge_weight is None:
+            return x_j
+        denominator = scatter_add(edge_weight, edge_index_i, dim=0, dim_size=size_i)
+        normalized = edge_weight / denominator[edge_index_i].clamp_min(1e-12)
+        return normalized.view(-1, 1) * x_j
 
     def update(self, aggr_out):
         if self.bias is not None:
@@ -69,4 +73,3 @@ class MyNNConv(MyMessagePassing):
     def __repr__(self):
         return '{}({}, {})'.format(self.__class__.__name__, self.in_channels,
                                    self.out_channels)
-

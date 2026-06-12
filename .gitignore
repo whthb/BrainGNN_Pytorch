@@ -17,7 +17,9 @@ events.out.tfevents.*
 worktrees/
 manifest_hcp*_qc_*.csv
 data/HCP900_subjectwise*/
+data/HCP900_feasibility*/
 data/HCP_S1200_subjectwise*/
 data/hcp900_motion_qc_*.csv
 data/hcp_atlas_workbench/
 CHANGELOG.md
+experiments/hcp900_feasibility_68roi/**/fold_*/

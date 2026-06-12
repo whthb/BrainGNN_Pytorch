@@ -1,0 +1,120 @@
+{
+  "aggregate": {
+    "rbf_svm": {
+      "accuracy_mean": 0.7979304205419723,
+      "accuracy_std": 0.0227062290793889,
+      "balanced_accuracy_mean": 0.737699751592873,
+      "balanced_accuracy_std": 0.031170171414607237,
+      "complexity_mean": {
+        "stored_scalar_proxy": 5165603.8,
+        "support_vectors": 558.2
+      },
+      "macro_f1_mean": 0.766096041773068,
+      "macro_f1_std": 0.03350697061393945,
+      "macro_precision_mean": 0.8868064988732977,
+      "macro_precision_std": 0.015591566950836957,
+      "macro_recall_mean": 0.737699751592873,
+      "macro_recall_std": 0.031170171414607237
+    }
+  },
+  "dataroot": "/home/whthb/hw/BrainGNN_Pytorch/data/HCP900_feasibility_68roi_merged",
+  "folds": [
+    {
+      "accuracy": 0.7807486631016043,
+      "balanced_accuracy": 0.7244420284159877,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 5182261,
+        "support_vectors": 560
+      },
+      "fold": 0,
+      "macro_f1": 0.7609177901709174,
+      "macro_precision": 0.8680059523809524,
+      "macro_recall": 0.7244420284159877,
+      "model": "rbf_svm",
+      "n_test_graphs": 187,
+      "n_train_graphs": 569
+    },
+    {
+      "accuracy": 0.7875647668393783,
+      "balanced_accuracy": 0.7358088122678715,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 5145245,
+        "support_vectors": 556
+      },
+      "fold": 1,
+      "macro_f1": 0.7697868620270368,
+      "macro_precision": 0.8843537414965986,
+      "macro_recall": 0.7358088122678715,
+      "model": "rbf_svm",
+      "n_test_graphs": 193,
+      "n_train_graphs": 566
+    },
+    {
+      "accuracy": 0.842391304347826,
+      "balanced_accuracy": 0.7971350218409041,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 5200769,
+        "support_vectors": 562
+      },
+      "fold": 2,
+      "macro_f1": 0.8267520147977835,
+      "macro_precision": 0.9151967273010415,
+      "macro_recall": 0.7971350218409041,
+      "model": "rbf_svm",
+      "n_test_graphs": 184,
+      "n_train_graphs": 572
+    },
+    {
+      "accuracy": 0.7947368421052632,
+      "balanced_accuracy": 0.7246490791438527,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 5135991,
+        "support_vectors": 555
+      },
+      "fold": 3,
+      "macro_f1": 0.7449835986353575,
+      "macro_precision": 0.8797355148956134,
+      "macro_recall": 0.7246490791438527,
+      "model": "rbf_svm",
+      "n_test_graphs": 190,
+      "n_train_graphs": 566
+    },
+    {
+      "accuracy": 0.7842105263157895,
+      "balanced_accuracy": 0.706463816295749,
+      "complexity": {
+        "measure": "support_vectors_and_stored_scalar_proxy",
+        "stored_scalar_proxy": 5163753,
+        "support_vectors": 558
+      },
+      "fold": 4,
+      "macro_f1": 0.7280399432342444,
+      "macro_precision": 0.8867405582922824,
+      "macro_recall": 0.706463816295749,
+      "model": "rbf_svm",
+      "n_test_graphs": 190,
+      "n_train_graphs": 567
+    }
+  ],
+  "input": {
+    "description": "BrainGNN Pearson node-feature matrix concatenated with the weighted positive top-10% partial-correlation adjacency matrix in fixed ROI order",
+    "edge_dimension": 4624,
+    "edge_source": "pcorr",
+    "edge_top_percent": 0.1,
+    "feature_dimension": 9248,
+    "node_feature_dimension": 4624,
+    "roi_identity_note": "BrainGNN's constant identity pos matrix is represented implicitly by fixed vector positions"
+  },
+  "reference": {
+    "brain_gnn_balanced_accuracy_mean": 0.752528492015674,
+    "brain_gnn_balanced_accuracy_std": 0.028057246307531116,
+    "brain_gnn_parameter_count": 55719
+  },
+  "sample_count": 944,
+  "split_manifest": "configs/hcp900_feasibility_68roi_subjectwise_5fold.json",
+  "training_note": "The retained unweighted RBF-SVM baseline is fit on the exact BrainGNN training graphs only; validation graphs are not added."
+}

@@ -48,6 +48,88 @@ Training and testing are integrated in file `03-main.py`. To run
 python 03-main.py 
 ```
 
+### Local HCP feasibility study
+
+The local HCP workflow validates BrainGNN behavior on an incomplete 68-ROI
+HCP900 task-fMRI subset. It is not a reproduction of the paper's 268-ROI HCP
+result. See `plan.md` for the experiment definition and reporting constraints.
+
+The feasibility workflow is organized as follows:
+
+- `08-build_hcp_feasibility_dataset.py` merges available LR/RL runs into one
+  graph per subject-task pair.
+- `09-build_hcp_feasibility_splits.py` creates fixed subject-wise folds.
+- `10-run_hcp_feasibility_baselines.py` and
+  `14-run_hcp_same_input_baselines.py` run the retained baselines whose mean
+  balanced accuracy is below BrainGNN.
+- `11-run_hcp_feasibility_experiments.py` runs the main experiment, ablations,
+  and lambda sweep; `12-summarize_hcp_feasibility.py` aggregates their outputs.
+- `13-plot_hcp_interpretability.py` generates the local Section 3.5-style
+  figures.
+- `imports/hcp_feasibility.py`, `imports/hcp_splits.py`, and `net/roi_pool.py`
+  provide reusable data, split, and paper-style ROI pooling support.
+- `configs/hcp900_feasibility_68roi_subjectwise_5fold.json` stores the fixed
+  split; `experiments/hcp900_feasibility_68roi/` stores compact aggregate
+  results and figures. Per-fold training artifacts are intentionally ignored.
+- `tests/` covers dataset construction, split integrity, and ROI pooling.
+
+Build one graph per available subject-task pair by merging LR/RL runs:
+
+```bash
+python 08-build_hcp_feasibility_dataset.py \
+  --source-root data/HCP900_subjectwise_qc_allsub_7task_lrrl \
+  --output-root data/HCP900_feasibility_68roi_merged
+```
+
+Build deterministic subject-wise five-fold splits:
+
+```bash
+python 09-build_hcp_feasibility_splits.py \
+  --dataroot data/HCP900_feasibility_68roi_merged \
+  --output configs/hcp900_feasibility_68roi_subjectwise_5fold.json
+```
+
+Run the majority-class baseline and the paper-like BrainGNN configuration:
+
+```bash
+python 10-run_hcp_feasibility_baselines.py \
+  --dataroot data/HCP900_feasibility_68roi_merged \
+  --split-manifest configs/hcp900_feasibility_68roi_subjectwise_5fold.json \
+  --output experiments/hcp900_feasibility_68roi/baselines.json
+
+python 11-run_hcp_feasibility_experiments.py \
+  --dataroot data/HCP900_feasibility_68roi_merged \
+  --split-manifest configs/hcp900_feasibility_68roi_subjectwise_5fold.json \
+  --output-root experiments/hcp900_feasibility_68roi/main \
+  --experiment main
+```
+
+The experiment runner also supports `loss_ablation`, `conv_ablation`, and
+`lambda_sweep`.
+
+Generate local equivalents of the interpretation figures in paper Section 3.5:
+
+```bash
+python 13-plot_hcp_interpretability.py \
+  --experiment-root experiments/hcp900_feasibility_68roi \
+  --atlas data/hcp_atlas_workbench/100307.aparc.32k_fs_LR.dlabel.nii \
+  --output-dir experiments/hcp900_feasibility_68roi/interpretability_figures
+```
+
+The generated Fig. 5- and Fig. 7-style maps use saved first-pooling top-17
+scores as a proxy because second-pooling node mappings were not saved. The
+Fig. 8 proxy is a task-ROI Jaccard heatmap, not Neurosynth decoding.
+
+Run the retained RBF-SVM baseline using the same Pearson node features and
+positive top-10% partial-correlation weighted graph as BrainGNN:
+
+```bash
+python 14-run_hcp_same_input_baselines.py \
+  --dataroot data/HCP900_feasibility_68roi_merged \
+  --split-manifest configs/hcp900_feasibility_68roi_subjectwise_5fold.json \
+  --output experiments/hcp900_feasibility_68roi/same_input_baselines.json
+```
+
 
 ## Citation
 If you find the code and dataset useful, please cite our paper.

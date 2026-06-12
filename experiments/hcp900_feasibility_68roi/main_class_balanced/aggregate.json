@@ -1,0 +1,37 @@
+{
+  "configs": {
+    "paper_like": {
+      "completed_folds": 5,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.7565625389342868,
+          "std": 0.022018252366899027
+        },
+        "balanced_accuracy": {
+          "mean": 0.7593018404090454,
+          "std": 0.015815928694453116
+        },
+        "macro_f1": {
+          "mean": 0.7458380960035854,
+          "std": 0.023186145328662623
+        },
+        "macro_precision": {
+          "mean": 0.7477582748380083,
+          "std": 0.02207676864007854
+        },
+        "macro_recall": {
+          "mean": 0.7593018404090454,
+          "std": 0.015815928694453116
+        }
+      },
+      "parameters": {
+        "conv": "ra",
+        "glc": 0.1,
+        "name": "paper_like",
+        "tpk": 0.1,
+        "unit": 1.0
+      }
+    }
+  },
+  "experiment": "main"
+}
