@@ -189,18 +189,84 @@ Per-fold training logs, predictions, pooling scores, and community weights are
 under `runs/`. This directory is intentionally ignored by Git because the
 complete matrix is much larger than the compact aggregates and report.
 
-## Current Result Snapshot
+## Final Experiment Results
 
-The completed June 12, 2026 rerun is summarized in
-`experiments/hcp900_subjectwise_paper_reproduction_current_20260612/REPORT.md`.
+The completed June 12, 2026 rerun used 15 unique configurations and five folds
+per configuration. The full generated report is
+[REPORT.md](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/REPORT.md);
+machine-readable results are in
+[summary.json](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/summary.json)
+and
+[report_data.json](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/report_data.json).
 
-- Main paper-like BrainGNN balanced accuracy: `0.8449 +/- 0.0205`
-- Same-input RBF-SVM balanced accuracy: `0.7942 +/- 0.0403`
-- Ra-GConv versus vanilla-GConv balanced-accuracy difference: `+0.0224`
-- Best tested lambda setting: `lambda1_TPK=0`, `lambda2_GLC=0.1`, balanced
-  accuracy `0.8601 +/- 0.0204`
-- Mean within-task top-17 ROI Jaccard rises from `0.4826` at GLC 0 to `0.8832`
-  at GLC 0.5
+### Main Result And Baselines
+
+| Method | Accuracy | Balanced accuracy | Macro F1 |
+|---|---:|---:|---:|
+| Majority class | - | `0.1429 +/- 0.0000` | `0.0518 +/- 0.0037` |
+| Same-input RBF-SVM | - | `0.7942 +/- 0.0403` | `0.8238 +/- 0.0344` |
+| BrainGNN current paper-like | `0.8622 +/- 0.0215` | `0.8449 +/- 0.0205` | `0.8430 +/- 0.0234` |
+
+BrainGNN improves mean balanced accuracy over the same-input RBF-SVM by
+`+0.0507`; the paired five-fold t-test gives `p=0.06260`.
+
+### Ablations And Capacity
+
+| Experiment | Setting | Balanced accuracy |
+|---|---|---:|
+| Convolution | Ra-GConv | `0.8449 +/- 0.0205` |
+| Convolution | Shared-kernel vanilla-GConv | `0.8226 +/- 0.0555` |
+| Loss | CE only | `0.8129 +/- 0.0213` |
+| Loss | CE + unit | `0.8183 +/- 0.0158` |
+| Loss | CE + unit + TPK | `0.8041 +/- 0.0231` |
+| Loss | CE + unit + GLC | `0.8601 +/- 0.0204` |
+| Loss | Full loss | `0.8449 +/- 0.0205` |
+| Capacity | Current default head, 55,719 parameters | `0.8449 +/- 0.0205` |
+| Capacity | Approximately 96k head, 96,039 parameters | `0.8269 +/- 0.0246` |
+
+The best tested lambda setting is `lambda1_TPK=0`, `lambda2_GLC=0.1`, with
+balanced accuracy `0.8601 +/- 0.0204`. The complete lambda sweep and per-fold
+results are in the generated report and `aggregates/` directory.
+
+### Final Interpretability Figures
+
+All final figures are stored in
+[`interpretability_figures/`](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/).
+Each figure is available as PNG for preview and PDF for publication.
+
+**Fig. 5-style: individual/group ROI consistency across GLC weights**
+
+![Fig. 5-style individual/group ROI consistency](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure5_glc_individual_group.png)
+
+[PDF](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure5_glc_individual_group.pdf)
+
+**Fig. 7-style: task-level salient ROIs**
+
+![Fig. 7-style task-level salient ROIs](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure7_task_salient_rois.png)
+
+[PDF](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure7_task_salient_rois.pdf)
+
+**Fig. 8-style: task-ROI similarity proxy**
+
+![Fig. 8-style task-ROI similarity proxy](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure8_proxy_task_roi_similarity.png)
+
+[PDF](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure8_proxy_task_roi_similarity.pdf)
+
+**Fig. 9-style: Ra-GConv community assignments**
+
+![Fig. 9-style Ra-GConv community assignments](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure9_community_assignments.png)
+
+[PDF](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure9_community_assignments.pdf)
+
+**Fig. 10-style: positive community weights**
+
+![Fig. 10-style positive community weights](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure10_alpha_positive_heatmap.png)
+
+[PDF](experiments/hcp900_subjectwise_paper_reproduction_current_20260612/interpretability_figures/figure10_alpha_positive_heatmap.pdf)
+
+The mean within-task top-17 ROI Jaccard is `0.4826`, `0.8172`, and `0.8832`
+for GLC weights 0, 0.1, and 0.5, respectively. The corresponding community
+stability values are `0.8614`, `0.9081`, and `0.9626`.
 
 ## Single-Fold Trainer
 
