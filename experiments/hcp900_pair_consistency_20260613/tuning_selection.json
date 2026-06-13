@@ -1,0 +1,463 @@
+{
+  "baseline": {
+    "completed_folds": 10,
+    "metrics": {
+      "accuracy": {
+        "mean": 0.8481781376518219,
+        "n": 10,
+        "std": 0.020663643975991648
+      },
+      "balanced_accuracy": {
+        "mean": 0.8292240242779121,
+        "n": 10,
+        "std": 0.02581507014882634
+      },
+      "direction_probe_balanced_accuracy": {
+        "mean": 0.6204521166438299,
+        "n": 10,
+        "std": 0.024865741636839883
+      },
+      "epochs_trained": {
+        "mean": 75.9,
+        "n": 10,
+        "std": 13.582709597131199
+      },
+      "macro_f1": {
+        "mean": 0.8329775825350362,
+        "n": 10,
+        "std": 0.02380111682107251
+      },
+      "pair_both_correct": {
+        "mean": 0.7546602037691668,
+        "n": 10,
+        "std": 0.052239363504933946
+      },
+      "pair_ensemble_accuracy": {
+        "mean": 0.9196970095804566,
+        "n": 10,
+        "std": 0.04525512342439464
+      },
+      "pair_ensemble_balanced_accuracy": {
+        "mean": 0.9012453023167308,
+        "n": 10,
+        "std": 0.06682611350976243
+      },
+      "pair_macro_task_agreement": {
+        "mean": 0.7318997074354218,
+        "n": 10,
+        "std": 0.06712198697259533
+      },
+      "pair_one_correct": {
+        "mean": 0.21057082576101022,
+        "n": 10,
+        "std": 0.044183370532048856
+      },
+      "pair_pool1_jaccard": {
+        "mean": 0.7968973513091662,
+        "n": 10,
+        "std": 0.04231114283793492
+      },
+      "pair_prediction_agreement": {
+        "mean": 0.7687164917775761,
+        "n": 10,
+        "std": 0.04629247935256467
+      },
+      "pair_prediction_js": {
+        "mean": 0.11419026666144638,
+        "n": 10,
+        "std": 0.014802991638909009
+      },
+      "selected_epoch": {
+        "mean": 58.7,
+        "n": 10,
+        "std": 18.330575550156627
+      },
+      "validation_balanced_accuracy": {
+        "mean": 0.8624773134412191,
+        "n": 10,
+        "std": 0.020353485895319143
+      },
+      "validation_pair_agreement": {
+        "mean": 0.7909686933851796,
+        "n": 10,
+        "std": 0.038999704203616814
+      }
+    },
+    "name": "baseline_mixed",
+    "pair_consistency_weight": 0.0,
+    "requested_init_seeds": [
+      123,
+      456
+    ]
+  },
+  "candidates": [
+    {
+      "completed_folds": 10,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.8530364372469634,
+          "n": 10,
+          "std": 0.017371204820182132
+        },
+        "balanced_accuracy": {
+          "mean": 0.8396838815547412,
+          "n": 10,
+          "std": 0.019072876410094763
+        },
+        "direction_probe_balanced_accuracy": {
+          "mean": 0.6129284390553204,
+          "n": 10,
+          "std": 0.028514134686900096
+        },
+        "epochs_trained": {
+          "mean": 72.9,
+          "n": 10,
+          "std": 16.831220989577673
+        },
+        "macro_f1": {
+          "mean": 0.8380065358200207,
+          "n": 10,
+          "std": 0.019579477519507983
+        },
+        "pair_both_correct": {
+          "mean": 0.7618648100460299,
+          "n": 10,
+          "std": 0.04989837003370286
+        },
+        "pair_ensemble_accuracy": {
+          "mean": 0.9235044113352415,
+          "n": 10,
+          "std": 0.027251654464576554
+        },
+        "pair_ensemble_balanced_accuracy": {
+          "mean": 0.9175716148930434,
+          "n": 10,
+          "std": 0.039690320612149096
+        },
+        "pair_macro_task_agreement": {
+          "mean": 0.762503131788846,
+          "n": 10,
+          "std": 0.0732201532711917
+        },
+        "pair_one_correct": {
+          "mean": 0.20015955167415367,
+          "n": 10,
+          "std": 0.05723129420459467
+        },
+        "pair_pool1_jaccard": {
+          "mean": 0.7989544885397767,
+          "n": 10,
+          "std": 0.039126652648797056
+        },
+        "pair_prediction_agreement": {
+          "mean": 0.7861457351479434,
+          "n": 10,
+          "std": 0.055822012802591615
+        },
+        "pair_prediction_js": {
+          "mean": 0.10748941313030362,
+          "n": 10,
+          "std": 0.01977876626595853
+        },
+        "selected_epoch": {
+          "mean": 54.5,
+          "n": 10,
+          "std": 15.590060936378665
+        },
+        "validation_balanced_accuracy": {
+          "mean": 0.8556373754460666,
+          "n": 10,
+          "std": 0.020913423497672577
+        },
+        "validation_pair_agreement": {
+          "mean": 0.7958316763142004,
+          "n": 10,
+          "std": 0.05211413198339624
+        }
+      },
+      "name": "pair_js_0p05_mixed",
+      "pair_consistency_weight": 0.05,
+      "requested_init_seeds": [
+        123,
+        456
+      ]
+    },
+    {
+      "completed_folds": 10,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.8497975708502026,
+          "n": 10,
+          "std": 0.02035998536142535
+        },
+        "balanced_accuracy": {
+          "mean": 0.8348047523496888,
+          "n": 10,
+          "std": 0.023704242021304417
+        },
+        "direction_probe_balanced_accuracy": {
+          "mean": 0.6167633650651323,
+          "n": 10,
+          "std": 0.03584636987186967
+        },
+        "epochs_trained": {
+          "mean": 79.1,
+          "n": 10,
+          "std": 17.346181135915767
+        },
+        "macro_f1": {
+          "mean": 0.8330594694201892,
+          "n": 10,
+          "std": 0.02310163537502292
+        },
+        "pair_both_correct": {
+          "mean": 0.7554432495647161,
+          "n": 10,
+          "std": 0.04057500677411473
+        },
+        "pair_ensemble_accuracy": {
+          "mean": 0.9164821169091362,
+          "n": 10,
+          "std": 0.04162653359207038
+        },
+        "pair_ensemble_balanced_accuracy": {
+          "mean": 0.8942071618857333,
+          "n": 10,
+          "std": 0.06787489161798627
+        },
+        "pair_macro_task_agreement": {
+          "mean": 0.7424785928357356,
+          "n": 10,
+          "std": 0.05352141756308681
+        },
+        "pair_one_correct": {
+          "mean": 0.2132370811846105,
+          "n": 10,
+          "std": 0.039386086529581484
+        },
+        "pair_pool1_jaccard": {
+          "mean": 0.7952259538538814,
+          "n": 10,
+          "std": 0.0413923577699864
+        },
+        "pair_prediction_agreement": {
+          "mean": 0.7746480791891066,
+          "n": 10,
+          "std": 0.03391284333279877
+        },
+        "pair_prediction_js": {
+          "mean": 0.11099976427581341,
+          "n": 10,
+          "std": 0.015028862360155541
+        },
+        "selected_epoch": {
+          "mean": 58.7,
+          "n": 10,
+          "std": 16.655629678880352
+        },
+        "validation_balanced_accuracy": {
+          "mean": 0.8634215217738547,
+          "n": 10,
+          "std": 0.02156552128755929
+        },
+        "validation_pair_agreement": {
+          "mean": 0.7998659944439679,
+          "n": 10,
+          "std": 0.03552938349057817
+        }
+      },
+      "name": "pair_js_0p1_mixed",
+      "pair_consistency_weight": 0.1,
+      "requested_init_seeds": [
+        123,
+        456
+      ]
+    },
+    {
+      "completed_folds": 10,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.8562753036437247,
+          "n": 10,
+          "std": 0.021211638700291087
+        },
+        "balanced_accuracy": {
+          "mean": 0.8371262995847552,
+          "n": 10,
+          "std": 0.025018966221329687
+        },
+        "direction_probe_balanced_accuracy": {
+          "mean": 0.6014185010980648,
+          "n": 10,
+          "std": 0.03787200377304567
+        },
+        "epochs_trained": {
+          "mean": 82.3,
+          "n": 10,
+          "std": 10.936635680134911
+        },
+        "macro_f1": {
+          "mean": 0.8408584406881292,
+          "n": 10,
+          "std": 0.025470348201343914
+        },
+        "pair_both_correct": {
+          "mean": 0.7671096215367285,
+          "n": 10,
+          "std": 0.043711785687668175
+        },
+        "pair_ensemble_accuracy": {
+          "mean": 0.9287119982380363,
+          "n": 10,
+          "std": 0.031334716457957046
+        },
+        "pair_ensemble_balanced_accuracy": {
+          "mean": 0.9148851148851149,
+          "n": 10,
+          "std": 0.048968858087480104
+        },
+        "pair_macro_task_agreement": {
+          "mean": 0.7519063476206334,
+          "n": 10,
+          "std": 0.07280451121666215
+        },
+        "pair_one_correct": {
+          "mean": 0.20200430475770115,
+          "n": 10,
+          "std": 0.050096739376530516
+        },
+        "pair_pool1_jaccard": {
+          "mean": 0.8004434028667999,
+          "n": 10,
+          "std": 0.03816267911147804
+        },
+        "pair_prediction_agreement": {
+          "mean": 0.7790417238883919,
+          "n": 10,
+          "std": 0.04679010142801724
+        },
+        "pair_prediction_js": {
+          "mean": 0.10939445284517965,
+          "n": 10,
+          "std": 0.014708980202127273
+        },
+        "selected_epoch": {
+          "mean": 61.3,
+          "n": 10,
+          "std": 14.31817027416562
+        },
+        "validation_balanced_accuracy": {
+          "mean": 0.8664133502319595,
+          "n": 10,
+          "std": 0.023074953246456614
+        },
+        "validation_pair_agreement": {
+          "mean": 0.803372095306831,
+          "n": 10,
+          "std": 0.05447107464542203
+        }
+      },
+      "name": "pair_js_0p2_mixed",
+      "pair_consistency_weight": 0.2,
+      "requested_init_seeds": [
+        123,
+        456
+      ]
+    },
+    {
+      "completed_folds": 10,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.851417004048583,
+          "n": 10,
+          "std": 0.01589294447481015
+        },
+        "balanced_accuracy": {
+          "mean": 0.8334423668768454,
+          "n": 10,
+          "std": 0.028072481751192604
+        },
+        "direction_probe_balanced_accuracy": {
+          "mean": 0.6001854911339595,
+          "n": 10,
+          "std": 0.021090843379282843
+        },
+        "epochs_trained": {
+          "mean": 82.0,
+          "n": 10,
+          "std": 12.48198702130394
+        },
+        "macro_f1": {
+          "mean": 0.8340262295001523,
+          "n": 10,
+          "std": 0.023546785913748022
+        },
+        "pair_both_correct": {
+          "mean": 0.7590197170665429,
+          "n": 10,
+          "std": 0.02847421153262365
+        },
+        "pair_ensemble_accuracy": {
+          "mean": 0.9185303821325524,
+          "n": 10,
+          "std": 0.03491264854834557
+        },
+        "pair_ensemble_balanced_accuracy": {
+          "mean": 0.9046002806717093,
+          "n": 10,
+          "std": 0.06007378637479113
+        },
+        "pair_macro_task_agreement": {
+          "mean": 0.7379796394082108,
+          "n": 10,
+          "std": 0.05751979509549381
+        },
+        "pair_one_correct": {
+          "mean": 0.20820833183770254,
+          "n": 10,
+          "std": 0.0351412873449224
+        },
+        "pair_pool1_jaccard": {
+          "mean": 0.7945930059455102,
+          "n": 10,
+          "std": 0.03678257715576141
+        },
+        "pair_prediction_agreement": {
+          "mean": 0.7764020397301572,
+          "n": 10,
+          "std": 0.030798402689748598
+        },
+        "pair_prediction_js": {
+          "mean": 0.11046358440822039,
+          "n": 10,
+          "std": 0.015714690427415152
+        },
+        "selected_epoch": {
+          "mean": 63.6,
+          "n": 10,
+          "std": 17.65332829808589
+        },
+        "validation_balanced_accuracy": {
+          "mean": 0.8595712800860171,
+          "n": 10,
+          "std": 0.019693790199098078
+        },
+        "validation_pair_agreement": {
+          "mean": 0.80175932111168,
+          "n": 10,
+          "std": 0.044069965806250014
+        }
+      },
+      "name": "pair_js_0p5_mixed",
+      "pair_consistency_weight": 0.5,
+      "requested_init_seeds": [
+        123,
+        456
+      ]
+    }
+  ],
+  "max_validation_bacc_drop": 0.005,
+  "selected_config": "pair_js_0p2_mixed",
+  "selected_weight": 0.2,
+  "selection_rule": "maximize validation pair agreement subject to validation BAcc non-inferiority"
+}

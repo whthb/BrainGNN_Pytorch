@@ -1,0 +1,39 @@
+{
+  "batch_size": 64,
+  "bootstrap_samples": 1000,
+  "dataroot": "/home/whthb/hw/BrainGNN_Pytorch/data/HCP900_subjectwise_qc_allsub_7task_lrrl",
+  "early_stopping_min_epochs": 40,
+  "early_stopping_patience": 20,
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "init_seeds": [
+    123,
+    456,
+    789
+  ],
+  "jobs": 1,
+  "max_validation_bacc_drop": 0.005,
+  "n_epochs": 100,
+  "pair_balance": "sqrt_inverse",
+  "pair_warmup_epochs": 20,
+  "pair_warmup_start": 10,
+  "pair_weights": [
+    0.05,
+    0.1,
+    0.2,
+    0.5
+  ],
+  "phase": "all",
+  "runner": "18-run_hcp_pair_consistency.py",
+  "split_seed": 123,
+  "trainer": "07-main_hcp_subjectwise.py",
+  "tune_init_seeds": [
+    123,
+    456
+  ]
+}

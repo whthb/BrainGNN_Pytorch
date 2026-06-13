@@ -1,0 +1,36 @@
+{
+  "adv_weights": [
+    0.01,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "batch_size": 64,
+  "dataroot": "/home/whthb/hw/BrainGNN_Pytorch/data/HCP900_subjectwise_qc_allsub_7task_lrrl",
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "jobs": 3,
+  "n_epochs": 100,
+  "phase": "all",
+  "runner": "17-run_hcp_direction_robustness.py",
+  "seeds": [
+    123,
+    456,
+    789
+  ],
+  "strong_baseline": {
+    "edge_source": "pcorr",
+    "edge_top_percent": 0.1,
+    "glc": 0.1,
+    "positive_edges_only": true,
+    "tpk": 0.0,
+    "unit": 1.0
+  },
+  "trainer": "07-main_hcp_subjectwise.py",
+  "tune_seed": 123
+}

@@ -268,6 +268,91 @@ The mean within-task top-17 ROI Jaccard is `0.4826`, `0.8172`, and `0.8832`
 for GLC weights 0, 0.1, and 0.5, respectively. The corresponding community
 stability values are `0.8614`, `0.9081`, and `0.9626`.
 
+## Direction-Robustness Extension
+
+The direction-robustness extension evaluates mixed-direction classification,
+LR-to-RL and RL-to-LR transfer, and a Gradient Reversal direction-adversarial
+BrainGNN:
+
+```bash
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python -u 17-run_hcp_direction_robustness.py \
+  --phase all --jobs 3
+```
+
+The completed `5 folds x 3 seeds` experiment selected
+`direction_adv_weight=0.1` using validation balanced accuracy. Across all 15
+matched seed-fold pairs, the direction-adversarial model did not reliably
+improve the strong `CE + unit + GLC` baseline:
+
+| Model | Balanced accuracy | LR/RL pair agreement | Direction probe balanced accuracy |
+|---|---:|---:|---:|
+| Strong baseline | `0.7972 +/- 0.0486` | `0.7258 +/- 0.0616` | `0.5884 +/- 0.0413` |
+| Direction-adversarial | `0.7921 +/- 0.0560` | `0.7335 +/- 0.0930` | `0.5764 +/- 0.0326` |
+
+The LR-to-RL and RL-to-LR baselines reached balanced accuracy
+`0.5978 +/- 0.0522` and `0.5681 +/- 0.0986`, respectively. Source-only
+training also uses fewer labeled graphs, so these transfer results should not
+be interpreted as isolating direction shift by themselves. Full results and
+paired tests are in
+[REPORT.md](experiments/hcp900_direction_robustness_20260612/REPORT.md).
+
+## LR/RL Pair-Consistency Extension
+
+The next model line directly constrains matched runs from the same subject and
+task instead of adversarially removing marginal direction information:
+
+```text
+L = L_task + L_unit + 0.1 L_GLC + lambda_pair JS(p_LR, p_RL)
+```
+
+All training graphs retain their ordinary task-classification loss. Only
+complete LR/RL pairs receive the additional JS loss. The paired forward pass
+uses evaluation-mode Dropout and BatchNorm while retaining gradients, so the
+loss measures direction disagreement rather than stochastic prediction noise.
+
+Run the fixed-split experiment:
+
+```bash
+conda run --no-capture-output -n braingnn_rtx5070ti \
+  python -u 18-run_hcp_pair_consistency.py \
+  --phase all --jobs 1
+```
+
+The runner uses one fixed task-direction-stratified five-fold split for every
+model initialization. It screens `lambda_pair = {0.05, 0.1, 0.2, 0.5}` on two
+initialization seeds. Candidates must remain within `0.5` percentage points of
+the baseline validation balanced accuracy; among eligible candidates, the
+runner selects the one with the highest validation LR/RL pair agreement. The
+selected model and baseline are then compared over three initialization seeds.
+Both models use the same checkpoint rule: retain epochs within `0.5`
+percentage points of the best validation balanced accuracy, then prefer higher
+validation pair agreement and lower pair JS. Training uses inverse-square-root
+task balancing for pairs, a linear pair-loss warm-up from epoch 10 through 29,
+and early stopping after at least 40 epochs with patience 20.
+
+Each fold reports per-task pair agreement, macro task-level pair agreement,
+pair prediction JS, both-correct rate, LR/RL probability-ensemble metrics, and
+subject-bootstrap confidence intervals in addition to ordinary classification
+metrics.
+The pair model performs an additional forward pass per training step; on one
+GPU, concurrent fold jobs cause substantial contention, so `--jobs 1` is the
+recommended setting.
+
+The completed fixed-split experiment selected `lambda_pair=0.2`. Across
+`5 folds x 3 initialization seeds`, the pair-consistency model improved task
+balanced accuracy from `0.7938 +/- 0.0556` to `0.8058 +/- 0.0505` and macro F1
+from `0.7978 +/- 0.0547` to `0.8091 +/- 0.0509`. The matched-fold BAcc delta was
+`+0.0119` in favor of the pair model in 13 of 15 folds; the exploratory paired
+t-test gave `p=0.03136`.
+
+Pair prediction agreement increased from `0.7418 +/- 0.0572` to
+`0.7506 +/- 0.0582`, but this smaller change was not significant
+(`p=0.34127`). The supported conclusion is improved task decoding with mild,
+task-dependent direction-consistency benefits, not strong LR/RL invariance.
+Full tuning, matched-fold, and per-task diagnostics are in
+[REPORT.md](experiments/hcp900_pair_consistency_20260613/REPORT.md).
+
 ## Single-Fold Trainer
 
 For debugging one fold directly:
@@ -279,6 +364,7 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --fold 0 --n_epochs 100 --batchSize 64 \
   --edge_source pcorr --edge_top_percent 0.10 --positive_edges_only \
   --best_metric balanced_acc \
+  --pair_consistency_weight 0.1 \
   --output_dir experiments/debug_hcp_fold0
 ```
 

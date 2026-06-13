@@ -10,6 +10,19 @@ from net.braingraphconv import MyNNConv
 from net.roi_pool import ROITopKPooling
 
 
+class GradientReversal(torch.autograd.Function):
+    """Pass values through unchanged and reverse their encoder gradients."""
+
+    @staticmethod
+    def forward(ctx, x, scale):
+        ctx.scale = scale
+        return x.view_as(x)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        return -ctx.scale * grad_output, None
+
+
 class SharedKernel(nn.Module):
     """Return the same vectorized graph-convolution kernel for every ROI."""
 
@@ -25,7 +38,8 @@ class SharedKernel(nn.Module):
 ##########################################################################################################################
 class Network(torch.nn.Module):
     def __init__(self, indim, ratio, nclass, k=8, R=200, dim1=32,
-                 dim2=32, fc_dim=512, dropout=0.5, roi_aware=True):
+                 dim2=32, fc_dim=512, dropout=0.5, roi_aware=True,
+                 direction_adversarial=False):
         '''
 
         :param indim: (int) node feature dimension
@@ -46,6 +60,7 @@ class Network(torch.nn.Module):
         self.R = R
         self.dropout = dropout
         self.roi_aware = roi_aware
+        self.direction_adversarial = direction_adversarial
 
         self.n1 = (
             nn.Sequential(nn.Linear(self.R, self.k, bias=False), nn.ReLU(),
@@ -68,12 +83,18 @@ class Network(torch.nn.Module):
         self.fc2 = torch.nn.Linear(self.dim2, self.dim3)
         self.bn2 = torch.nn.BatchNorm1d(self.dim3)
         self.fc3 = torch.nn.Linear(self.dim3, nclass)
+        self.direction_head = (
+            nn.Sequential(
+                nn.Linear(self.dim3, min(128, self.dim3)),
+                nn.ReLU(),
+                nn.Dropout(self.dropout),
+                nn.Linear(min(128, self.dim3), 2),
+            )
+            if direction_adversarial else None
+        )
 
 
-
-
-    def forward(self, x, edge_index, batch, edge_attr, pos):
-
+    def encode_graph(self, x, edge_index, batch, edge_attr, pos):
         x = self.conv1(x, edge_index, edge_attr, pos)
         x, edge_index, edge_attr, batch, perm, _, score1 = self.pool1(x, edge_index, edge_attr, batch)
 
@@ -93,9 +114,43 @@ class Network(torch.nn.Module):
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = self.bn2(F.relu(self.fc2(x)))
         x= F.dropout(x, p=self.dropout, training=self.training)
-        x = F.log_softmax(self.fc3(x), dim=-1)
+        return x, self.pool1.weight, self.pool2.weight, score1, score2
 
-        return x, self.pool1.weight, self.pool2.weight, score1.view(x.size(0), -1), score2.view(x.size(0), -1)
+    def forward(self, x, edge_index, batch, edge_attr, pos):
+        graph_embedding, w1, w2, score1, score2 = self.encode_graph(
+            x, edge_index, batch, edge_attr, pos
+        )
+        output = F.log_softmax(self.fc3(graph_embedding), dim=-1)
+        return (
+            output,
+            w1,
+            w2,
+            score1.view(output.size(0), -1),
+            score2.view(output.size(0), -1),
+        )
+
+    def forward_with_direction(self, x, edge_index, batch, edge_attr, pos,
+                               reversal_scale=1.0):
+        if self.direction_head is None:
+            raise RuntimeError("direction-adversarial head is not enabled")
+        graph_embedding, w1, w2, score1, score2 = self.encode_graph(
+            x, edge_index, batch, edge_attr, pos
+        )
+        output = F.log_softmax(self.fc3(graph_embedding), dim=-1)
+        reversed_embedding = GradientReversal.apply(graph_embedding, reversal_scale)
+        direction_output = F.log_softmax(self.direction_head(reversed_embedding), dim=-1)
+        return (
+            output,
+            direction_output,
+            w1,
+            w2,
+            score1.view(output.size(0), -1),
+            score2.view(output.size(0), -1),
+            graph_embedding,
+        )
+
+    def graph_embedding(self, x, edge_index, batch, edge_attr, pos):
+        return self.encode_graph(x, edge_index, batch, edge_attr, pos)[0]
 
     def augment_adj(self, edge_index, edge_weight, num_nodes):
         edge_index, edge_weight = add_self_loops(edge_index, edge_weight,
