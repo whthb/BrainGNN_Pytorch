@@ -1,12 +1,11 @@
 # BrainGNN_Pytorch
 
-Compact course-project repository for reproducing BrainGNN on HCP task-fMRI
-subject-wise classification and extending it with LR/RL direction-robustness
-experiments.
+本仓库用于课程项目中的 BrainGNN 复现与改进实验，主要内容包括 HCP
+task-fMRI subject-wise 脑图分类复现，以及针对 HCP LR/RL 采集方向差异的方向鲁棒性实验。
 
-GitHub repository: <https://github.com/whthb/BrainGNN_Pytorch>
+GitHub 仓库地址：<https://github.com/whthb/BrainGNN_Pytorch>
 
-## Repository Structure
+## 仓库结构
 
 ```text
 BrainGNN_Pytorch/
@@ -14,6 +13,11 @@ BrainGNN_Pytorch/
 ├── requirements.txt
 ├── requirements-rtx5070ti.txt
 ├── net/
+│   ├── braingnn.py
+│   ├── braingraphconv.py
+│   ├── brainmsgpassing.py
+│   ├── inits.py
+│   └── roi_pool.py
 ├── 07-main_hcp_subjectwise.py
 ├── 13-plot_hcp_interpretability.py
 ├── 14-run_hcp_same_input_baselines.py
@@ -25,22 +29,16 @@ BrainGNN_Pytorch/
 │   ├── hcp900_subjectwise_paper_reproduction_current_20260612/
 │   ├── hcp900_direction_robustness_20260612/
 │   └── hcp900_pair_consistency_20260613/
-└── reports/
-    └── braingnn_course_report/
-        ├── main.tex
-        ├── build.sh
-        ├── figures/
-        └── sections/
+└── .gitignore
 ```
 
-`experiments/` keeps compact summaries, aggregate metrics, protocols, split
-manifests, and generated reports. Large per-fold training outputs under
-`experiments/**/runs/`, raw datasets, logs, model checkpoints, and local LaTeX
-build products are intentionally ignored.
+`experiments/` 中保留的是 compact summaries、aggregate metrics、protocols、
+split manifests 和生成的实验报告。原始数据、逐折训练输出、TensorBoard 日志、
+模型 checkpoint、本地临时文件以及课程报告源码目录 `reports/` 均不纳入 GitHub 仓库。
 
-## Environment
+## 环境配置
 
-For an RTX 50-series GPU with CUDA 12.8:
+对于 RTX 50 系列 GPU 和 CUDA 12.8，可使用：
 
 ```bash
 conda create -n braingnn_rtx5070ti python=3.11 pip -y
@@ -48,13 +46,12 @@ conda activate braingnn_rtx5070ti
 python -m pip install -r requirements-rtx5070ti.txt
 ```
 
-The generic dependency list is kept in `requirements.txt`; the RTX-specific
-file pins the CUDA 12.8 PyTorch/PyG wheels used in the local experiments.
+通用依赖列表见 `requirements.txt`；`requirements-rtx5070ti.txt` 固定了本地实验使用的
+CUDA 12.8 PyTorch / PyG wheel 版本。
 
-## Dataset
+## 数据集
 
-The HCP data are not committed to this repository. Experiment scripts expect
-the local run-level graph dataset at:
+HCP 原始数据和处理后的图数据不上传至本仓库。实验脚本默认期望本地数据目录为：
 
 ```text
 data/HCP900_subjectwise_qc_allsub_7task_lrrl/
@@ -63,14 +60,13 @@ data/HCP900_subjectwise_qc_allsub_7task_lrrl/
   subjects/*.h5
 ```
 
-Each graph uses Pearson-correlation rows as node features and positive top-10%
-partial-correlation edges. Splits are deterministic and subject-wise, so one
-subject never appears in more than one train, validation, or test partition
-within the same fold.
+每个图样本以 Pearson correlation 行向量作为节点特征，并使用 positive top-10\%
+partial correlation edges 构建稀疏边。划分采用 deterministic subject-wise split，
+同一被试不会同时出现在同一 fold 的训练集、验证集和测试集中。
 
-## Paper Reproduction
+## 论文复现实验
 
-Run the five-fold BrainGNN reproduction matrix:
+运行五折 BrainGNN 复现实验矩阵：
 
 ```bash
 conda run --no-capture-output -n braingnn_rtx5070ti \
@@ -80,10 +76,10 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --output-dir experiments/hcp900_subjectwise_paper_reproduction_current_20260612
 ```
 
-The matrix covers the main BrainGNN setting, loss ablations, convolution
-ablation, `lambda1_TPK` / `lambda2_GLC` scanning, and capacity comparison.
+该矩阵包括主模型结果、损失函数消融、卷积层消融、`lambda1_TPK` / `lambda2_GLC`
+扫描以及模型容量对比。
 
-Run the same-input RBF-SVM baseline on the exported subject splits:
+在相同 subject-wise split 上运行 RBF-SVM baseline：
 
 ```bash
 ROOT=experiments/hcp900_subjectwise_paper_reproduction_current_20260612
@@ -95,7 +91,7 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --output "$ROOT/baselines/same_input_rbf_svm.json"
 ```
 
-Generate compact reproduction tables:
+生成 compact reproduction report：
 
 ```bash
 conda run --no-capture-output -n braingnn_rtx5070ti \
@@ -103,7 +99,7 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --experiment-root "$ROOT"
 ```
 
-Final reproduction results are stored in:
+最终复现实验结果保存在：
 
 ```text
 experiments/hcp900_subjectwise_paper_reproduction_current_20260612/
@@ -117,11 +113,10 @@ experiments/hcp900_subjectwise_paper_reproduction_current_20260612/
   baselines/*.json
 ```
 
-## Interpretability Figures
+## 可解释性图示
 
-The report figures are generated from saved experiment summaries and copied
-into `reports/braingnn_course_report/figures/`. If the full per-fold `runs/`
-outputs are available locally, figures can be regenerated with:
+若本地保留完整逐折训练输出 `runs/` 和 atlas 文件，可重新生成可解释性图示。由于
+`reports/` 不属于 GitHub 仓库内容，建议将临时图片输出到 `.tmp/interpretability_figures/`：
 
 ```bash
 MPLCONFIGDIR=.tmp/matplotlib \
@@ -129,12 +124,12 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   python 13-plot_hcp_interpretability.py \
   --experiment-root experiments/hcp900_subjectwise_paper_reproduction_current_20260612 \
   --atlas data/hcp_atlas_workbench/100307.aparc.32k_fs_LR.dlabel.nii \
-  --output-dir reports/braingnn_course_report/figures
+  --output-dir .tmp/interpretability_figures
 ```
 
-## Direction-Robustness Extension
+## LR/RL 方向鲁棒性实验
 
-Run the LR/RL direction-adversarial experiment:
+运行方向对抗训练实验：
 
 ```bash
 conda run --no-capture-output -n braingnn_rtx5070ti \
@@ -144,11 +139,10 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --output-dir experiments/hcp900_direction_robustness_20260612
 ```
 
-The compact results are in
-`experiments/hcp900_direction_robustness_20260612/REPORT.md`,
-`summary.json`, `protocol.json`, `tuning_selection.json`, and `splits/`.
+结果保存在 `experiments/hcp900_direction_robustness_20260612/`，其中包括
+`REPORT.md`、`summary.json`、`protocol.json`、`tuning_selection.json` 和 `splits/`。
 
-Run the LR/RL pair-consistency experiment:
+运行 LR/RL 配对一致性实验：
 
 ```bash
 conda run --no-capture-output -n braingnn_rtx5070ti \
@@ -158,13 +152,12 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --output-dir experiments/hcp900_pair_consistency_20260613
 ```
 
-The compact results are in
-`experiments/hcp900_pair_consistency_20260613/REPORT.md`, `summary.json`,
-`protocol.json`, `tuning_selection.json`, and `splits/`.
+结果保存在 `experiments/hcp900_pair_consistency_20260613/`，其中包括
+`REPORT.md`、`summary.json`、`protocol.json`、`tuning_selection.json` 和 `splits/`。
 
-## Single-Fold Debugging
+## 单折调试
 
-For one BrainGNN fold:
+直接运行一个 BrainGNN fold：
 
 ```bash
 conda run --no-capture-output -n braingnn_rtx5070ti \
@@ -180,18 +173,12 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   --output_dir experiments/debug_hcp_fold0
 ```
 
-## Course Report
+## 课程报告
 
-The final LaTeX report is under `reports/braingnn_course_report/`.
+课程报告源码和 PDF 是本地交付文件，位于本地 `reports/braingnn_course_report/`，不随
+GitHub 仓库上传。
 
-```bash
-cd reports/braingnn_course_report
-./build.sh
-```
-
-The compiled PDF is written to `reports/braingnn_course_report/build/main.pdf`.
-
-## Citation
+## 引用
 
 ```bibtex
 @article{li2020braingnn,
