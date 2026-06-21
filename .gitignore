@@ -17,7 +17,6 @@ model_pyg2_gpu/
 model_*/
 data/
 artifacts/
-reports/
 data/ABIDE_pcp/
 experiments/**/runs/
 experiments/hcp900_feasibility_68roi/

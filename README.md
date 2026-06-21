@@ -29,12 +29,18 @@ BrainGNN_Pytorch/
 │   ├── hcp900_subjectwise_paper_reproduction_current_20260612/
 │   ├── hcp900_direction_robustness_20260612/
 │   └── hcp900_pair_consistency_20260613/
+├── reports/
+│   └── braingnn_course_report/
+│       ├── main.tex
+│       ├── build.sh
+│       ├── figures/
+│       └── sections/
 └── .gitignore
 ```
 
 `experiments/` 中保留的是 compact summaries、aggregate metrics、protocols、
 split manifests 和生成的实验报告。原始数据、逐折训练输出、TensorBoard 日志、
-模型 checkpoint、本地临时文件以及课程报告源码目录 `reports/` 均不纳入 GitHub 仓库。
+模型 checkpoint、本地临时文件以及课程报告编译产物不纳入 GitHub 仓库。
 
 ## 环境配置
 
@@ -115,8 +121,8 @@ experiments/hcp900_subjectwise_paper_reproduction_current_20260612/
 
 ## 可解释性图示
 
-若本地保留完整逐折训练输出 `runs/` 和 atlas 文件，可重新生成可解释性图示。由于
-`reports/` 不属于 GitHub 仓库内容，建议将临时图片输出到 `.tmp/interpretability_figures/`：
+若本地保留完整逐折训练输出 `runs/` 和 atlas 文件，可重新生成可解释性图示。报告中使用的最终图示保存在
+`reports/braingnn_course_report/figures/`：
 
 ```bash
 MPLCONFIGDIR=.tmp/matplotlib \
@@ -124,7 +130,7 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
   python 13-plot_hcp_interpretability.py \
   --experiment-root experiments/hcp900_subjectwise_paper_reproduction_current_20260612 \
   --atlas data/hcp_atlas_workbench/100307.aparc.32k_fs_LR.dlabel.nii \
-  --output-dir .tmp/interpretability_figures
+  --output-dir reports/braingnn_course_report/figures
 ```
 
 ## LR/RL 方向鲁棒性实验
@@ -175,8 +181,16 @@ conda run --no-capture-output -n braingnn_rtx5070ti \
 
 ## 课程报告
 
-课程报告源码和 PDF 是本地交付文件，位于本地 `reports/braingnn_course_report/`，不随
-GitHub 仓库上传。
+课程报告源码位于 `reports/braingnn_course_report/`。该目录包含 LaTeX 主文件、章节文件、
+报告图示和编译脚本。编译方式为：
+
+```bash
+cd reports/braingnn_course_report
+./build.sh
+```
+
+生成的 PDF 位于 `reports/braingnn_course_report/build/main.pdf`。`build/` 为本地编译产物，
+不纳入 GitHub 仓库。
 
 ## 引用
 

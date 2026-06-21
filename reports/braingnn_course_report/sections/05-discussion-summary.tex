@@ -1,0 +1,33 @@
+\chapter{讨论与总结}
+
+\section{BrainGNN 方法贡献与本地复现结果讨论}
+
+BrainGNN 的关键价值在于将 ROI 的固定身份纳入模型结构，而不是把脑图节点视为完全同质、可交换的节点。Ra-GConv 通过 community soft assignment 为不同 ROI 生成差异化卷积核，R-pool 则根据节点重要性分数保留关键 ROI，使模型在完成图分类的同时具备 ROI 级解释入口。
+
+本地复现实验支持了这一设计。在卷积层消融中，Ra-GConv 的 balanced accuracy 高于 shared-kernel vanilla-GConv；与 same-input RBF-SVM 相比，BrainGNN 也取得更高的平均 balanced accuracy。这说明 ROI-aware convolution 和脑图结构建模对 HCP 任务分类具有实际价值。损失函数消融则显示，CE + unit + GLC 是本地实验中最稳定的组合，而 TPK 未带来稳定增益，说明解释性正则需要在分类性能和解释稳定性之间平衡。
+
+\section{可解释性结果的含义与边界}
+
+本地可解释性分析显示，随着 GLC 权重增大，同一任务内部的 top ROI Jaccard 明显升高，说明 GLC 能增强不同样本之间关键 ROI 选择的一致性，使解释结果更接近 group-level biomarker。
+
+但稳定性并不等于任务特异性。任务间 ROI 相似性较高，说明当前模型可能更多依赖跨任务共享的高 saliency 脑区，而不是为每个任务学习完全分离的任务特异 ROI。R-pool 选出的 ROI 应理解为当前实验条件下对分类有贡献的节点，不能直接解释为具有因果作用的脑区。后续仍需要结合已有脑功能网络知识、跨随机种子稳定性分析和更多数据集验证。
+
+\section{LR/RL 方向偏移与一致性建模讨论}
+
+HCP 数据中的 LR/RL 采集方向差异会影响任务预测稳定性。Cross-direction baseline 明显低于 mixed-direction strong baseline，说明 LR/RL 方向差异不是可以忽略的随机噪声，而是一种可能改变脑图分布的系统性因素。
+
+方向对抗训练能略微提高 LR/RL pair agreement，并降低 direction probe balanced accuracy，但同时降低任务 balanced accuracy 和 Macro F1。这说明全局压制方向信息可能会损伤任务判别信息。相比之下，配对一致性 BrainGNN 直接约束同一受试者、同一任务 LR/RL 预测分布，使其在提升 balanced accuracy 和 Macro F1 的同时小幅提高 pair agreement。因此，配对一致性训练比方向对抗更符合本项目“保持任务分类性能并提升 LR/RL 配对一致性”的目标。
+
+需要注意的是，pair agreement 的提升幅度仍然有限，不能认为 LR/RL 方向偏移已经被完全消除。更稳妥的结论是，配对一致性训练提供了一种有效的方向鲁棒性正则，而不是完整解决方向不变性问题的最终方案。
+
+\section{研究局限性与未来工作}
+
+本地实验与原论文存在若干差异。本报告使用 HCP task-fMRI 本地可用子集，并依据 FreeSurfer aparc / Desikan-Killiany 皮层分区提取 68 个 cortical ROI，而原论文 HCP 实验使用 268 个功能节点。图构建也依赖 partial correlation、positive top-10\% edges 等具体设置，因此结论可能受到 atlas、连接估计方法和图稀疏化阈值影响。
+
+未来工作可以从三个方向展开：第一，在不同 atlas、连接阈值和图构建方案下验证复现结论；第二，将 salient ROI 与经典功能网络、已有神经影像文献和行为变量对照，增强可解释性验证；第三，在更严格的 pair-disjoint split、多中心或多扫描协议数据上检验配对一致性方法的泛化能力。
+
+\section{总结}
+
+总体而言，本项目完成了 BrainGNN 的方法梳理、本地 HCP 复现、超参数扫描、消融实验、baseline 对比、可解释性分析以及方向鲁棒性改进实验。复现结果支持 ROI-aware convolution 和 GLC 正则项的有效性，也说明可解释稳定性不应直接等同于任务特异性或因果解释。
+
+在改进实验中，简单方向对抗训练尚不足以在保持任务性能的同时提升方向鲁棒性；相比之下，直接约束 LR/RL 真配对预测分布的 pair-consistency 方法更稳定，能够同时提升任务分类性能并小幅提高配对一致性。因此，对于具有真实配对关系的系统性采集差异，利用配对结构约束预测一致性比全局删除方向信息更适合当前 HCP LR/RL 任务。

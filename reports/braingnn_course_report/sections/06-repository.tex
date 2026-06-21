@@ -1,0 +1,41 @@
+\chapter*{附录：项目仓库与代码结构}
+\addcontentsline{toc}{chapter}{附录：项目仓库与代码结构}
+
+本项目代码仓库地址为：
+
+\begin{center}
+\url{https://github.com/whthb/BrainGNN_Pytorch}
+\end{center}
+
+最终 GitHub 仓库保留与本报告结果直接相关的代码、实验汇总和报告源码。原始数据、训练日志、模型 checkpoint、逐折中间输出和本地编译缓存不纳入 GitHub 仓库。
+
+\begin{verbatim}
+BrainGNN_Pytorch/
+|-- README.md
+|-- requirements.txt
+|-- requirements-rtx5070ti.txt
+|-- net/
+|   |-- braingnn.py
+|   |-- braingraphconv.py
+|   |-- brainmsgpassing.py
+|   |-- inits.py
+|   `-- roi_pool.py
+|-- 07-main_hcp_subjectwise.py
+|-- 13-plot_hcp_interpretability.py
+|-- 14-run_hcp_same_input_baselines.py
+|-- 15-run_hcp_subjectwise_new_baseline.py
+|-- 16-report_hcp_subjectwise_reproduction.py
+|-- 17-run_hcp_direction_robustness.py
+|-- 18-run_hcp_pair_consistency.py
+|-- experiments/
+|   |-- hcp900_subjectwise_paper_reproduction_current_20260612/
+|   |-- hcp900_direction_robustness_20260612/
+|   `-- hcp900_pair_consistency_20260613/
+|-- reports/
+|   `-- braingnn_course_report/
+|       |-- main.tex
+|       |-- build.sh
+|       |-- figures/
+|       `-- sections/
+`-- .gitignore
+\end{verbatim}

@@ -1,0 +1,227 @@
+\chapter{论文改进：LR/RL 方向鲁棒性与配对一致性}
+
+\section{改进动机与问题诊断}
+
+HCP task-fMRI 数据中包含 LR 和 RL 两种相位编码方向。理想情况下，同一受试者、同一任务在 LR/RL 两个方向下应得到一致的任务预测；如果模型过度利用方向相关差异，则可能出现同一任务跨方向预测不一致、跨方向泛化下降，以及 salient ROI 解释不稳定等问题。
+
+本项目首先从方向鲁棒性角度诊断复现模型。方向实验使用 HCP900 subject-wise LR/RL run-level 图，并采用按任务和方向共同分层的受试者隔离五折划分。评价目标不是单纯提高分类准确率，而是在保持任务分类性能的前提下，提升 LR/RL 配对一致性。
+
+\begin{table}[H]
+  \centering
+  \caption{LR/RL 方向问题的诊断结果}
+  \begin{tabular}{lcc}
+    \toprule
+    Protocol & Balanced accuracy & Macro F1 \\
+    \midrule
+    Mixed-direction strong baseline & $0.7972 \pm 0.0486$ & $0.7997 \pm 0.0477$ \\
+    LR to RL & $0.5978 \pm 0.0522$ & $0.5892 \pm 0.0496$ \\
+    RL to LR & $0.5681 \pm 0.0986$ & $0.5530 \pm 0.1107$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Cross-direction baseline 明显低于 mixed-direction strong baseline，说明只在一个方向上训练并迁移到另一个方向是困难设置。但 source-only 训练同时减少了可用标注图数量，因此该结果主要用于说明 LR/RL 方向差异值得关注，不能单独归因于方向偏移。
+
+\section{实验设置与评价指标}
+
+方向鲁棒性实验的基础模型为第三章消融实验中表现较好的 strong baseline，即 \code{CE + unit + 0.1 GLC}，TPK disabled。实验结果分别来自方向对抗实验目录和配对一致性实验目录。
+
+\begin{table}[H]
+  \centering
+  \caption{改进实验的共同设置}
+  \begin{tabularx}{\linewidth}{lX}
+    \toprule
+    项目 & 设置 \\
+    \midrule
+    数据 & HCP900 subject-wise 7-task LR/RL run-level graphs \\
+    主模型 & BrainGNN, Ra-GConv, 68 cortical ROI \\
+    图构建 & \code{pcorr}, top 10\% positive edges \\
+    strong baseline loss & \code{CE + unit + 0.1 GLC}, TPK disabled \\
+    训练轮数与 batch size & 100 epochs, batch size 64 \\
+    优化器 & Adam, learning rate 0.001, weight decay 0.005 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+本章除 balanced accuracy 和 Macro F1 外，还使用以下方向鲁棒性指标：Pair agreement 衡量同一受试者、同一任务 LR/RL 两个 run 的离散预测是否一致；Direction probe BAcc 表示冻结模型表征后用线性探针预测 LR/RL 方向的 balanced accuracy，越接近 0.5 表示方向信息越难解码；absolute LR/RL BAcc gap 衡量 LR 与 RL 两个方向上的分类性能差距，越小表示方向间性能更均衡。
+
+\section{方法一：方向对抗训练}
+
+第一阶段改进尝试在 BrainGNN 图级表征后加入 direction head，并通过 gradient reversal 约束表征中的方向信息。给定脑图 $G$，BrainGNN encoder $f_{\theta}$ 先得到图级表示 $z$，任务分类头 $C_{\phi}$ 输出七类任务预测，方向分类头 $D_{\psi}$ 输出 LR/RL 方向预测：
+
+\begin{equation}
+  z=f_{\theta}(G), \quad
+  \hat{y}=C_{\phi}(z), \quad
+  \hat{d}=D_{\psi}(\mathrm{GRL}(z)).
+\end{equation}
+
+其中，$\mathrm{GRL}$ 表示 gradient reversal layer。前向传播时它等价于恒等映射，反向传播时将传给 encoder 的方向分类梯度取反，使 encoder 学到的 $z$ 尽量难以预测方向。总损失写为：
+
+\begin{equation}
+  L_{\mathrm{adv}}
+  = L_{\mathrm{task}} + L_{\mathrm{unit}} + 0.1L_{\mathrm{GLC}}
+  + \lambda_{\mathrm{adv}} L_{\mathrm{dir}} .
+\end{equation}
+
+其中，$\lambda_{\mathrm{adv}}$ 控制方向对抗约束强度。实现上，该方法在 \pathcode{07-main_hcp_subjectwise.py} 中通过 \code{direction\_adv\_weight} 控制。调参只使用 seed 123 的 validation folds，候选权重为 $\{0.01,0.05,0.1,0.2\}$，最终根据 validation balanced accuracy 选择 $\lambda_{\mathrm{adv}}=0.1$。方向对抗实验中，三个 seed $[123,456,789]$ 同时控制 subject split 和模型初始化，因此最终结果包含 15 个 seed-fold。
+
+\begin{table}[H]
+  \centering
+  \caption{方向对抗权重调参结果（seed 123）}
+  \begin{tabular}{ccc}
+    \toprule
+    $\lambda_{\mathrm{adv}}$ & Validation balanced accuracy & Test balanced accuracy \\
+    \midrule
+    0.01 & $0.8544 \pm 0.0204$ & $0.8353 \pm 0.0149$ \\
+    0.05 & $0.8555 \pm 0.0321$ & $0.8090 \pm 0.0265$ \\
+    0.1 & $\mathbf{0.8655 \pm 0.0331}$ & $0.8290 \pm 0.0286$ \\
+    0.2 & $0.8619 \pm 0.0265$ & $0.8325 \pm 0.0143$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{方向对抗实验结果}
+
+\begin{table}[H]
+  \centering
+  \caption{方向对抗训练主结果（三个 seed，共 15 个 seed-fold）}
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lcccc}
+    \toprule
+    模型 & BAcc & Macro F1 & Pair agree & Direction probe BAcc \\
+    \midrule
+    Strong baseline & $0.7972 \pm 0.0486$ & $0.7997 \pm 0.0477$ & $0.7258 \pm 0.0616$ & $0.5884 \pm 0.0413$ \\
+    Direction-adversarial & $0.7921 \pm 0.0560$ & $0.7954 \pm 0.0572$ & $0.7335 \pm 0.0930$ & $0.5764 \pm 0.0326$ \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Direction-adversarial 相对 strong baseline 的变化}
+  \small
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xccc}
+    \toprule
+    指标 & Baseline & Direction-adversarial & Delta \\
+    \midrule
+    Balanced accuracy & 0.7972 & 0.7921 & -0.0051 \\
+    Macro F1 & 0.7997 & 0.7954 & -0.0043 \\
+    Pair prediction agreement & 0.7258 & 0.7335 & +0.0077 \\
+    Direction probe BAcc & 0.5884 & 0.5764 & -0.0120 \\
+    Absolute LR/RL BAcc gap & 0.0391 & 0.0320 & -0.0071 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+方向对抗训练使 pair agreement 从 0.7258 提高到 0.7335，direction probe BAcc 从 0.5884 降低到 0.5764，方向可解码性和方向间性能差距均略有改善。但任务 balanced accuracy 从 0.7972 降为 0.7921，说明全局方向对抗约束没有稳定转化为任务性能收益。对于选中的 $\lambda_{\mathrm{adv}}=0.1$，seed 123 的五折 test balanced accuracy 为 $0.8290 \pm 0.0286$，三 seed 汇总均值下降主要来自 seed 789 的较低结果；因此调参表应被理解为 seed 123 的模型选择结果，而不是三 seed 性能估计。
+
+\section{方法二：LR/RL 配对一致性训练}
+
+方向对抗训练试图从全局表征中删除方向信息，但其约束目标与最终任务预测之间存在间接关系。第二阶段改进改为直接约束同一受试者、同一任务的 LR/RL 真配对预测分布，使两次扫描方向下的任务概率输出更一致。训练集中完整 LR/RL 配对集合定义为：
+
+\begin{equation}
+  \mathcal{P} =
+  \{(G_i^{\mathrm{LR}},G_i^{\mathrm{RL}})
+  \mid
+  \mathrm{subj}(G_i^{\mathrm{LR}})=\mathrm{subj}(G_i^{\mathrm{RL}}),
+  \mathrm{task}(G_i^{\mathrm{LR}})=\mathrm{task}(G_i^{\mathrm{RL}})\}.
+\end{equation}
+
+对于每个配对，模型分别得到两个方向的七类预测概率：
+
+\begin{equation}
+  p_i^{\mathrm{LR}}=\mathrm{softmax}(C_{\phi}(f_{\theta}(G_i^{\mathrm{LR}}))), \quad
+  p_i^{\mathrm{RL}}=\mathrm{softmax}(C_{\phi}(f_{\theta}(G_i^{\mathrm{RL}}))).
+\end{equation}
+
+配对一致性损失采用 Jensen-Shannon divergence：
+
+\begin{equation}
+  L_{\mathrm{pair}}
+  =
+  \frac{1}{|\mathcal{P}|}
+  \sum_{i=1}^{|\mathcal{P}|}
+  \mathrm{JS}(p_i^{\mathrm{LR}},p_i^{\mathrm{RL}}),
+\end{equation}
+
+\begin{equation}
+  \mathrm{JS}(p,q)
+  =
+  \frac{1}{2}\mathrm{KL}(p\|m)
+  +
+  \frac{1}{2}\mathrm{KL}(q\|m),
+  \quad
+  m=\frac{1}{2}(p+q).
+\end{equation}
+
+最终训练目标为：
+
+\begin{equation}
+  L
+  = L_{\mathrm{task}} + L_{\mathrm{unit}} + 0.1L_{\mathrm{GLC}}
+  + \lambda_{\mathrm{pair}} L_{\mathrm{pair}}.
+\end{equation}
+
+所有训练图仍参与普通任务分类，只有完整 LR/RL 配对额外计算一致性损失；训练配对严格来自训练受试者，不使用验证或测试配对。实现上，该方法在 \pathcode{07-main_hcp_subjectwise.py} 中通过 \code{pair\_consistency\_weight} 控制。
+
+配对一致性实验固定 split seed 为 123，并使用三个模型初始化种子 $[123,456,789]$，因此 15 个结果只改变模型初始化而共享同一组 subject-wise folds。配对损失采用 inverse-square-root task balancing，并从 epoch 10 开始、用 20 个 epoch 线性 warm-up 到目标权重。候选权重为 $\{0.05,0.1,0.2,0.5\}$；选择规则是在 validation balanced accuracy 相对基线下降不超过 0.5 个百分点的候选中，优先选择 validation pair agreement 最高者，最终选择 $\lambda_{\mathrm{pair}}=0.2$。
+
+\begin{table}[H]
+  \centering
+  \caption{配对一致性权重筛选结果}
+  \begin{tabular}{cccc}
+    \toprule
+    $\lambda_{\mathrm{pair}}$ & Validation BAcc & Validation pair agreement & Test BAcc \\
+    \midrule
+    0.05 & $0.8556 \pm 0.0209$ & $0.7958 \pm 0.0521$ & $0.8397 \pm 0.0191$ \\
+    0.1 & $0.8634 \pm 0.0216$ & $0.7999 \pm 0.0355$ & $0.8348 \pm 0.0237$ \\
+    0.2 & $\mathbf{0.8664 \pm 0.0231}$ & $\mathbf{0.8034 \pm 0.0545}$ & $0.8371 \pm 0.0250$ \\
+    0.5 & $0.8596 \pm 0.0197$ & $0.8018 \pm 0.0441$ & $0.8334 \pm 0.0281$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{配对一致性实验结果}
+
+\begin{table}[H]
+  \centering
+  \caption{配对一致性训练主结果（三个 initialization seed，共 15 个 fold-init）}
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lccccc}
+    \toprule
+    模型 & BAcc & Macro F1 & Pair agree & Pair macro agree & Pair ensemble BAcc \\
+    \midrule
+    Strong baseline & $0.7938 \pm 0.0556$ & $0.7978 \pm 0.0547$ & $0.7418 \pm 0.0572$ & $0.7030 \pm 0.0733$ & $0.8692 \pm 0.0754$ \\
+    Pair consistency & $0.8058 \pm 0.0505$ & $0.8091 \pm 0.0509$ & $0.7506 \pm 0.0582$ & $0.7159 \pm 0.0813$ & $0.8727 \pm 0.0771$ \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Pair consistency 相对 strong baseline 的变化}
+  \small
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xccc}
+    \toprule
+    指标 & Baseline & Pair consistency & Delta \\
+    \midrule
+    Balanced accuracy & 0.7938 & 0.8058 & +0.0119 \\
+    Macro F1 & 0.7978 & 0.8091 & +0.0114 \\
+    Pair prediction agreement & 0.7418 & 0.7506 & +0.0088 \\
+    Pair macro-task agreement & 0.7030 & 0.7159 & +0.0129 \\
+    Pair prediction JS & 0.1241 & 0.1207 & -0.0034 \\
+    Pair pool1 Jaccard & 0.6718 & 0.6759 & +0.0041 \\
+    Direction probe BAcc & 0.6011 & 0.5968 & -0.0043 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+配对一致性训练将 balanced accuracy 从 0.7938 提高到 0.8058，Macro F1 从 0.7978 提高到 0.8091，同时将 LR/RL pair agreement 从 0.7418 提高到 0.7506。预测分布 JS、pooling ROI Jaccard 和 direction probe BAcc 也朝预期方向小幅变化，说明直接约束真实 LR/RL 配对比全局方向对抗更贴近本项目目标。需要注意的是，配对一致性带来的 pair agreement 提升幅度仍然较小，因此更稳妥的结论是：该方法在保持并提升任务分类性能的同时，带来了轻微的 LR/RL 配对一致性改善。
+
+\section{本章小结}
+
+方向鲁棒性改进经历了两个阶段。方向对抗训练能够略微提高配对一致性并降低方向可解码性，但伴随任务性能下降，说明简单删除全局方向信息并不稳定。配对一致性训练则直接利用同一受试者、同一任务的 LR/RL 真配对，将方向鲁棒性目标写入任务预测分布，在最终实验中同时提高 balanced accuracy、Macro F1 和 pair agreement。因此，本项目最终采用配对一致性训练作为更合适的改进方案。

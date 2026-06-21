@@ -1,0 +1,54 @@
+\documentclass[UTF8,12pt,a4paper,openany]{ctexrep}
+
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\graphicspath{
+  {figures/}
+}
+
+\hypersetup{
+  pdftitle={BrainGNN 项目作业报告},
+  pdfauthor={},
+  pdfsubject={BrainGNN 论文方法、复现与改进实验},
+  pdfkeywords={BrainGNN, fMRI, graph neural network, HCP, interpretability}
+}
+\urlstyle{same}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\captionsetup{font=small,labelfont=bf}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pathcode}[1]{\path{#1}}
+\newcommand{\metric}[1]{\ensuremath{\mathrm{#1}}}
+\newcommand{\todoText}[1]{\textcolor{gray}{\textbf{待补充：}#1}}
+\newcommand{\safeincludegraphics}[2][]{\includegraphics[#1]{#2}}
+
+\begin{document}
+
+\input{sections/00-title}
+
+\pagenumbering{Roman}
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+\input{sections/01-introduction}
+\input{sections/02-paper-method}
+\input{sections/03-reproduction}
+\input{sections/04-improvement}
+\input{sections/05-discussion-summary}
+\input{sections/06-repository}
+\input{sections/07-references}
+
+\end{document}

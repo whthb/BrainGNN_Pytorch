@@ -1,0 +1,3589 @@
+{
+  "figure10": {
+    "fold": "fold_3",
+    "max": 0.2939073443412781,
+    "mean": 0.040337201207876205,
+    "shape": [
+      68,
+      8
+    ],
+    "zero_fraction": 0.6158088235294118
+  },
+  "figure5": {
+    "fold": 0,
+    "rows": {
+      "0": {
+        "common_roi_count": 10,
+        "common_rois": [
+          {
+            "atlas_id": 7,
+            "name": "L_fusiform",
+            "zero_based_index": 5
+          },
+          {
+            "atlas_id": 11,
+            "name": "L_lateraloccipital",
+            "zero_based_index": 9
+          },
+          {
+            "atlas_id": 29,
+            "name": "L_superiorparietal",
+            "zero_based_index": 27
+          },
+          {
+            "atlas_id": 31,
+            "name": "L_supramarginal",
+            "zero_based_index": 29
+          },
+          {
+            "atlas_id": 42,
+            "name": "R_fusiform",
+            "zero_based_index": 39
+          },
+          {
+            "atlas_id": 44,
+            "name": "R_inferiortemporal",
+            "zero_based_index": 41
+          },
+          {
+            "atlas_id": 46,
+            "name": "R_lateraloccipital",
+            "zero_based_index": 43
+          },
+          {
+            "atlas_id": 59,
+            "name": "R_precentral",
+            "zero_based_index": 56
+          },
+          {
+            "atlas_id": 64,
+            "name": "R_superiorparietal",
+            "zero_based_index": 61
+          },
+          {
+            "atlas_id": 66,
+            "name": "R_supramarginal",
+            "zero_based_index": 63
+          }
+        ],
+        "mean_pairwise_jaccard": 0.5745718050065876,
+        "samples": [
+          {
+            "sample": "SOCIAL_LR",
+            "subject": "105216",
+            "top_rois": [
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 51,
+                "name": "R_parahippocampal",
+                "zero_based_index": 48
+              },
+              {
+                "atlas_id": 55,
+                "name": "R_parstriangularis",
+                "zero_based_index": 52
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 44,
+                "name": "R_inferiortemporal",
+                "zero_based_index": 41
+              },
+              {
+                "atlas_id": 20,
+                "name": "L_parstriangularis",
+                "zero_based_index": 18
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 47,
+                "name": "R_lateralorbitofrontal",
+                "zero_based_index": 44
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 24,
+                "name": "L_precentral",
+                "zero_based_index": 22
+              },
+              {
+                "atlas_id": 53,
+                "name": "R_parsopercularis",
+                "zero_based_index": 50
+              },
+              {
+                "atlas_id": 38,
+                "name": "R_caudalmiddlefrontal",
+                "zero_based_index": 36
+              }
+            ]
+          },
+          {
+            "sample": "SOCIAL_RL",
+            "subject": "107321",
+            "top_rois": [
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 44,
+                "name": "R_inferiortemporal",
+                "zero_based_index": 41
+              },
+              {
+                "atlas_id": 9,
+                "name": "L_inferiortemporal",
+                "zero_based_index": 7
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 50,
+                "name": "R_middletemporal",
+                "zero_based_index": 47
+              },
+              {
+                "atlas_id": 36,
+                "name": "R_bankssts",
+                "zero_based_index": 34
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 43,
+                "name": "R_inferiorparietal",
+                "zero_based_index": 40
+              },
+              {
+                "atlas_id": 20,
+                "name": "L_parstriangularis",
+                "zero_based_index": 18
+              }
+            ]
+          },
+          {
+            "sample": "SOCIAL_RL",
+            "subject": "139637",
+            "top_rois": [
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 44,
+                "name": "R_inferiortemporal",
+                "zero_based_index": 41
+              },
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 9,
+                "name": "L_inferiortemporal",
+                "zero_based_index": 7
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 43,
+                "name": "R_inferiorparietal",
+                "zero_based_index": 40
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 55,
+                "name": "R_parstriangularis",
+                "zero_based_index": 52
+              },
+              {
+                "atlas_id": 53,
+                "name": "R_parsopercularis",
+                "zero_based_index": 50
+              },
+              {
+                "atlas_id": 57,
+                "name": "R_postcentral",
+                "zero_based_index": 54
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              }
+            ]
+          }
+        ]
+      },
+      "0.1": {
+        "common_roi_count": 14,
+        "common_rois": [
+          {
+            "atlas_id": 7,
+            "name": "L_fusiform",
+            "zero_based_index": 5
+          },
+          {
+            "atlas_id": 11,
+            "name": "L_lateraloccipital",
+            "zero_based_index": 9
+          },
+          {
+            "atlas_id": 13,
+            "name": "L_lingual",
+            "zero_based_index": 11
+          },
+          {
+            "atlas_id": 21,
+            "name": "L_pericalcarine",
+            "zero_based_index": 19
+          },
+          {
+            "atlas_id": 29,
+            "name": "L_superiorparietal",
+            "zero_based_index": 27
+          },
+          {
+            "atlas_id": 31,
+            "name": "L_supramarginal",
+            "zero_based_index": 29
+          },
+          {
+            "atlas_id": 42,
+            "name": "R_fusiform",
+            "zero_based_index": 39
+          },
+          {
+            "atlas_id": 44,
+            "name": "R_inferiortemporal",
+            "zero_based_index": 41
+          },
+          {
+            "atlas_id": 46,
+            "name": "R_lateraloccipital",
+            "zero_based_index": 43
+          },
+          {
+            "atlas_id": 48,
+            "name": "R_lingual",
+            "zero_based_index": 45
+          },
+          {
+            "atlas_id": 56,
+            "name": "R_pericalcarine",
+            "zero_based_index": 53
+          },
+          {
+            "atlas_id": 59,
+            "name": "R_precentral",
+            "zero_based_index": 56
+          },
+          {
+            "atlas_id": 64,
+            "name": "R_superiorparietal",
+            "zero_based_index": 61
+          },
+          {
+            "atlas_id": 66,
+            "name": "R_supramarginal",
+            "zero_based_index": 63
+          }
+        ],
+        "mean_pairwise_jaccard": 0.7927875243664717,
+        "samples": [
+          {
+            "sample": "SOCIAL_LR",
+            "subject": "105216",
+            "top_rois": [
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 13,
+                "name": "L_lingual",
+                "zero_based_index": 11
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 24,
+                "name": "L_precentral",
+                "zero_based_index": 22
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 48,
+                "name": "R_lingual",
+                "zero_based_index": 45
+              },
+              {
+                "atlas_id": 44,
+                "name": "R_inferiortemporal",
+                "zero_based_index": 41
+              },
+              {
+                "atlas_id": 53,
+                "name": "R_parsopercularis",
+                "zero_based_index": 50
+              },
+              {
+                "atlas_id": 40,
+                "name": "R_cuneus",
+                "zero_based_index": 37
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              }
+            ]
+          },
+          {
+            "sample": "SOCIAL_RL",
+            "subject": "107321",
+            "top_rois": [
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 13,
+                "name": "L_lingual",
+                "zero_based_index": 11
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 5,
+                "name": "L_cuneus",
+                "zero_based_index": 3
+              },
+              {
+                "atlas_id": 44,
+                "name": "R_inferiortemporal",
+                "zero_based_index": 41
+              },
+              {
+                "atlas_id": 24,
+                "name": "L_precentral",
+                "zero_based_index": 22
+              },
+              {
+                "atlas_id": 43,
+                "name": "R_inferiorparietal",
+                "zero_based_index": 40
+              },
+              {
+                "atlas_id": 48,
+                "name": "R_lingual",
+                "zero_based_index": 45
+              }
+            ]
+          },
+          {
+            "sample": "SOCIAL_RL",
+            "subject": "139637",
+            "top_rois": [
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 44,
+                "name": "R_inferiortemporal",
+                "zero_based_index": 41
+              },
+              {
+                "atlas_id": 48,
+                "name": "R_lingual",
+                "zero_based_index": 45
+              },
+              {
+                "atlas_id": 5,
+                "name": "L_cuneus",
+                "zero_based_index": 3
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 57,
+                "name": "R_postcentral",
+                "zero_based_index": 54
+              },
+              {
+                "atlas_id": 43,
+                "name": "R_inferiorparietal",
+                "zero_based_index": 40
+              },
+              {
+                "atlas_id": 13,
+                "name": "L_lingual",
+                "zero_based_index": 11
+              }
+            ]
+          }
+        ]
+      },
+      "0.5": {
+        "common_roi_count": 15,
+        "common_rois": [
+          {
+            "atlas_id": 5,
+            "name": "L_cuneus",
+            "zero_based_index": 3
+          },
+          {
+            "atlas_id": 11,
+            "name": "L_lateraloccipital",
+            "zero_based_index": 9
+          },
+          {
+            "atlas_id": 13,
+            "name": "L_lingual",
+            "zero_based_index": 11
+          },
+          {
+            "atlas_id": 21,
+            "name": "L_pericalcarine",
+            "zero_based_index": 19
+          },
+          {
+            "atlas_id": 22,
+            "name": "L_postcentral",
+            "zero_based_index": 20
+          },
+          {
+            "atlas_id": 24,
+            "name": "L_precentral",
+            "zero_based_index": 22
+          },
+          {
+            "atlas_id": 29,
+            "name": "L_superiorparietal",
+            "zero_based_index": 27
+          },
+          {
+            "atlas_id": 40,
+            "name": "R_cuneus",
+            "zero_based_index": 37
+          },
+          {
+            "atlas_id": 42,
+            "name": "R_fusiform",
+            "zero_based_index": 39
+          },
+          {
+            "atlas_id": 46,
+            "name": "R_lateraloccipital",
+            "zero_based_index": 43
+          },
+          {
+            "atlas_id": 48,
+            "name": "R_lingual",
+            "zero_based_index": 45
+          },
+          {
+            "atlas_id": 56,
+            "name": "R_pericalcarine",
+            "zero_based_index": 53
+          },
+          {
+            "atlas_id": 59,
+            "name": "R_precentral",
+            "zero_based_index": 56
+          },
+          {
+            "atlas_id": 64,
+            "name": "R_superiorparietal",
+            "zero_based_index": 61
+          },
+          {
+            "atlas_id": 66,
+            "name": "R_supramarginal",
+            "zero_based_index": 63
+          }
+        ],
+        "mean_pairwise_jaccard": 0.8888888888888888,
+        "samples": [
+          {
+            "sample": "SOCIAL_LR",
+            "subject": "105216",
+            "top_rois": [
+              {
+                "atlas_id": 13,
+                "name": "L_lingual",
+                "zero_based_index": 11
+              },
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 48,
+                "name": "R_lingual",
+                "zero_based_index": 45
+              },
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 40,
+                "name": "R_cuneus",
+                "zero_based_index": 37
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 5,
+                "name": "L_cuneus",
+                "zero_based_index": 3
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 24,
+                "name": "L_precentral",
+                "zero_based_index": 22
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 57,
+                "name": "R_postcentral",
+                "zero_based_index": 54
+              },
+              {
+                "atlas_id": 22,
+                "name": "L_postcentral",
+                "zero_based_index": 20
+              }
+            ]
+          },
+          {
+            "sample": "SOCIAL_RL",
+            "subject": "107321",
+            "top_rois": [
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 13,
+                "name": "L_lingual",
+                "zero_based_index": 11
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 7,
+                "name": "L_fusiform",
+                "zero_based_index": 5
+              },
+              {
+                "atlas_id": 5,
+                "name": "L_cuneus",
+                "zero_based_index": 3
+              },
+              {
+                "atlas_id": 48,
+                "name": "R_lingual",
+                "zero_based_index": 45
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 40,
+                "name": "R_cuneus",
+                "zero_based_index": 37
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 24,
+                "name": "L_precentral",
+                "zero_based_index": 22
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 22,
+                "name": "L_postcentral",
+                "zero_based_index": 20
+              }
+            ]
+          },
+          {
+            "sample": "SOCIAL_RL",
+            "subject": "139637",
+            "top_rois": [
+              {
+                "atlas_id": 21,
+                "name": "L_pericalcarine",
+                "zero_based_index": 19
+              },
+              {
+                "atlas_id": 11,
+                "name": "L_lateraloccipital",
+                "zero_based_index": 9
+              },
+              {
+                "atlas_id": 56,
+                "name": "R_pericalcarine",
+                "zero_based_index": 53
+              },
+              {
+                "atlas_id": 46,
+                "name": "R_lateraloccipital",
+                "zero_based_index": 43
+              },
+              {
+                "atlas_id": 48,
+                "name": "R_lingual",
+                "zero_based_index": 45
+              },
+              {
+                "atlas_id": 64,
+                "name": "R_superiorparietal",
+                "zero_based_index": 61
+              },
+              {
+                "atlas_id": 5,
+                "name": "L_cuneus",
+                "zero_based_index": 3
+              },
+              {
+                "atlas_id": 29,
+                "name": "L_superiorparietal",
+                "zero_based_index": 27
+              },
+              {
+                "atlas_id": 59,
+                "name": "R_precentral",
+                "zero_based_index": 56
+              },
+              {
+                "atlas_id": 13,
+                "name": "L_lingual",
+                "zero_based_index": 11
+              },
+              {
+                "atlas_id": 42,
+                "name": "R_fusiform",
+                "zero_based_index": 39
+              },
+              {
+                "atlas_id": 40,
+                "name": "R_cuneus",
+                "zero_based_index": 37
+              },
+              {
+                "atlas_id": 57,
+                "name": "R_postcentral",
+                "zero_based_index": 54
+              },
+              {
+                "atlas_id": 31,
+                "name": "L_supramarginal",
+                "zero_based_index": 29
+              },
+              {
+                "atlas_id": 24,
+                "name": "L_precentral",
+                "zero_based_index": 22
+              },
+              {
+                "atlas_id": 22,
+                "name": "L_postcentral",
+                "zero_based_index": 20
+              },
+              {
+                "atlas_id": 66,
+                "name": "R_supramarginal",
+                "zero_based_index": 63
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "task": "SOCIAL",
+    "top_rois": 17
+  },
+  "figure7": {
+    "EMOTION": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9168113470077515,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.8926123380661011,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.8442705273628235,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.84315025806427,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.8383709788322449,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.8331464529037476,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.812687337398529,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.8051100969314575,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.7923529148101807,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7765255570411682,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 40,
+        "mean_first_pool_score": 0.7693343162536621,
+        "name": "R_cuneus",
+        "zero_based_index": 37
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.7596546411514282,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.7547311186790466,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.7511795163154602,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.7266024947166443,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.7237963080406189,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      },
+      {
+        "atlas_id": 57,
+        "mean_first_pool_score": 0.6902595162391663,
+        "name": "R_postcentral",
+        "zero_based_index": 54
+      }
+    ],
+    "GAMBLING": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9151431918144226,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.8883515000343323,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.8587779402732849,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.8531355857849121,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.8476264476776123,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.8394468426704407,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.8221248388290405,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.8136821389198303,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.8081746101379395,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      },
+      {
+        "atlas_id": 40,
+        "mean_first_pool_score": 0.7924442291259766,
+        "name": "R_cuneus",
+        "zero_based_index": 37
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7874860167503357,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.7774714827537537,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.7669683694839478,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.734336793422699,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.718882143497467,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.707614541053772,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 31,
+        "mean_first_pool_score": 0.664484977722168,
+        "name": "L_supramarginal",
+        "zero_based_index": 29
+      }
+    ],
+    "LANGUAGE": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9234707355499268,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.8911017179489136,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.8356035351753235,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.8250561356544495,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.8167651295661926,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.8164206743240356,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.8116185069084167,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.8065748810768127,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.8048624396324158,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.7993811964988708,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.7991211414337158,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 40,
+        "mean_first_pool_score": 0.7950406074523926,
+        "name": "R_cuneus",
+        "zero_based_index": 37
+      },
+      {
+        "atlas_id": 57,
+        "mean_first_pool_score": 0.7776123285293579,
+        "name": "R_postcentral",
+        "zero_based_index": 54
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.7444114685058594,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.7438653707504272,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7437610626220703,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.709241509437561,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      }
+    ],
+    "MOTOR": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9160680174827576,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.8887338042259216,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.8544715642929077,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.8443100452423096,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.8409528732299805,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.829105794429779,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.8077362775802612,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.8038947582244873,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.8032119870185852,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 40,
+        "mean_first_pool_score": 0.7907664179801941,
+        "name": "R_cuneus",
+        "zero_based_index": 37
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.7810220122337341,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.7807300090789795,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7668416500091553,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 57,
+        "mean_first_pool_score": 0.7559973001480103,
+        "name": "R_postcentral",
+        "zero_based_index": 54
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.7508115172386169,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.7296451926231384,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.7086563110351562,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      }
+    ],
+    "RELATIONAL": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9160623550415039,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.8937121629714966,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.8694155812263489,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.864310622215271,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.8582585453987122,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.8549839854240417,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.829095721244812,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.819533109664917,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.8160158395767212,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 40,
+        "mean_first_pool_score": 0.7966818809509277,
+        "name": "R_cuneus",
+        "zero_based_index": 37
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7932862043380737,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.7792304754257202,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.7316761016845703,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.7264507412910461,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.7185800075531006,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.6871508359909058,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 31,
+        "mean_first_pool_score": 0.6520575284957886,
+        "name": "L_supramarginal",
+        "zero_based_index": 29
+      }
+    ],
+    "SOCIAL": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9247550368309021,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.9034764766693115,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.8681890964508057,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.8545321822166443,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.8382183313369751,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.833848237991333,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.8068233728408813,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.7975400686264038,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.7870088815689087,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7863013744354248,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.7786648273468018,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.7776739001274109,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.7436397075653076,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      },
+      {
+        "atlas_id": 57,
+        "mean_first_pool_score": 0.7191709280014038,
+        "name": "R_postcentral",
+        "zero_based_index": 54
+      },
+      {
+        "atlas_id": 31,
+        "mean_first_pool_score": 0.7122966647148132,
+        "name": "L_supramarginal",
+        "zero_based_index": 29
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.7109924554824829,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.6790228486061096,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      }
+    ],
+    "WM": [
+      {
+        "atlas_id": 64,
+        "mean_first_pool_score": 0.9154641628265381,
+        "name": "R_superiorparietal",
+        "zero_based_index": 61
+      },
+      {
+        "atlas_id": 29,
+        "mean_first_pool_score": 0.8901935815811157,
+        "name": "L_superiorparietal",
+        "zero_based_index": 27
+      },
+      {
+        "atlas_id": 21,
+        "mean_first_pool_score": 0.8640710115432739,
+        "name": "L_pericalcarine",
+        "zero_based_index": 19
+      },
+      {
+        "atlas_id": 56,
+        "mean_first_pool_score": 0.8586397767066956,
+        "name": "R_pericalcarine",
+        "zero_based_index": 53
+      },
+      {
+        "atlas_id": 46,
+        "mean_first_pool_score": 0.8530696630477905,
+        "name": "R_lateraloccipital",
+        "zero_based_index": 43
+      },
+      {
+        "atlas_id": 11,
+        "mean_first_pool_score": 0.8488015532493591,
+        "name": "L_lateraloccipital",
+        "zero_based_index": 9
+      },
+      {
+        "atlas_id": 13,
+        "mean_first_pool_score": 0.8194775581359863,
+        "name": "L_lingual",
+        "zero_based_index": 11
+      },
+      {
+        "atlas_id": 48,
+        "mean_first_pool_score": 0.8106454610824585,
+        "name": "R_lingual",
+        "zero_based_index": 45
+      },
+      {
+        "atlas_id": 42,
+        "mean_first_pool_score": 0.7987403273582458,
+        "name": "R_fusiform",
+        "zero_based_index": 39
+      },
+      {
+        "atlas_id": 7,
+        "mean_first_pool_score": 0.7944226861000061,
+        "name": "L_fusiform",
+        "zero_based_index": 5
+      },
+      {
+        "atlas_id": 5,
+        "mean_first_pool_score": 0.7911245822906494,
+        "name": "L_cuneus",
+        "zero_based_index": 3
+      },
+      {
+        "atlas_id": 40,
+        "mean_first_pool_score": 0.7800897359848022,
+        "name": "R_cuneus",
+        "zero_based_index": 37
+      },
+      {
+        "atlas_id": 59,
+        "mean_first_pool_score": 0.7522486448287964,
+        "name": "R_precentral",
+        "zero_based_index": 56
+      },
+      {
+        "atlas_id": 66,
+        "mean_first_pool_score": 0.7451805472373962,
+        "name": "R_supramarginal",
+        "zero_based_index": 63
+      },
+      {
+        "atlas_id": 22,
+        "mean_first_pool_score": 0.7342190742492676,
+        "name": "L_postcentral",
+        "zero_based_index": 20
+      },
+      {
+        "atlas_id": 24,
+        "mean_first_pool_score": 0.7294368147850037,
+        "name": "L_precentral",
+        "zero_based_index": 22
+      },
+      {
+        "atlas_id": 57,
+        "mean_first_pool_score": 0.6909207105636597,
+        "name": "R_postcentral",
+        "zero_based_index": 54
+      }
+    ]
+  },
+  "figure8_proxy": {
+    "tasks": [
+      "EMOTION",
+      "GAMBLING",
+      "LANGUAGE",
+      "MOTOR",
+      "RELATIONAL",
+      "SOCIAL",
+      "WM"
+    ],
+    "top_roi_jaccard": [
+      [
+        1.0,
+        0.8888888955116272,
+        1.0,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0
+      ],
+      [
+        0.8888888955116272,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272
+      ],
+      [
+        1.0,
+        0.8888888955116272,
+        1.0,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0
+      ],
+      [
+        1.0,
+        0.8888888955116272,
+        1.0,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0
+      ],
+      [
+        0.8888888955116272,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272
+      ],
+      [
+        0.8888888955116272,
+        0.8888888955116272,
+        0.8888888955116272,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0,
+        0.8888888955116272
+      ],
+      [
+        1.0,
+        0.8888888955116272,
+        1.0,
+        1.0,
+        0.8888888955116272,
+        0.8888888955116272,
+        1.0
+      ]
+    ]
+  },
+  "figure9": [
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.07999328523874283,
+        0.0,
+        0.0,
+        0.0,
+        0.054590050131082535,
+        0.0
+      ],
+      "atlas_id": 1,
+      "community_memberships_zero_based": [
+        2,
+        6
+      ],
+      "name": "L_bankssts",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.04664512723684311,
+      "zero_based_index": 0
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.13604725897312164,
+        0.08629954606294632,
+        0.0
+      ],
+      "atlas_id": 2,
+      "community_memberships_zero_based": [
+        5,
+        6
+      ],
+      "name": "L_caudalanteriorcingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.07751345634460449,
+      "zero_based_index": 1
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.09176590293645859,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 3,
+      "community_memberships_zero_based": [
+        2
+      ],
+      "name": "L_caudalmiddlefrontal",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.041819456964731216,
+      "zero_based_index": 2
+    },
+    {
+      "alpha_positive": [
+        0.05510830134153366,
+        0.2811230719089508,
+        0.0,
+        0.008351549506187439,
+        0.0,
+        0.0,
+        0.13904409110546112,
+        0.1339280754327774
+      ],
+      "atlas_id": 5,
+      "community_memberships_zero_based": [
+        1
+      ],
+      "name": "L_cuneus",
+      "strongest_qualifying_community_zero_based": 1,
+      "threshold": 0.17188800871372223,
+      "zero_based_index": 3
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 6,
+      "community_memberships_zero_based": [],
+      "name": "L_entorhinal",
+      "strongest_qualifying_community_zero_based": null,
+      "threshold": 0.0,
+      "zero_based_index": 4
+    },
+    {
+      "alpha_positive": [
+        0.19594469666481018,
+        0.0,
+        0.0,
+        0.26591432094573975,
+        0.0,
+        0.0,
+        0.16471721231937408,
+        0.0
+      ],
+      "atlas_id": 7,
+      "community_memberships_zero_based": [
+        0,
+        3
+      ],
+      "name": "L_fusiform",
+      "strongest_qualifying_community_zero_based": 3,
+      "threshold": 0.1827022135257721,
+      "zero_based_index": 5
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.10212892293930054,
+        0.09949561208486557,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 8,
+      "community_memberships_zero_based": [
+        1,
+        2
+      ],
+      "name": "L_inferiorparietal",
+      "strongest_qualifying_community_zero_based": 1,
+      "threshold": 0.06886102259159088,
+      "zero_based_index": 6
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.16267696022987366,
+        0.0,
+        0.0,
+        0.028020400553941727,
+        0.06725689768791199,
+        0.14890821278095245
+      ],
+      "atlas_id": 9,
+      "community_memberships_zero_based": [
+        2,
+        7
+      ],
+      "name": "L_inferiortemporal",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.11533061414957047,
+      "zero_based_index": 7
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0031121012289077044,
+        0.0009363064309582114,
+        0.0,
+        0.1680879145860672,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 10,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_isthmuscingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.0769248977303505,
+      "zero_based_index": 8
+    },
+    {
+      "alpha_positive": [
+        0.23791301250457764,
+        0.0,
+        0.0,
+        0.05940132215619087,
+        0.0,
+        0.0,
+        0.21980443596839905,
+        0.07163097709417343
+      ],
+      "atlas_id": 11,
+      "community_memberships_zero_based": [
+        0,
+        6
+      ],
+      "name": "L_lateraloccipital",
+      "strongest_qualifying_community_zero_based": 0,
+      "threshold": 0.16730058193206787,
+      "zero_based_index": 9
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.004775454755872488,
+        0.02184103988111019,
+        0.21925710141658783,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 12,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_lateralorbitofrontal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.10233795642852783,
+      "zero_based_index": 10
+    },
+    {
+      "alpha_positive": [
+        0.12102628499269485,
+        0.16787084937095642,
+        0.02269868552684784,
+        0.0,
+        0.0520586334168911,
+        0.0,
+        0.11383803188800812,
+        0.12356632202863693
+      ],
+      "atlas_id": 13,
+      "community_memberships_zero_based": [
+        1
+      ],
+      "name": "L_lingual",
+      "strongest_qualifying_community_zero_based": 1,
+      "threshold": 0.13546691834926605,
+      "zero_based_index": 11
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.196353942155838,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 14,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_medialorbitofrontal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.08948220312595367,
+      "zero_based_index": 12
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1451365351676941,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 15,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_middletemporal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.06614146381616592,
+      "zero_based_index": 13
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 16,
+      "community_memberships_zero_based": [],
+      "name": "L_parahippocampal",
+      "strongest_qualifying_community_zero_based": null,
+      "threshold": 0.0,
+      "zero_based_index": 14
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.10038825124502182,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 17,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_paracentral",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.04574882611632347,
+      "zero_based_index": 15
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 18,
+      "community_memberships_zero_based": [],
+      "name": "L_parsopercularis",
+      "strongest_qualifying_community_zero_based": null,
+      "threshold": 0.0,
+      "zero_based_index": 16
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.05296040698885918,
+        0.0,
+        0.0,
+        0.22005903720855713,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 19,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_parsorbitalis",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.10650952160358429,
+      "zero_based_index": 17
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.09149403870105743,
+        0.0,
+        0.0,
+        0.2025720775127411,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 20,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_parstriangularis",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.10621801018714905,
+      "zero_based_index": 18
+    },
+    {
+      "alpha_positive": [
+        0.15305861830711365,
+        0.2312709540128708,
+        0.21006613969802856,
+        0.0,
+        0.03825567662715912,
+        0.0,
+        0.24976061284542084,
+        0.03076118603348732
+      ],
+      "atlas_id": 21,
+      "community_memberships_zero_based": [
+        1,
+        6
+      ],
+      "name": "L_pericalcarine",
+      "strongest_qualifying_community_zero_based": 6,
+      "threshold": 0.21513886749744415,
+      "zero_based_index": 19
+    },
+    {
+      "alpha_positive": [
+        0.1156093031167984,
+        0.0731465294957161,
+        0.0,
+        0.07508766651153564,
+        0.11838291585445404,
+        0.06374482065439224,
+        0.049018148332834244,
+        0.1007322296500206
+      ],
+      "atlas_id": 22,
+      "community_memberships_zero_based": [
+        0,
+        4
+      ],
+      "name": "L_postcentral",
+      "strongest_qualifying_community_zero_based": 4,
+      "threshold": 0.11090219020843506,
+      "zero_based_index": 20
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.061588551849126816,
+        0.0,
+        0.0,
+        0.1941847950220108,
+        0.009798168204724789,
+        0.0
+      ],
+      "atlas_id": 23,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_posteriorcingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.09720899164676666,
+      "zero_based_index": 21
+    },
+    {
+      "alpha_positive": [
+        0.15151281654834747,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.16913987696170807
+      ],
+      "atlas_id": 24,
+      "community_memberships_zero_based": [
+        0,
+        7
+      ],
+      "name": "L_precentral",
+      "strongest_qualifying_community_zero_based": 7,
+      "threshold": 0.10964465141296387,
+      "zero_based_index": 22
+    },
+    {
+      "alpha_positive": [
+        0.038369953632354736,
+        0.022108044475317,
+        0.07831361144781113,
+        0.0,
+        0.0,
+        0.09178517758846283,
+        0.0,
+        0.012954751029610634
+      ],
+      "atlas_id": 25,
+      "community_memberships_zero_based": [
+        2,
+        5
+      ],
+      "name": "L_precuneus",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.06448724865913391,
+      "zero_based_index": 23
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.05112636461853981,
+        0.0,
+        0.0,
+        0.19477997720241547,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 26,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_rostralanteriorcingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.09495900571346283,
+      "zero_based_index": 24
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0076599931344389915,
+        0.1302344650030136,
+        0.0,
+        0.0,
+        0.17479459941387177,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 27,
+      "community_memberships_zero_based": [
+        2,
+        5
+      ],
+      "name": "L_rostralmiddlefrontal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.1055607870221138,
+      "zero_based_index": 25
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.23857225477695465,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 28,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_superiorfrontal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.10872188955545425,
+      "zero_based_index": 26
+    },
+    {
+      "alpha_positive": [
+        0.2071070820093155,
+        0.1399056613445282,
+        0.19773146510124207,
+        0.0,
+        0.17248877882957458,
+        0.07815408706665039,
+        0.14156866073608398,
+        0.17564591765403748
+      ],
+      "atlas_id": 29,
+      "community_memberships_zero_based": [
+        0
+      ],
+      "name": "L_superiorparietal",
+      "strongest_qualifying_community_zero_based": 0,
+      "threshold": 0.20386621356010437,
+      "zero_based_index": 27
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.040052395313978195,
+        0.14252382516860962,
+        0.0,
+        0.0,
+        0.19489727914333344,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 30,
+      "community_memberships_zero_based": [
+        2,
+        5
+      ],
+      "name": "L_superiortemporal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.11971987783908844,
+      "zero_based_index": 28
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.13738907873630524,
+        0.11660409718751907,
+        0.0,
+        0.17673571407794952,
+        0.0,
+        0.101914182305336,
+        0.0
+      ],
+      "atlas_id": 31,
+      "community_memberships_zero_based": [
+        1,
+        4
+      ],
+      "name": "L_supramarginal",
+      "strongest_qualifying_community_zero_based": 4,
+      "threshold": 0.13607022166252136,
+      "zero_based_index": 29
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.01608738861978054,
+        0.0,
+        0.0,
+        0.15573039650917053,
+        0.0025426624342799187,
+        0.0
+      ],
+      "atlas_id": 32,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_frontalpole",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.07268345355987549,
+      "zero_based_index": 30
+    },
+    {
+      "alpha_positive": [
+        0.02076238952577114,
+        0.0,
+        0.1407710760831833,
+        0.011894535273313522,
+        0.0,
+        0.06808429211378098,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 33,
+      "community_memberships_zero_based": [
+        2
+      ],
+      "name": "L_temporalpole",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.0772707462310791,
+      "zero_based_index": 31
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.11735883355140686,
+        0.08568978309631348,
+        0.0,
+        0.19763348996639252,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 34,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_transversetemporal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.1208900585770607,
+      "zero_based_index": 32
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.053879983723163605,
+        0.0,
+        0.01634804531931877,
+        0.13315123319625854,
+        0.0657874345779419,
+        0.05060063675045967
+      ],
+      "atlas_id": 35,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "L_insula",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.08328168094158173,
+      "zero_based_index": 33
+    },
+    {
+      "alpha_positive": [
+        0.021420059725642204,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.04329735040664673,
+        0.0,
+        0.019912270829081535
+      ],
+      "atlas_id": 36,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_bankssts",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.025722626596689224,
+      "zero_based_index": 34
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.015704510733485222,
+        0.0,
+        0.07528938353061676,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 37,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_caudalanteriorcingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.036072760820388794,
+      "zero_based_index": 35
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0439753420650959,
+        0.0,
+        0.015472431667149067,
+        0.06601713597774506,
+        0.0,
+        0.02048288844525814,
+        0.05334113538265228
+      ],
+      "atlas_id": 38,
+      "community_memberships_zero_based": [
+        4,
+        7
+      ],
+      "name": "R_caudalmiddlefrontal",
+      "strongest_qualifying_community_zero_based": 4,
+      "threshold": 0.04948703199625015,
+      "zero_based_index": 36
+    },
+    {
+      "alpha_positive": [
+        0.1258946806192398,
+        0.16161803901195526,
+        0.0,
+        0.07350873947143555,
+        0.17101427912712097,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 40,
+      "community_memberships_zero_based": [
+        1,
+        4
+      ],
+      "name": "R_cuneus",
+      "strongest_qualifying_community_zero_based": 4,
+      "threshold": 0.13829976320266724,
+      "zero_based_index": 37
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.00786014273762703,
+        0.0
+      ],
+      "atlas_id": 41,
+      "community_memberships_zero_based": [
+        6
+      ],
+      "name": "R_entorhinal",
+      "strongest_qualifying_community_zero_based": 6,
+      "threshold": 0.003582015633583069,
+      "zero_based_index": 38
+    },
+    {
+      "alpha_positive": [
+        0.10227178782224655,
+        0.16363029181957245,
+        0.0,
+        0.08710718154907227,
+        0.15409769117832184,
+        0.0,
+        0.0,
+        0.005581807345151901
+      ],
+      "atlas_id": 42,
+      "community_memberships_zero_based": [
+        1,
+        4
+      ],
+      "name": "R_fusiform",
+      "strongest_qualifying_community_zero_based": 1,
+      "threshold": 0.13092833757400513,
+      "zero_based_index": 39
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.12074647843837738,
+        0.0,
+        0.09336782246828079,
+        0.0,
+        0.0,
+        0.0,
+        0.13970230519771576
+      ],
+      "atlas_id": 43,
+      "community_memberships_zero_based": [
+        1,
+        7
+      ],
+      "name": "R_inferiorparietal",
+      "strongest_qualifying_community_zero_based": 7,
+      "threshold": 0.10249984264373779,
+      "zero_based_index": 40
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0017537547973915935,
+        0.0,
+        0.18823613226413727,
+        0.19040443003177643,
+        0.07209015637636185,
+        0.03482356294989586,
+        0.1114710196852684
+      ],
+      "atlas_id": 44,
+      "community_memberships_zero_based": [
+        3,
+        4
+      ],
+      "name": "R_inferiortemporal",
+      "strongest_qualifying_community_zero_based": 4,
+      "threshold": 0.15043522417545319,
+      "zero_based_index": 41
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.10574047267436981,
+        0.0,
+        0.0,
+        0.1032349094748497,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 45,
+      "community_memberships_zero_based": [
+        2,
+        5
+      ],
+      "name": "R_isthmuscingulate",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.07137075066566467,
+      "zero_based_index": 42
+    },
+    {
+      "alpha_positive": [
+        0.2939073443412781,
+        0.0,
+        0.0,
+        0.11686079204082489,
+        0.1918603777885437,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 46,
+      "community_memberships_zero_based": [
+        0,
+        4
+      ],
+      "name": "R_lateraloccipital",
+      "strongest_qualifying_community_zero_based": 0,
+      "threshold": 0.18224748969078064,
+      "zero_based_index": 43
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.04946885257959366,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 47,
+      "community_memberships_zero_based": [
+        3
+      ],
+      "name": "R_lateralorbitofrontal",
+      "strongest_qualifying_community_zero_based": 3,
+      "threshold": 0.02254389226436615,
+      "zero_based_index": 44
+    },
+    {
+      "alpha_positive": [
+        0.13062018156051636,
+        0.11004586517810822,
+        0.04569665342569351,
+        0.09795992821455002,
+        0.12678293883800507,
+        0.0,
+        0.12764446437358856,
+        0.10147546976804733
+      ],
+      "atlas_id": 48,
+      "community_memberships_zero_based": [],
+      "name": "R_lingual",
+      "strongest_qualifying_community_zero_based": null,
+      "threshold": 0.13587075471878052,
+      "zero_based_index": 45
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.07826892286539078,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 49,
+      "community_memberships_zero_based": [
+        2
+      ],
+      "name": "R_medialorbitofrontal",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.03566862642765045,
+      "zero_based_index": 46
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.06993155926465988,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 50,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_middletemporal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.031869132071733475,
+      "zero_based_index": 47
+    },
+    {
+      "alpha_positive": [
+        0.11328670382499695,
+        0.0,
+        0.0,
+        0.09671799093484879,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 51,
+      "community_memberships_zero_based": [
+        0,
+        3
+      ],
+      "name": "R_parahippocampal",
+      "strongest_qualifying_community_zero_based": 0,
+      "threshold": 0.07190622389316559,
+      "zero_based_index": 48
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.11988983303308487,
+        0.06476669758558273,
+        0.06375297904014587
+      ],
+      "atlas_id": 52,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_paracentral",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.07423586398363113,
+      "zero_based_index": 49
+    },
+    {
+      "alpha_positive": [
+        0.05740845203399658,
+        0.04535134509205818,
+        0.0,
+        0.0,
+        0.09724028408527374,
+        0.060820072889328,
+        0.0,
+        0.044764626771211624
+      ],
+      "atlas_id": 53,
+      "community_memberships_zero_based": [
+        4
+      ],
+      "name": "R_parsopercularis",
+      "strongest_qualifying_community_zero_based": 4,
+      "threshold": 0.07143652439117432,
+      "zero_based_index": 50
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.07009599357843399,
+        0.0,
+        0.0,
+        0.1429653763771057,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 54,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_parsorbitalis",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.07622873783111572,
+      "zero_based_index": 51
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.1001003086566925,
+        0.0,
+        0.0,
+        0.10545536875724792,
+        0.005140780936926603,
+        0.01020764373242855
+      ],
+      "atlas_id": 55,
+      "community_memberships_zero_based": [
+        2,
+        5
+      ],
+      "name": "R_parstriangularis",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.0711614117026329,
+      "zero_based_index": 52
+    },
+    {
+      "alpha_positive": [
+        0.2171625941991806,
+        0.2573954463005066,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1137925460934639
+      ],
+      "atlas_id": 56,
+      "community_memberships_zero_based": [
+        0,
+        1
+      ],
+      "name": "R_pericalcarine",
+      "strongest_qualifying_community_zero_based": 1,
+      "threshold": 0.17545750737190247,
+      "zero_based_index": 53
+    },
+    {
+      "alpha_positive": [
+        0.020783603191375732,
+        0.15900671482086182,
+        0.0,
+        0.16887034475803375,
+        0.09852277487516403,
+        0.0,
+        0.0,
+        0.12256639450788498
+      ],
+      "atlas_id": 57,
+      "community_memberships_zero_based": [
+        1,
+        3
+      ],
+      "name": "R_postcentral",
+      "strongest_qualifying_community_zero_based": 3,
+      "threshold": 0.140486940741539,
+      "zero_based_index": 54
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0792078748345375,
+        0.0,
+        0.09461234509944916,
+        0.0,
+        0.07353024929761887
+      ],
+      "atlas_id": 58,
+      "community_memberships_zero_based": [
+        3,
+        5,
+        7
+      ],
+      "name": "R_posteriorcingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.0712057501077652,
+      "zero_based_index": 55
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.17109669744968414,
+        0.02450220286846161,
+        0.0,
+        0.0,
+        0.0,
+        0.16839270293712616,
+        0.2056565284729004
+      ],
+      "atlas_id": 59,
+      "community_memberships_zero_based": [
+        1,
+        6,
+        7
+      ],
+      "name": "R_precentral",
+      "strongest_qualifying_community_zero_based": 7,
+      "threshold": 0.1577816903591156,
+      "zero_based_index": 56
+    },
+    {
+      "alpha_positive": [
+        0.11116025596857071,
+        0.0,
+        0.15634196996688843,
+        0.0,
+        0.0,
+        0.0391518771648407,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 60,
+      "community_memberships_zero_based": [
+        0,
+        2
+      ],
+      "name": "R_precuneus",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.09597039222717285,
+      "zero_based_index": 57
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.15983463823795319,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 61,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_rostralanteriorcingulate",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.07283966988325119,
+      "zero_based_index": 58
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.04457087069749832,
+        0.0,
+        0.03904055804014206,
+        0.08059297502040863,
+        0.0
+      ],
+      "atlas_id": 62,
+      "community_memberships_zero_based": [
+        6
+      ],
+      "name": "R_rostralmiddlefrontal",
+      "strongest_qualifying_community_zero_based": 6,
+      "threshold": 0.04932565987110138,
+      "zero_based_index": 59
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.021742919459939003,
+        0.017786039039492607,
+        0.0,
+        0.17182035744190216,
+        0.0,
+        0.09700795263051987
+      ],
+      "atlas_id": 63,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_superiorfrontal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.09753231704235077,
+      "zero_based_index": 60
+    },
+    {
+      "alpha_positive": [
+        0.1850644201040268,
+        0.1779632866382599,
+        0.0,
+        0.14688841998577118,
+        0.19133396446704865,
+        0.0,
+        0.1278689205646515,
+        0.17471405863761902
+      ],
+      "atlas_id": 64,
+      "community_memberships_zero_based": [],
+      "name": "R_superiorparietal",
+      "strongest_qualifying_community_zero_based": null,
+      "threshold": 0.20049580931663513,
+      "zero_based_index": 61
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.11947332322597504,
+        0.04031683877110481,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 65,
+      "community_memberships_zero_based": [
+        2
+      ],
+      "name": "R_superiortemporal",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.05982930585741997,
+      "zero_based_index": 62
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.16603009402751923,
+        0.0,
+        0.0,
+        0.12593084573745728,
+        0.0,
+        0.13761582970619202,
+        0.1502961367368698
+      ],
+      "atlas_id": 66,
+      "community_memberships_zero_based": [
+        1,
+        7
+      ],
+      "name": "R_supramarginal",
+      "strongest_qualifying_community_zero_based": 1,
+      "threshold": 0.14573031663894653,
+      "zero_based_index": 63
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.17864762246608734,
+        0.0,
+        0.00324810273014009
+      ],
+      "atlas_id": 67,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_frontalpole",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.08167524635791779,
+      "zero_based_index": 64
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0964725911617279,
+        0.0,
+        0.0,
+        0.06754308193922043,
+        0.0,
+        0.02584429271519184
+      ],
+      "atlas_id": 68,
+      "community_memberships_zero_based": [
+        2,
+        5
+      ],
+      "name": "R_temporalpole",
+      "strongest_qualifying_community_zero_based": 2,
+      "threshold": 0.05914277583360672,
+      "zero_based_index": 65
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.03211755305528641,
+        0.0,
+        0.020003387704491615,
+        0.1533147394657135,
+        0.0,
+        0.0
+      ],
+      "atlas_id": 69,
+      "community_memberships_zero_based": [
+        5
+      ],
+      "name": "R_transversetemporal",
+      "strongest_qualifying_community_zero_based": 5,
+      "threshold": 0.0752546563744545,
+      "zero_based_index": 66
+    },
+    {
+      "alpha_positive": [
+        0.0,
+        0.0,
+        0.0,
+        0.024026798084378242,
+        0.0,
+        0.062473371624946594,
+        0.0,
+        0.08158841729164124
+      ],
+      "atlas_id": 70,
+      "community_memberships_zero_based": [
+        5,
+        7
+      ],
+      "name": "R_insula",
+      "strongest_qualifying_community_zero_based": 7,
+      "threshold": 0.05184359848499298,
+      "zero_based_index": 67
+    }
+  ],
+  "roi_labels": [
+    {
+      "atlas_id": 1,
+      "name": "L_bankssts",
+      "zero_based_index": 0
+    },
+    {
+      "atlas_id": 2,
+      "name": "L_caudalanteriorcingulate",
+      "zero_based_index": 1
+    },
+    {
+      "atlas_id": 3,
+      "name": "L_caudalmiddlefrontal",
+      "zero_based_index": 2
+    },
+    {
+      "atlas_id": 5,
+      "name": "L_cuneus",
+      "zero_based_index": 3
+    },
+    {
+      "atlas_id": 6,
+      "name": "L_entorhinal",
+      "zero_based_index": 4
+    },
+    {
+      "atlas_id": 7,
+      "name": "L_fusiform",
+      "zero_based_index": 5
+    },
+    {
+      "atlas_id": 8,
+      "name": "L_inferiorparietal",
+      "zero_based_index": 6
+    },
+    {
+      "atlas_id": 9,
+      "name": "L_inferiortemporal",
+      "zero_based_index": 7
+    },
+    {
+      "atlas_id": 10,
+      "name": "L_isthmuscingulate",
+      "zero_based_index": 8
+    },
+    {
+      "atlas_id": 11,
+      "name": "L_lateraloccipital",
+      "zero_based_index": 9
+    },
+    {
+      "atlas_id": 12,
+      "name": "L_lateralorbitofrontal",
+      "zero_based_index": 10
+    },
+    {
+      "atlas_id": 13,
+      "name": "L_lingual",
+      "zero_based_index": 11
+    },
+    {
+      "atlas_id": 14,
+      "name": "L_medialorbitofrontal",
+      "zero_based_index": 12
+    },
+    {
+      "atlas_id": 15,
+      "name": "L_middletemporal",
+      "zero_based_index": 13
+    },
+    {
+      "atlas_id": 16,
+      "name": "L_parahippocampal",
+      "zero_based_index": 14
+    },
+    {
+      "atlas_id": 17,
+      "name": "L_paracentral",
+      "zero_based_index": 15
+    },
+    {
+      "atlas_id": 18,
+      "name": "L_parsopercularis",
+      "zero_based_index": 16
+    },
+    {
+      "atlas_id": 19,
+      "name": "L_parsorbitalis",
+      "zero_based_index": 17
+    },
+    {
+      "atlas_id": 20,
+      "name": "L_parstriangularis",
+      "zero_based_index": 18
+    },
+    {
+      "atlas_id": 21,
+      "name": "L_pericalcarine",
+      "zero_based_index": 19
+    },
+    {
+      "atlas_id": 22,
+      "name": "L_postcentral",
+      "zero_based_index": 20
+    },
+    {
+      "atlas_id": 23,
+      "name": "L_posteriorcingulate",
+      "zero_based_index": 21
+    },
+    {
+      "atlas_id": 24,
+      "name": "L_precentral",
+      "zero_based_index": 22
+    },
+    {
+      "atlas_id": 25,
+      "name": "L_precuneus",
+      "zero_based_index": 23
+    },
+    {
+      "atlas_id": 26,
+      "name": "L_rostralanteriorcingulate",
+      "zero_based_index": 24
+    },
+    {
+      "atlas_id": 27,
+      "name": "L_rostralmiddlefrontal",
+      "zero_based_index": 25
+    },
+    {
+      "atlas_id": 28,
+      "name": "L_superiorfrontal",
+      "zero_based_index": 26
+    },
+    {
+      "atlas_id": 29,
+      "name": "L_superiorparietal",
+      "zero_based_index": 27
+    },
+    {
+      "atlas_id": 30,
+      "name": "L_superiortemporal",
+      "zero_based_index": 28
+    },
+    {
+      "atlas_id": 31,
+      "name": "L_supramarginal",
+      "zero_based_index": 29
+    },
+    {
+      "atlas_id": 32,
+      "name": "L_frontalpole",
+      "zero_based_index": 30
+    },
+    {
+      "atlas_id": 33,
+      "name": "L_temporalpole",
+      "zero_based_index": 31
+    },
+    {
+      "atlas_id": 34,
+      "name": "L_transversetemporal",
+      "zero_based_index": 32
+    },
+    {
+      "atlas_id": 35,
+      "name": "L_insula",
+      "zero_based_index": 33
+    },
+    {
+      "atlas_id": 36,
+      "name": "R_bankssts",
+      "zero_based_index": 34
+    },
+    {
+      "atlas_id": 37,
+      "name": "R_caudalanteriorcingulate",
+      "zero_based_index": 35
+    },
+    {
+      "atlas_id": 38,
+      "name": "R_caudalmiddlefrontal",
+      "zero_based_index": 36
+    },
+    {
+      "atlas_id": 40,
+      "name": "R_cuneus",
+      "zero_based_index": 37
+    },
+    {
+      "atlas_id": 41,
+      "name": "R_entorhinal",
+      "zero_based_index": 38
+    },
+    {
+      "atlas_id": 42,
+      "name": "R_fusiform",
+      "zero_based_index": 39
+    },
+    {
+      "atlas_id": 43,
+      "name": "R_inferiorparietal",
+      "zero_based_index": 40
+    },
+    {
+      "atlas_id": 44,
+      "name": "R_inferiortemporal",
+      "zero_based_index": 41
+    },
+    {
+      "atlas_id": 45,
+      "name": "R_isthmuscingulate",
+      "zero_based_index": 42
+    },
+    {
+      "atlas_id": 46,
+      "name": "R_lateraloccipital",
+      "zero_based_index": 43
+    },
+    {
+      "atlas_id": 47,
+      "name": "R_lateralorbitofrontal",
+      "zero_based_index": 44
+    },
+    {
+      "atlas_id": 48,
+      "name": "R_lingual",
+      "zero_based_index": 45
+    },
+    {
+      "atlas_id": 49,
+      "name": "R_medialorbitofrontal",
+      "zero_based_index": 46
+    },
+    {
+      "atlas_id": 50,
+      "name": "R_middletemporal",
+      "zero_based_index": 47
+    },
+    {
+      "atlas_id": 51,
+      "name": "R_parahippocampal",
+      "zero_based_index": 48
+    },
+    {
+      "atlas_id": 52,
+      "name": "R_paracentral",
+      "zero_based_index": 49
+    },
+    {
+      "atlas_id": 53,
+      "name": "R_parsopercularis",
+      "zero_based_index": 50
+    },
+    {
+      "atlas_id": 54,
+      "name": "R_parsorbitalis",
+      "zero_based_index": 51
+    },
+    {
+      "atlas_id": 55,
+      "name": "R_parstriangularis",
+      "zero_based_index": 52
+    },
+    {
+      "atlas_id": 56,
+      "name": "R_pericalcarine",
+      "zero_based_index": 53
+    },
+    {
+      "atlas_id": 57,
+      "name": "R_postcentral",
+      "zero_based_index": 54
+    },
+    {
+      "atlas_id": 58,
+      "name": "R_posteriorcingulate",
+      "zero_based_index": 55
+    },
+    {
+      "atlas_id": 59,
+      "name": "R_precentral",
+      "zero_based_index": 56
+    },
+    {
+      "atlas_id": 60,
+      "name": "R_precuneus",
+      "zero_based_index": 57
+    },
+    {
+      "atlas_id": 61,
+      "name": "R_rostralanteriorcingulate",
+      "zero_based_index": 58
+    },
+    {
+      "atlas_id": 62,
+      "name": "R_rostralmiddlefrontal",
+      "zero_based_index": 59
+    },
+    {
+      "atlas_id": 63,
+      "name": "R_superiorfrontal",
+      "zero_based_index": 60
+    },
+    {
+      "atlas_id": 64,
+      "name": "R_superiorparietal",
+      "zero_based_index": 61
+    },
+    {
+      "atlas_id": 65,
+      "name": "R_superiortemporal",
+      "zero_based_index": 62
+    },
+    {
+      "atlas_id": 66,
+      "name": "R_supramarginal",
+      "zero_based_index": 63
+    },
+    {
+      "atlas_id": 67,
+      "name": "R_frontalpole",
+      "zero_based_index": 64
+    },
+    {
+      "atlas_id": 68,
+      "name": "R_temporalpole",
+      "zero_based_index": 65
+    },
+    {
+      "atlas_id": 69,
+      "name": "R_transversetemporal",
+      "zero_based_index": 66
+    },
+    {
+      "atlas_id": 70,
+      "name": "R_insula",
+      "zero_based_index": 67
+    }
+  ]
+}

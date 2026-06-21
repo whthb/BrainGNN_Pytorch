@@ -1,0 +1,188 @@
+\chapter{论文复现}
+
+\section{本地配置}
+
+复现实验使用当前项目代码，单次训练入口为 \pathcode{07-main_hcp_subjectwise.py}，统一五折运行入口为 \pathcode{15-run_hcp_subjectwise_new_baseline.py}。实验数据包含 343 名被试、1235 个 LR/RL run-level 脑图和 7 个任务类别，并依据 FreeSurfer aparc / Desikan-Killiany 皮层分区提取 68 个 cortical ROI。
+
+实验运行在单卡 NVIDIA GeForce RTX 5070 Ti 上，软件环境为 conda 环境 \code{braingnn\_rtx5070ti}，主要依赖包括 Python 3.11.15、PyTorch 2.7.1+cu128、PyTorch Geometric 2.7.0、NumPy 1.26.4、scikit-learn 1.9.0 和 pandas 3.0.3。
+
+\begin{table}[H]
+  \centering
+  \caption{本地复现实验配置}
+  \begin{tabularx}{\linewidth}{lX}
+    \toprule
+    项目 & 设置 \\
+    \midrule
+    数据集 & \code{data/HCP900\_subjectwise\_qc\_allsub\_7task\_lrrl} \\
+    划分方式 & subject-wise deterministic five-fold split \\
+    节点特征 & Pearson correlation rows \\
+    边 & positive top-10\% partial-correlation edges \\
+    优化器 & Adam, learning rate 0.001, weight decay 0.005 \\
+    学习率衰减 & 每 20 epoch 衰减为原来的 0.5 \\
+    训练轮数与 batch size & 100 epochs, batch size 64 \\
+    模型选择 & validation balanced accuracy 最优 checkpoint \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{主实验结果与 Baseline 比较}
+
+\subsection{实验设置}
+
+主实验采用 BrainGNN 模型，并在相同 subject-wise split 上与 majority class 和 same-input RBF-SVM 进行比较。
+
+\subsection{实验结果}
+
+\begin{table}[H]
+  \centering
+  \caption{本地主实验与 baseline 结果}
+  \begin{tabular}{lcc}
+    \toprule
+    方法 & Balanced accuracy & Macro F1 \\
+    \midrule
+    Majority class & $0.1429 \pm 0.0000$ & $0.0518 \pm 0.0037$ \\
+    Same-input RBF-SVM & $0.7942 \pm 0.0403$ & $0.8238 \pm 0.0344$ \\
+    BrainGNN & $0.8449 \pm 0.0205$ & $0.8430 \pm 0.0234$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+BrainGNN 相比 same-input RBF-SVM 的 mean balanced accuracy 提升为 $+0.0507$，说明 BrainGNN 能比使用相同输入的传统 baseline 获得更高的平均 balanced accuracy。
+
+\section{超参数扫描}
+
+\subsection{实验设置}
+
+超参数扫描围绕 TPK loss 权重 $\lambda_1$ 和 GLC loss 权重 $\lambda_2$ 展开，评估不同正则强度对分类性能的影响。
+
+\subsection{实验结果}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.72\linewidth]{hparam_lambda1_0_lambda2_sweep.pdf}
+  \caption{固定 $\lambda_1=0$ 时改变 $\lambda_2$ 的超参数扫描结果。柱高表示五折 balanced accuracy 均值，误差线表示标准差；$\lambda_2=0.1$ 取得最高结果。}
+  \label{fig:hparam-lambda1-0}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.72\linewidth]{hparam_lambda1_01_lambda2_sweep.pdf}
+  \caption{固定 $\lambda_1=0.1$ 时改变 $\lambda_2$ 的超参数扫描结果。$\lambda_2=0.1$ 仍然优于其它 GLC 权重，说明适度 GLC 正则对分类性能更有利。}
+  \label{fig:hparam-lambda1-01}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.72\linewidth]{hparam_lambda2_01_lambda1_sweep.pdf}
+  \caption{固定 $\lambda_2=0.1$ 时改变 $\lambda_1$ 的超参数扫描结果。随着 TPK 权重从 0 增大到 0.5，balanced accuracy 整体没有进一步提升。}
+  \label{fig:hparam-lambda2-01}
+\end{figure}
+
+本地最佳设置为 $\lambda_1=0,\lambda_2=0.1$，balanced accuracy 为 $0.8601 \pm 0.0204$。结果表明适度 GLC 对本地 HCP 任务最有帮助，而 TPK 在本地设置下没有带来稳定增益。
+
+\section{消融实验}
+
+\subsection{卷积层消融}
+
+\begin{table}[H]
+  \centering
+  \caption{Ra-GConv 与 shared-kernel vanilla-GConv 对比}
+  \begin{tabular}{lc}
+    \toprule
+    卷积设置 & Balanced accuracy \\
+    \midrule
+    Ra-GConv & $0.8449 \pm 0.0205$ \\
+    Shared-kernel vanilla-GConv & $0.8226 \pm 0.0555$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Ra-GConv 相比 vanilla-GConv 的 mean balanced accuracy 提升为 $+0.0224$，结果支持 ROI-aware convolution 的设计动机。
+
+\subsection{损失函数消融}
+
+\begin{table}[H]
+  \centering
+  \caption{损失函数消融实验}
+  \begin{tabular}{lcc}
+    \toprule
+    损失设置 & Balanced accuracy & Macro F1 \\
+    \midrule
+    CE only & $0.8129 \pm 0.0213$ & $0.8087 \pm 0.0321$ \\
+    CE + unit & $0.8183 \pm 0.0158$ & $0.8176 \pm 0.0191$ \\
+    CE + unit + TPK & $0.8041 \pm 0.0231$ & $0.8031 \pm 0.0265$ \\
+    CE + unit + GLC & $\mathbf{0.8601 \pm 0.0204}$ & $\mathbf{0.8550 \pm 0.0251}$ \\
+    Full loss & $0.8449 \pm 0.0205$ & $0.8430 \pm 0.0234$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+消融结果显示，GLC 是本地复现中最稳定有效的正则项；TPK 单独加入后反而降低 balanced accuracy。
+
+\section{可解释性分析}
+
+\subsection{实验设置}
+
+可解释性分析使用第一层 pooling score 衡量 ROI saliency，并选取得分较高的 ROI 进行任务级和样本级分析。
+
+\subsection{GLC 与 ROI 选择稳定性}
+
+以下 Top-17 ROI Jaccard 衡量不同样本高 saliency ROI 集合的重叠程度，Community stability 衡量 ROI community 归属的一致性，Score gap 衡量被选中 ROI 与未选中 ROI 的 pooling score 区分度。
+
+\begin{table}[H]
+  \centering
+  \caption{GLC 权重与 ROI 选择稳定性}
+  \small
+  \begin{tabularx}{\linewidth}{c>{\centering\arraybackslash}Xcc}
+    \toprule
+    GLC weight & Top-17 ROI Jaccard & Community stability & Score gap \\
+    \midrule
+    0 & 0.4826 & 0.8614 & 0.3548 \\
+    0.1 & 0.8172 & 0.9081 & 0.3429 \\
+    0.5 & 0.8832 & 0.9626 & 0.3077 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+GLC 权重增大时，同一任务内部的 top ROI Jaccard 明显升高，说明 GLC 会促使同类样本选择更一致的 ROI，更偏向 group-level biomarker。
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.92\linewidth]{figure5_glc_individual_group.pdf}
+  \caption{不同 GLC 权重下同一任务样本的 ROI 选择一致性。蓝色标记表示模型选出的 salient ROI；Jaccard 越高表示不同样本之间选择的 ROI 越一致。该结果表明 GLC 正则能够增强同类样本的 ROI 选择稳定性，使模型解释从个体差异更强的模式转向更一致的 group-level biomarker。}
+  \label{fig:glc-jaccard}
+\end{figure}
+
+\subsection{任务相关 Salient ROI}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.92\linewidth]{figure7_task_salient_rois.pdf}
+  \caption{七类 HCP 任务的平均第一层 pooling saliency。该图用于观察不同认知任务是否诱导出不同的 salient ROI 模式。该结果表明 BrainGNN 的 pooling score 不只是随机选择节点，而是能够为不同任务形成可区分的 ROI 重要性分布。}
+  \label{fig:task-salient-rois}
+\end{figure}
+
+\subsection{任务间 ROI 相似性}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.76\linewidth]{figure8_proxy_task_roi_similarity.pdf}
+  \caption{任务间 top ROI Jaccard 相似性。颜色越深表示两个任务选出的 salient ROI 重叠程度越高。该结果表明模型提取的 salient ROI 既包含不同任务共享的脑区模式，也保留了任务之间的差异性，可用于分析任务表征之间的相似关系。}
+  \label{fig:task-roi-similarity}
+\end{figure}
+
+\subsection{Ra-GConv Community}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.78\linewidth]{figure9_community_assignments.pdf}
+  \caption{第一层 Ra-GConv 中每个 ROI 最强且超过阈值的 community 归属。颜色表示 community 编号，灰色表示没有明显归属。该结果表明 Ra-GConv 学到的滤波器并非对所有 ROI 使用同一组权重，而是会将不同 ROI 分配到不同 community basis，从而支持 ROI-aware convolution 的结构设计。}
+  \label{fig:community-assignment}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \safeincludegraphics[width=0.86\linewidth]{figure10_alpha_positive_heatmap.pdf}
+  \caption{非负 community membership 矩阵 $\alpha^+$。颜色越深表示 ROI 对对应 community basis 的贡献越强。该结果表明 ROI 与 community basis 之间存在稀疏且强弱不同的对应关系，使模型能够通过可解释的 membership 权重刻画脑区功能分组。}
+  \label{fig:alpha-heatmap}
+\end{figure}

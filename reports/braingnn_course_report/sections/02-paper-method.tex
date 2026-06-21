@@ -1,0 +1,281 @@
+\chapter{论文实验方法}
+
+\section{数据集与脑图构建}
+
+\subsection{脑图表示}
+
+BrainGNN 将每个被试的一次 fMRI 数据表示为加权无向脑图。首先，根据脑区模板将大脑划分为 $N$ 个 ROI，一个脑图可记为 $G=(V,E)$，其中 $V=\{v_1,\dots,v_N\}$ 表示 ROI 节点集合，$E=[e_{ij}]\in\mathbb{R}^{N\times N}$ 表示 ROI 间的连接权重矩阵。每个节点 $v_i$ 对应一个节点特征向量 $h_i$，所有节点特征组成矩阵 $H=[h_1,\dots,h_N]$。
+
+在数据处理过程中，首先从 fMRI 数据中提取每个 ROI 的 BOLD 信号，并对 ROI 内体素信号取平均，得到该脑区的平均时间序列 $x_i(t)$。节点特征由 Pearson correlation 构造。对任意 ROI $i$ 和 ROI $j$，计算二者 BOLD 平均时间序列的 Pearson 相关系数：
+
+\begin{equation}
+  \rho_{ij}
+  =
+  \frac{\operatorname{cov}(x_i,x_j)}
+  {\sigma_i\sigma_j}.
+\end{equation}
+
+对节点 $v_i$，其初始特征取为 $h_i^{(0)}=(\rho_{i1},\rho_{i2},\dots,\rho_{iN})$，用于刻画该 ROI 与全脑其他 ROI 的整体功能连接模式。
+
+边权重由 partial correlation 构造。若协方差矩阵为 $\Sigma$，精度矩阵为 $\Omega=\Sigma^{-1}$，则 ROI $i$ 与 ROI $j$ 的 partial correlation 可写为：
+
+\begin{equation}
+  p_{ij}
+  =
+  -\frac{\Omega_{ij}}
+  {\sqrt{\Omega_{ii}\Omega_{jj}}}.
+\end{equation}
+
+Partial correlation 在控制其他 ROI 影响后衡量两个 ROI 之间的条件相关关系，因此更接近直接功能连接。原论文采用 top positive partial correlations 得到稀疏图，用于减少噪声连接并降低图计算复杂度。
+
+\subsection{Biopoint 数据集}
+
+Biopoint 数据集用于 ASD 儿童与健康对照组（healthy control, HC）的二分类任务。被试执行 biological motion 相关的 task-fMRI 实验，原始 fMRI 数据经过预处理并剔除头动过大的被试，最终包含 75 名 ASD 儿童和 43 名年龄、IQ 匹配的 HC。
+
+该数据集使用 Desikan-Killiany atlas 将大脑划分为 84 个 ROI。为了进行数据增强，原论文在每个 ROI 内随机采样部分体素，计算平均 BOLD 时间序列，并重复该过程多次，从而将每个 fMRI 样本扩增为多个脑图。由于同一被试可以生成多个增强样本，评价时需要采用 subject-wise 方式，避免同一被试的样本同时出现在训练集和测试集。
+
+\subsection{HCP 数据集}
+
+HCP 数据集用于 task-fMRI 认知状态分类，分类目标为七类任务状态：gambling、language、motor、relational、social、working memory 和 emotion。原论文筛选完成完整扫描且头动较小的被试，以减弱头动对功能连接估计的影响。
+
+在原论文设置中，HCP fMRI 数据使用 whole-brain functional atlas 划分为 268 个功能节点。每个被试在每种任务条件下构造一个加权无向脑图，用于训练七分类模型。需要注意的是，本报告第三章中的本地复现实验使用的是本地 HCP 子集和 68 ROI atlas，因此其数据规模和 ROI 数量与原论文设置不同。
+
+\section{BrainGNN 模型}
+
+\subsection{整体框架}
+
+BrainGNN 是一种面向 fMRI 脑图分析的图神经网络模型。模型以加权脑图为输入，在完成分类任务的同时学习具有可解释性的脑区表示。整体流程可以概括为：
+
+\begin{equation}
+  \begin{aligned}
+    \text{Brain Graph}
+    &\rightarrow
+    \text{Ra-GConv}
+    \rightarrow
+    \text{R-pool}
+    \rightarrow
+    \text{Ra-GConv}
+    \rightarrow
+    \text{R-pool} \\
+    &\rightarrow
+    \text{Readout}
+    \rightarrow
+    \text{MLP}
+    \rightarrow
+    \text{Class}.
+  \end{aligned}
+\end{equation}
+
+其中，Ra-GConv 用于学习 ROI-aware 节点表示，R-pool 用于保留任务相关的重要 ROI，readout layer 将节点表示汇总为图级表示，并最终通过 MLP classifier 得到分类结果。
+
+\subsection{ROI-aware Graph Convolution}
+
+普通 GNN 通常对所有节点共享同一组卷积参数，隐含假设图中节点具有相同性质。然而在脑图中，不同 ROI 具有固定空间位置和不同功能含义，因此将所有脑区视为同质节点并不合理。BrainGNN 针对这一问题提出 ROI-aware graph convolution layer（Ra-GConv），使卷积核依赖于具体 ROI。
+
+在第 $l$ 层中，设节点 $v_i$ 的特征为 $h_i^{(l)}\in\mathbb{R}^{d^{(l)}}$，邻域为 $\mathcal{N}^{(l)}(i)$，边权重为 $e_{ij}^{(l)}$。Ra-GConv 的节点更新形式为：
+
+\begin{equation}
+  \tilde{h}_i^{(l+1)}
+  =
+  \operatorname{ReLU}
+  \left(
+  W_i^{(l)}h_i^{(l)}
+  +
+  \sum_{j\in \mathcal{N}^{(l)}(i)}
+  e_{ij}^{(l)}W_j^{(l)}h_j^{(l)}
+  \right),
+\end{equation}
+
+其中 $W_i^{(l)}$ 是 ROI $i$ 对应的节点特异卷积核。与共享同一个 $W^{(l)}$ 的普通 GNN 不同，Ra-GConv 为不同 ROI 分配不同的变换参数，从而建模脑区异质性。
+
+为了避免为每个 ROI 完全独立学习卷积核带来的参数量过大问题，BrainGNN 将 $W_i^{(l)}$ 表示为 community basis 的线性组合：
+
+\begin{equation}
+  \operatorname{vec}(W_i^{(l)})
+  =
+  \sum_{u=1}^{K^{(l)}}
+  (\alpha_{iu}^{(l)})^+\beta_u^{(l)}
+  +
+  b^{(l)}.
+\end{equation}
+
+其中，$\beta_u^{(l)}$ 可以理解为第 $u$ 个 community basis，$(\alpha_{iu}^{(l)})^+$ 可以理解为 ROI $i$ 对该 community 的非负归属分数。因此，Ra-GConv 不仅生成 ROI-specific embedding kernel，也从参数层面学习 ROI 的 soft community assignment。
+
+\subsection{ROI-topK Pooling}
+
+由于 fMRI 脑图节点数较多，且部分 ROI 可能与分类任务关系较弱，BrainGNN 使用 ROI-topK pooling（R-pool）对脑图进行降维。R-pool 的目标是在保留判别性脑区的同时，逐层减少无关或噪声 ROI 对图级表示的影响。
+
+具体而言，在第 $l$ 个 R-pool 层中，$\tilde{H}^{(l+1)}$ 表示 Ra-GConv 输出的节点表示矩阵，$w^{(l)}$ 为可学习投影向量。模型先通过投影计算每个节点的重要性得分：
+
+\begin{equation}
+  s^{(l)}
+  =
+  \frac{\tilde{H}^{(l+1)}w^{(l)}}{\|w^{(l)}\|_2},
+\end{equation}
+
+并进一步将得分标准化为 $\tilde{s}^{(l)}$。随后，模型使用 $\operatorname{topk}(\tilde{s}^{(l)},k)$ 选出得分最高的 $k$ 个节点索引，记为 $\mathbf{i}$。池化后的节点特征由原节点表示和 score gate 共同决定：
+
+\begin{equation}
+  H^{(l+1)}
+  =
+  \left(
+    \tilde{H}^{(l+1)}
+    \odot
+    \operatorname{sigmoid}(\tilde{s}^{(l)})
+  \right)_{\mathbf{i},:},
+\end{equation}
+
+其中 $\odot$ 表示按节点得分对节点表示进行逐元素加权。池化后的邻接矩阵则取被选中节点对应的子矩阵：
+
+\begin{equation}
+  E^{(l+1)}
+  =
+  E^{(l)}_{\mathbf{i},\mathbf{i}}.
+\end{equation}
+
+因此，R-pool 不只是简单删除节点，而是先根据可学习 score 对 ROI 表示进行门控，再保留 top-$k$ ROI 形成新的子图。
+
+R-pool 也是 BrainGNN 可解释性的主要来源。由于被保留或赋予较高 score 的 ROI 被认为对当前预测任务更重要，因此这些 ROI 可以作为候选 salient ROI 或 biomarker 进行后续分析。
+
+\subsection{Readout Layer}
+
+Readout layer 用于将节点级表示汇总为图级表示。经过第 $l$ 个 conv-pool block 后，模型得到池化后的图 $(V^{(l)},E^{(l)})$ 及其节点表示矩阵 $H^{(l)}=[h_i^{(l)}:i=1,\dots,N^{(l)}]$。
+
+BrainGNN 同时使用 mean pooling 和 max pooling 汇总节点信息，并将二者拼接为第 $l$ 个 block 的图级表示：
+
+\begin{equation}
+  z^{(l)}
+  =
+  \operatorname{mean}(H^{(l)})
+  \|
+  \operatorname{max}(H^{(l)}).
+\end{equation}
+
+其中，$\operatorname{mean}$ 和 $\operatorname{max}$ 均按特征维度逐元素计算，$\|$ 表示向量拼接。mean pooling 描述节点表示的整体平均模式，max pooling 则保留最强响应的节点特征，两者结合可以同时利用全局分布和局部显著信息。
+
+为了保留不同层次的图结构信息，BrainGNN 会在每个 GNN block 后添加 readout layer，并将所有 block 得到的图级表示进一步拼接：
+
+\begin{equation}
+  z
+  =
+  z^{(1)}
+  \|
+  z^{(2)}
+  \|
+  \cdots
+  \|
+  z^{(L)}.
+\end{equation}
+
+最终，$z$ 被输入 MLP classifier，用于得到图分类预测结果。
+
+\section{损失函数设计}
+
+BrainGNN 的损失函数由分类损失和若干正则项组成。分类损失用于完成图分类任务，正则项主要用于约束 R-pool 的节点选择过程，从而提升 ROI 选择的稳定性和可解释性。
+
+\subsection{Classification Loss}
+
+分类任务采用交叉熵损失。设训练样本数为 $M$，类别数为 $C$，$y_{m,c}$ 表示第 $m$ 个样本在第 $c$ 类上的真实标签，$\hat{y}_{m,c}$ 表示模型预测概率，则分类损失为：
+
+\begin{equation}
+  L_{ce}
+  =
+  -\frac{1}{M}
+  \sum_{m=1}^{M}
+  \sum_{c=1}^{C}
+  y_{m,c}\log(\hat{y}_{m,c}).
+\end{equation}
+
+\subsection{Unit Loss}
+
+在 R-pool 中，节点表示会被投影到可学习向量 $w^{(l)}$ 上得到 pooling score。由于 $w^{(l)}$ 的尺度变化不改变 score 的相对排序，原论文引入 Unit loss 约束投影向量的范数：
+
+\begin{equation}
+  L_{unit}^{(l)}
+  =
+  \left(\|w^{(l)}\|_2-1\right)^2.
+\end{equation}
+
+该项使 $w^{(l)}$ 接近单位向量，缓解 pooling score 的尺度不可识别问题。
+
+\subsection{Group-level Consistency Loss}
+
+Group-level consistency（GLC）loss 用于鼓励同一类别样本具有相似的 ROI 选择模式。由于第一层 R-pool 的 score 仍与原始 ROI 一一对应，GLC loss 主要作用于第一层 pooling score。设第 $c$ 类样本集合为 $I_c$，$S_c^{(1)}$ 表示该类别样本的第一层标准化 pooling score 矩阵，则 GLC loss 可写为：
+
+\begin{equation}
+  L_{GLC}
+  =
+  \sum_{c=1}^{C}
+  \sum_{m,n\in I_c}
+  \|\tilde{s}_m^{(1)}-\tilde{s}_n^{(1)}\|^2.
+\end{equation}
+
+该项可以理解为约束同类样本的 ROI score 更相似，从而使模型解释更偏向 group-level biomarker。
+
+\subsection{TopK Pooling Loss}
+
+TopK pooling（TPK）loss 用于增强被选中节点与未选中节点之间的区分度。其目标是使 top-$k$ ROI 的得分更接近 1，而未被保留 ROI 的得分更接近 0，从而使 R-pool 的节点选择更加明确。
+
+\subsection{Total Loss}
+
+最终损失函数为：
+
+\begin{equation}
+  L_{total}
+  =
+  L_{ce}
+  +
+  \sum_{l=1}^{L}L_{unit}^{(l)}
+  +
+  \lambda_1\sum_{l=1}^{L}L_{TPK}^{(l)}
+  +
+  \lambda_2L_{GLC}.
+\end{equation}
+
+其中，$\lambda_1$ 控制 TPK loss 的权重，$\lambda_2$ 控制 GLC loss 的权重。二者也是原论文超参数讨论和本地复现实验关注的重点。
+
+\section{原论文训练与实验设置}
+
+\subsection{训练设置}
+
+原论文中，BrainGNN 的 ROI community 数设为 $K=8$，R-pool 中每层保留一半节点，即 pooling rate 为 0.5。该设置用于逐步筛选重要 ROI，同时保留足够的图结构信息。
+
+训练时使用 Adam 优化器，初始学习率为 0.001，每 20 个 epoch 衰减为原来的一半。模型训练 100 个 epoch，weight decay 设为 0.005。原论文中，batch size 在 Biopoint 数据集上设为 400，在 HCP 数据集上设为 200。
+
+实验采用 5 折交叉验证，并使用 subject-wise 划分，即同一被试生成的脑图只能出现在训练集、验证集或测试集之一，从而避免数据泄漏。需要注意的是，本报告第三章的本地复现配置与原论文设置并不完全相同，例如本地复现实验使用 batch size 64，并采用本地可用的 HCP 子集。
+
+\subsection{超参数讨论}
+
+原论文主要讨论总损失中的 $\lambda_1$ 和 $\lambda_2$。其中，$\lambda_1$ 控制 TPK loss 的强度，用于增强被选中 ROI 与未选中 ROI 之间的得分区分；$\lambda_2$ 控制 GLC loss 的强度，用于调节 ROI 选择的一致性。
+
+较小的 $\lambda_2$ 允许不同个体选择不同 ROI，更偏向 individual-level biomarker；较大的 $\lambda_2$ 鼓励同类样本选择相似 ROI，更偏向 group-level biomarker。但如果 $\lambda_2$ 过大，模型可能过度约束 ROI 选择，从而损伤分类性能。
+
+原论文报告了不同 $\lambda_1$ 和 $\lambda_2$ 组合下的交叉验证结果，并据此确定后续实验设置。该过程说明 BrainGNN 的分类性能和解释稳定性都受到损失权重的影响。
+
+\subsection{消融实验设计}
+
+消融实验用于验证 BrainGNN 各组成部分的贡献。原论文主要比较 Ra-GConv 与 vanilla-GConv，其中 vanilla-GConv 不使用 ROI-aware 机制，而是直接学习共享卷积核。该比较用于检验 ROI-specific embedding 是否有助于脑图分类。
+
+此外，原论文还通过不同损失项组合分析 Unit loss、TPK loss 和 GLC loss 对模型性能和解释性的影响。本报告第三章会在本地 HCP 数据上复现类似的超参数扫描和消融实验。
+
+\section{可解释性分析}
+
+BrainGNN 的可解释性主要来自两个部分：R-pool 的 salient ROI selection 和 Ra-GConv 的 community detection。
+
+\subsection{Individual-level 与 Group-level Biomarker}
+
+R-pool 根据 pooling score 选择重要 ROI。被保留或赋予较高 score 的 ROI 被认为对当前预测任务更有贡献，因此可以作为候选 biomarker 进行分析。
+
+GLC loss 中的超参数 $\lambda_2$ 控制解释层级。较小的 $\lambda_2$ 允许不同个体选择不同 ROI，更偏向 individual-level biomarker；较大的 $\lambda_2$ 鼓励同类样本选择相似 ROI，更偏向 group-level biomarker。该设计使 BrainGNN 能够在分类性能和解释稳定性之间进行调节。
+
+\subsection{Salient ROI 验证}
+
+原论文通过与已有神经科学研究结果对照，验证 BrainGNN 选出的 salient ROI 是否具有实际意义。具体做法是：对同一类别样本的第一层 R-pool node pooling score 取平均，并选择得分较高的 ROI 作为候选 salient ROI。
+
+在 HCP 数据集上，原论文进一步使用 Neurosynth 对七类任务对应的 salient ROI 进行外部验证，分析模型选出的 ROI 是否与真实任务关键词具有较高相关性。该验证说明 BrainGNN 的 ROI selection 不仅有助于分类，也能提供具有神经科学意义的解释线索。
+
+\subsection{Ra-GConv Community}
+
+根据 Ra-GConv 的参数分解，$(\alpha_{iu}^{(l)})^+$ 表示 ROI $i$ 对 community $u$ 的非负归属分数。因此，$\alpha^+$ 矩阵可以用于判断不同 ROI 在模型学习过程中被分配到哪些功能 community。
+
+原论文选取表现较好的模型，并基于第一层 Ra-GConv 的 $\alpha^+$ 对 ROI 进行 community assignment。该分析从参数层面解释模型学习到的 ROI 功能分组，也支持 Ra-GConv 的设计动机：不同 ROI 不应共享完全相同的卷积核，而应根据其 community membership 使用不同的 embedding kernel。
