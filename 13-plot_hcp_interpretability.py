@@ -12,6 +12,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Ellipse
 import nibabel as nib
@@ -52,12 +53,21 @@ LOBE_BOXES = {
 }
 
 
+def cjk_title_options(fontsize: int) -> dict[str, object]:
+    candidates = []
+    for root in (Path.cwd(), Path(__file__).resolve().parent):
+        candidates.extend((root / ".tmp" / "tectonic-cache").rglob("FandolSong-Regular.otf"))
+    if candidates:
+        return {"fontsize": fontsize, "fontproperties": font_manager.FontProperties(fname=str(candidates[0]))}
+    return {"fontsize": fontsize}
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment-root", required=True, type=Path)
     parser.add_argument("--atlas", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
-    parser.add_argument("--fold", type=int, default=0, help="fold used for the Fig. 5-style comparison")
+    parser.add_argument("--fold", type=int, default=0, help="fold used for the individual/group ROI comparison")
     parser.add_argument("--task", default="SOCIAL", choices=TASK_ORDER)
     parser.add_argument("--top-rois", type=int, default=17)
     return parser.parse_args()
@@ -267,8 +277,8 @@ def figure5_glc_comparison(
             ha="right", va="center", fontsize=8,
         )
     fig.suptitle(
-        f"Fig. 5-style local comparison: individual/group ROI selection ({task}, first-pool top-{top_rois} proxy)",
-        fontsize=11,
+        f"图 3.4  GLC 正则下的个体/群体 ROI 选择（{task}, first-pool top-{top_rois}）",
+        **cjk_title_options(11),
     )
     fig.colorbar(last_scatter, ax=axes, shrink=0.55, label="First R-pool score")
     save_figure(fig, output_dir, "figure5_glc_individual_group")
@@ -307,8 +317,8 @@ def figure7_task_saliency(
         ]
     axes_flat[-1].axis("off")
     fig.suptitle(
-        f"Fig. 7-style local HCP task saliency (mean first-pool score; top-{top_rois} proxy)",
-        fontsize=11,
+        f"图 3.5  七类 HCP 任务的 ROI saliency（mean first-pool score; top-{top_rois}）",
+        **cjk_title_options(11),
     )
     fig.colorbar(last_scatter, ax=axes, shrink=0.62, label="Mean first R-pool score")
     save_figure(fig, output_dir, "figure7_task_salient_rois")
@@ -331,7 +341,10 @@ def figure8_proxy(output_dir: Path, means: dict[str, np.ndarray], top_rois: int)
                     fontsize=7, color="white" if matrix[row, column] > 0.55 else "black")
     ax.set_xticks(range(len(TASK_ORDER)), TASK_ORDER, rotation=45, ha="right")
     ax.set_yticks(range(len(TASK_ORDER)), TASK_ORDER)
-    ax.set_title("Fig. 8 proxy: Jaccard similarity of task-specific top ROI sets\n(not Neurosynth decoding)")
+    ax.set_title(
+        "图 3.6  任务 top ROI 集合的 Jaccard 相似性",
+        **cjk_title_options(11),
+    )
     fig.colorbar(image, ax=ax, label=f"Top-{top_rois} ROI Jaccard")
     save_figure(fig, output_dir, "figure8_proxy_task_roi_similarity")
     return {"tasks": list(TASK_ORDER), "top_roi_jaccard": matrix.tolist()}
@@ -394,7 +407,8 @@ def figure9_communities(
     ax.set_aspect("equal")
     ax.axis("off")
     ax.set_title(
-        f"Fig. 9-style local community assignment ({fold_name}; strongest community above mean + std)"
+        f"图 3.7  Ra-GConv community 归属（{fold_name}; mean+std 阈值）",
+        **cjk_title_options(11),
     )
     colorbar = fig.colorbar(scatter, ax=ax, ticks=range(8), shrink=0.75)
     colorbar.set_label("Ra-GConv community (zero-based)")
@@ -409,7 +423,10 @@ def figure10_alpha_heatmap(output_dir: Path, alpha: np.ndarray, fold_name: str) 
     ax.set_ylabel("Community zero-based index")
     ax.set_yticks(range(alpha.shape[1]))
     ax.set_xticks(np.arange(0, alpha.shape[0], 2))
-    ax.set_title(f"Fig. 10 local equivalent: first Ra-GConv alpha+ ({fold_name})")
+    ax.set_title(
+        f"图 3.8  第一层 Ra-GConv alpha+ 矩阵（{fold_name}）",
+        **cjk_title_options(11),
+    )
     fig.colorbar(image, ax=ax, label="Positive community-membership weight")
     save_figure(fig, output_dir, "figure10_alpha_positive_heatmap")
     return {
@@ -443,12 +460,12 @@ BrainGNN Section 3.5. They are not exact reproductions of the paper figures.
 
 Important limitations:
 
-- Training outputs save first R-pool scores only. The Fig. 5- and Fig. 7-style
+- Training outputs save first R-pool scores only. The Figure 3.4 and Figure 3.5
   maps therefore use first-layer top-{top_rois} ROIs as a proxy for the nodes
   remaining after the second R-pool layer.
 - The double-hemisphere drawing is a schematic layout using the real
   Desikan-Killiany ROI names; it is not a surface-coordinate rendering.
-- Neurosynth masks and decoding scores are unavailable, so the paper's Fig. 8
+- Neurosynth masks and decoding scores are unavailable, so the paper's Figure 8
   cannot be reproduced from the current artifacts.
 """
     (output_dir / "README.md").write_text(text)

@@ -47,3 +47,19 @@ The cross-direction baselines are substantially below the mixed-direction baseli
 | 0.05 | 0.8555 +/- 0.0321 | 0.8090 +/- 0.0265 |
 | 0.1 | 0.8655 +/- 0.0331 | 0.8290 +/- 0.0286 |
 | 0.2 | 0.8619 +/- 0.0265 | 0.8325 +/- 0.0143 |
+
+## Note on Tuning Versus Main Results
+
+The tuning table and the main three-seed results use the same training command template and the same core hyperparameters: HCP900 subjectwise data, direction-stratified folds, 100 epochs, batch size 64, learning rate 0.001, `pcorr` edges, top 10% positive edges, `best_metric=balanced_acc`, and the strong BrainGNN loss setting `CE + unit + 0.1 GLC` with TPK disabled. The tuning candidates differ only in `direction_adv_weight`.
+
+The apparent accuracy gap between the tuning section and the main result is mainly a reporting-scope difference. The tuning table is computed only on `tune_seed=123` over five folds, because that seed is used to select the adversarial weight. The main table reports the selected weight across all three seeds `[123, 456, 789]`, giving 15 seed-fold results.
+
+For the selected `direction_adv_weight=0.1`, the tuning test balanced accuracy `0.8290 +/- 0.0286` is exactly the seed-123 five-fold result. In the final three-seed summary, the per-seed balanced accuracies are:
+
+| Seed | Test balanced accuracy |
+|---:|---:|
+| 123 | 0.8290 +/- 0.0286 |
+| 456 | 0.8239 +/- 0.0213 |
+| 789 | 0.7233 +/- 0.0321 |
+
+Thus the final three-seed mean drops to `0.7921 +/- 0.0560` because seed `789` is substantially lower. The tuning table should therefore be read as a seed-123 model-selection table, not as a directly comparable three-seed performance estimate.
